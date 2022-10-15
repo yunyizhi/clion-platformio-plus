@@ -5,9 +5,9 @@ clion platformio 插件增强
 
 已有的界面如下，已经把基础树绘制完成，platformio home也可以嵌入clion.
 
-<img src="./readme-resources/pioTask.png" alt="pio tasks">
+![](./readme-resources/pioTask.png)
 
-<img src="./readme-resources/pioHome.png" alt="pio home">
+![](./readme-resources/pioHome.png)
 
 
 
