@@ -1,0 +1,31 @@
+{
+  "typeMap": {
+    "PioTaskTreeNode": "org.btik.platformioplus.ui.model.PioTaskTreeNode",
+    "CommandNode": "org.btik.platformioplus.ui.model.CommandNode",
+    "PioHomeNode": "org.btik.platformioplus.ui.model.PioHomeNode"
+  },
+  "tree": {
+    "Tasks": {
+      "type": "PioTaskTreeNode",
+      "children": [
+        {
+          "Default": {
+            "type": "PioTaskTreeNode",
+            "children": [
+              {
+                "Re init": {
+                  "type": "CommandNode",
+                  "command": "init --ide clion"
+                },
+                "Build": {
+                  "type": "CommandNode",
+                  "command": "run"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

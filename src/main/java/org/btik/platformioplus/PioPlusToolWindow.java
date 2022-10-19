@@ -3,8 +3,9 @@ package org.btik.platformioplus;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.treeStructure.Tree;
+import org.btik.platformioplus.execute.Runner;
 import org.btik.platformioplus.ui.IconCellRenderer;
-import org.btik.platformioplus.ui.model.PioHomeNode;
+import org.btik.platformioplus.ui.model.CommandNode;
 import org.btik.platformioplus.ui.model.TaskTreeNodeFactory;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class PioPlusToolWindow {
 
 
     private void createUIComponents() {
-        DefaultMutableTreeNode root = TaskTreeNodeFactory.newNode(" Tasks");
+        DefaultMutableTreeNode root = TaskTreeNodeFactory.newNode("Tasks");
         tree = new Tree(root);
         tree.setCellRenderer(new IconCellRenderer());
         DefaultMutableTreeNode defaultTasks = TaskTreeNodeFactory.newNode("Default");
@@ -67,11 +68,9 @@ public class PioPlusToolWindow {
                     }
                     DefaultMutableTreeNode lastPathComponent = (DefaultMutableTreeNode) path.getLastPathComponent();
                     Object userObject = lastPathComponent.getUserObject();
-                    if (userObject instanceof PioHomeNode) {
-                        ((PioHomeNode) userObject).run();
+                    if (userObject instanceof CommandNode) {
+                        Runner.run(e.getComponent(), (CommandNode) userObject);
                     }
-                    System.out.println(e.getComponent());
-                    System.out.println(e.getComponent().getClass());
                 }
             }
         });
