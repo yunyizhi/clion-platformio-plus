@@ -3,10 +3,10 @@ package org.btik.platformioplus;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.treeStructure.Tree;
-import org.btik.platformioplus.execute.Runner;
+import org.btik.platformioplus.execute.TreeNodeCmdExecutor;
 import org.btik.platformioplus.ui.IconCellRenderer;
 import org.btik.platformioplus.ui.model.CommandNode;
-import org.btik.platformioplus.ui.model.TaskTreeNodeFactory;
+import org.btik.platformioplus.ui.model.TreeLoader;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -40,24 +40,8 @@ public class PioPlusToolWindow {
 
 
     private void createUIComponents() {
-        DefaultMutableTreeNode root = TaskTreeNodeFactory.newNode("Tasks");
-        tree = new Tree(root);
+        tree = new Tree(TreeLoader.load());
         tree.setCellRenderer(new IconCellRenderer());
-        DefaultMutableTreeNode defaultTasks = TaskTreeNodeFactory.newNode("Default");
-        root.add(defaultTasks);
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Re init", " init --ide clion");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Build", " run");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Upload", " run --target upload");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Monitor", " device monitor");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Upload and Monitor", " run --target upload --target monitor");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Devices", " device list");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Clean", " run --target clean");
-        TaskTreeNodeFactory.appendCmd(defaultTasks, "Clean All", " run --target cleanall");
-        DefaultMutableTreeNode pioHome = TaskTreeNodeFactory.newNode(" Home");
-        root.add(pioHome);
-        TaskTreeNodeFactory.appendPioHome(pioHome, "Open", " home --no-open");
-        TaskTreeNodeFactory.appendCmd(pioHome, "Upgrade", " upgrade");
-
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -69,10 +53,11 @@ public class PioPlusToolWindow {
                     DefaultMutableTreeNode lastPathComponent = (DefaultMutableTreeNode) path.getLastPathComponent();
                     Object userObject = lastPathComponent.getUserObject();
                     if (userObject instanceof CommandNode) {
-                        Runner.run(e.getComponent(), (CommandNode) userObject);
+                        TreeNodeCmdExecutor.execute(e.getComponent(), (CommandNode) userObject);
                     }
                 }
             }
         });
+
     }
 }

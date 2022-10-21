@@ -25,7 +25,7 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <notificationGroup id="PlatformIO Plus" displayType="BALLOON" bundle="messages.PlatformioPlusBundle" key="notification.group.platformio-plus"/>
         <toolWindow id="Pio Plus Tasks" secondary="true" icon="/pioplus/platformio_13.svg" anchor="right"
                     factoryClass="org.btik.platformioplus.PioPlusToolWindowFactory"/>
         <toolWindow id="Pio  Home" factoryClass="org.btik.platformioplus.PioHomeToolWindowFactory"

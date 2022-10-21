@@ -14,10 +14,10 @@ import java.io.File;
  * @author lustre
  * @since 2022/10/20 0:29
  */
-public class Runner {
+public class TreeNodeCmdExecutor {
 
 
-    public static void run(Component component, CommandNode commandNode) {
+    public static void execute(Component component, CommandNode commandNode) {
         Tool tool = new Tool();
         tool.setName(commandNode.toString());
         String platformioLocation;
