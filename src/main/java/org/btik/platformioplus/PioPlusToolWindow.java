@@ -1,6 +1,5 @@
 package org.btik.platformioplus;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.treeStructure.Tree;
 import org.btik.platformioplus.execute.TreeNodeCmdExecutor;
@@ -23,14 +22,9 @@ public class PioPlusToolWindow {
     private JPanel pioToolWinContent;
 
     private Tree tree;
-    private JPanel head;
-    private JLabel setting;
-
 
     public PioPlusToolWindow(ToolWindow toolWindow) {
-        setting.setIcon(AllIcons.General.Settings);
-        setting.setToolTipText("settings");
-        setting.setText("");
+//
     }
 
 
