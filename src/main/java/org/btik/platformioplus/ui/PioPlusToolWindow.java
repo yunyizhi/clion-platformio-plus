@@ -1,9 +1,7 @@
-package org.btik.platformioplus;
+package org.btik.platformioplus.ui;
 
-import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.treeStructure.Tree;
 import org.btik.platformioplus.execute.TreeNodeCmdExecutor;
-import org.btik.platformioplus.ui.IconCellRenderer;
 import org.btik.platformioplus.ui.model.CommandNode;
 import org.btik.platformioplus.ui.model.TreeLoader;
 
@@ -23,7 +21,7 @@ public class PioPlusToolWindow {
 
     private Tree tree;
 
-    public PioPlusToolWindow(ToolWindow toolWindow) {
+    public PioPlusToolWindow() {
 //
     }
 

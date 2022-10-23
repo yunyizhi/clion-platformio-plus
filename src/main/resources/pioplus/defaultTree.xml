@@ -25,7 +25,7 @@
             <executable name="Verbose Upload" parameters=" run --verbose --target upload " type="CommandNode"/>
             <executable name="Verbose Test" parameters=" test --verbose " type="CommandNode"/>
             <executable name="Verbose Check" parameters=" check --verbose " type="CommandNode"/>
-            <executable name="compilation database" parameters=" run --target compiledb " type="CommandNode"/>
+            <executable name="Compilation Database" parameters=" run --target compiledb " type="CommandNode"/>
         </folder>
         <folder name="Remote Development" type="PioTaskTreeNode">
             <executable name="Remote Upload" parameters=" remote run --target upload " type="CommandNode"/>

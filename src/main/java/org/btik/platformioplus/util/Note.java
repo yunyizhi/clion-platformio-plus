@@ -23,6 +23,6 @@ public class Note extends DynamicBundle {
     }
 
     public static String getMsgF(String key, Object... o) {
-        return INSTANCE.getMessage(key, o);
+        return String.format(getMsg(key), o);
     }
 }
