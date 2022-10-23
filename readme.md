@@ -1,9 +1,9 @@
 # clion-platformio-plus
-clion platformio 插件增强
-
-只有周末有空写一写，加上可能需要休息或者有其他事情，可能需要好几个月才能发布一个release。
-
-已有的界面如下，已经把基础树绘制完成，platformio home也可以嵌入clion.
+> clion platformio 插件增强
+>
+> 提供platformio的命令界面封装。
+>
+> 将platformio的home嵌入clion。
 
 ![](./readme-resources/pioTask.png)
 
@@ -11,6 +11,6 @@ clion platformio 插件增强
 
 
 
-现在准备将Tasks栏下增加工具栏用于跳转到设置platformio路径的界面。
+项目中含platformio.ini则可以加载对应 的工具窗口。
 
-下一步就是通过树调用pio二进制文件。
+若是后添加platformio.ini，可以右键该文件选择 Reload PioPlus来重新加载该插件的界面。
