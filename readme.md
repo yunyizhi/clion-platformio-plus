@@ -5,9 +5,9 @@
 >
 > 将platformio的home嵌入clion。
 
-![](./readme-resources/pioTask.png)
+![](https://github.com/yunyizhi/clion-platformio-plus/blob/1.0-dev/readme-resources/pioHome.png)
 
-![](./readme-resources/pioHome.png)
+![](https://github.com/yunyizhi/clion-platformio-plus/blob/1.0-dev/readme-resources/pioTask.png)
 
 
 
