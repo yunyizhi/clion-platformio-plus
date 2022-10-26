@@ -14,9 +14,17 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-  <p>The following description is from the translation software:
-  Encapsulates commands that are not encapsulated by platformio plugins.
-And embed pio's home inside Clion.<br></p>
+  Provides Clion with some graphical support for platformio.
+<ul>
+    <li>Encapsulate commands for platformio builds into a tree structure like the tree of gradle plugins.
+    </li>
+    <li>And enables Clion to support platform home.</li>
+</ul>
+
+
+<p>
+    This plugin works with Clion's PlatformIO project
+    But it's not a replacement for '<strong>Platformio for Clion</strong>'.</p>
 <ul>
     <li><a href="https://gitcode.net/qq_26700087/clion-platformio-plus">gitcode</a></li>
     <li><a href="https://github.com/yunyizhi/clion-platformio-plus">github</a></li>
