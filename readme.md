@@ -23,7 +23,7 @@
 中国用户如果需要离线包可以在这里下载[离线0.0.1.1-beta安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/c307e4fb4e2362225c8c6128186740d8/platformio-plus-0.0.1.1-beta.zip)
 详情可见发行版。
 
-### <a id ="en" >Description from Bing translation<a/
+### <a id ="en" >Description from Bing translation</a>
 
 
 Provides Clion with some graphical support for platformio.
