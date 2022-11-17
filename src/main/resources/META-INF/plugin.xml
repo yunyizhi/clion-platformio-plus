@@ -47,7 +47,7 @@
         />
         <projectService serviceInterface="org.btik.platformioplus.service.PlatformIoPlusService"
                         serviceImplementation="org.btik.platformioplus.service.impl.PlatformIoPlusServiceImpl"/>
-        <postStartupActivity implementation="org.btik.platformioplus.service.PlatformIoPlusInit"/>
+        <postStartupActivity implementation="org.btik.platformioplus.service.PlatformIoPlusInit" order="last"/>
     </extensions>
     <projectListeners>
         <listener
