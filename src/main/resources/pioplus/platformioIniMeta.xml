@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<IniMeta>
+    <Section name="env">
+        <!-- Platform options-->
+        <Key>platform</Key>
+        <Key>platform_packages</Key>
+        <Key>framework</Key>
+        <Key>board</Key>
+        <Key>board_build.mcu</Key>
+        <Key>board_build.f_cpu</Key>
+        <Key>board_build.ldscript</Key>
+        <!--  Build options-->
+        <Key>build_type</Key>
+        <Key>build_flags</Key>
+        <Key>build_src_flags</Key>
+        <Key>build_unflags</Key>
+        <Key>build_src_filter</Key>
+        <Key>targets</Key>
+        <!--  Library options-->
+        <Key>lib_deps</Key>
+        <Key>lib_ignore</Key>
+        <Key>lib_extra_dirs</Key>
+        <Key>lib_ldf_mode</Key>
+        <Key>lib_compat_mode</Key>
+        <Key>lib_archive</Key>
+        <!-- Upload options-->
+        <Key>upload_port</Key>
+        <Key>upload_protocol</Key>
+        <Key>upload_speed</Key>
+        <Key>upload_flags</Key>
+        <Key>upload_resetmethod</Key>
+        <Key>upload_command</Key>
+        <!-- Monitor options-->
+        <Key>monitor_port</Key>
+        <Key>monitor_speed</Key>
+        <Key>monitor_parity</Key>
+        <Key>monitor_filters</Key>
+        <Key>monitor_rts</Key>
+        <Key>monitor_dtr</Key>
+        <Key>monitor_eol</Key>
+        <Key>monitor_raw</Key>
+        <Key>monitor_echo</Key>
+        <Key>monitor_encoding</Key>
+        <!-- Check options-->
+        <Key>check_tool</Key>
+        <Key>check_patterns</Key>
+        <Key>check_flags</Key>
+        <Key>check_severity</Key>
+        <Key>check_skip_packages</Key>
+        <Key>Test options</Key>
+        <Key>test_framework</Key>
+        <Key>test_filter</Key>
+        <Key>test_ignore</Key>
+        <Key>test_port</Key>
+        <Key>test_speed</Key>
+        <Key>test_build_src</Key>
+        <Key>test_testing_command</Key>
+        <!-- Debugging options-->
+        <Key>debug_tool</Key>
+        <Key>debug_build_flags</Key>
+        <Key>debug_init_break</Key>
+        <Key>debug_init_cmds</Key>
+        <Key>debug_extra_cmds</Key>
+        <Key>debug_load_cmds</Key>
+        <Key>debug_load_mode</Key>
+        <Key>debug_server</Key>
+        <Key>debug_port</Key>
+        <Key>debug_speed</Key>
+        <Key>debug_svd_path</Key>
+        <Key>debug_server_ready_pattern</Key>
+        <Key>debug_test</Key>
+        <!-- Advanced options-->
+        <Key>extends</Key>
+        <Key>extra_scripts</Key>
+    </Section>
+    <Section name="platformio">
+        <!-- Generic options-->
+        <Key>description</Key>
+        <Key>default_envs</Key>
+        <Key>extra_configs</Key>
+        <!-- Directory options-->
+        <Key>core_dir</Key>
+        <Key>globallib_dir</Key>
+        <Key>platforms_dir</Key>
+        <Key>packages_dir</Key>
+        <Key>cache_dir</Key>
+        <Key>build_cache_dir</Key>
+        <Key>workspace_dir</Key>
+        <Key>build_dir</Key>
+        <Key>libdeps_dir</Key>
+        <Key>include_dir</Key>
+        <Key>src_dir</Key>
+        <Key>lib_dir</Key>
+        <Key>data_dir</Key>
+        <Key>test_dir</Key>
+        <Key>boards_dir</Key>
+        <Key>monitor_dir</Key>
+        <Key>shared_dir</Key>
+    </Section>
+</IniMeta>

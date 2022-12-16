@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.1.4-beta"
+version = "0.0.2.0-beta"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ intellij {
     version.set("2022.3")
     type.set("CL") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("com.jetbrains.plugins.ini4idea:223.7571.233"))
 }
 
 tasks {

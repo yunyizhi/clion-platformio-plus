@@ -35,7 +35,7 @@ public class TreeLoader {
             documentElement = treeConf.getDocumentElement();
 
         } catch (Exception e) {
-            NOTIFICATION_GROUP.createNotification(getMsg("tree.load.failed"),
+            NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
                     getMsgF("tree.load.failed", e.getMessage()), NotificationType.ERROR).notify(null);
             return null;
         }
