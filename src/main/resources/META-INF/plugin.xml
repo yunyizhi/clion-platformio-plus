@@ -19,6 +19,7 @@
     <li>Encapsulate commands for platformio builds into a tree structure like the tree of gradle plugins.
     </li>
     <li>And enables Clion to support platform home.</li>
+    <li>Support platformio.ini prompting/autocomplete.</li>
 </ul>
 
 

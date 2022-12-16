@@ -32,6 +32,10 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("222.*")
+        changeNotes.set(
+            "<p>en:Support platformio.ini prompting/autocomplete.</p>" +
+                    "<p>中文:支持platformio.ini提示/自动补全</p>"
+        )
     }
 
     signPlugin {
