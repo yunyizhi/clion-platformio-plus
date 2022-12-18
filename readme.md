@@ -2,17 +2,19 @@
 
 
 
-<a href="https://plugins.jetbrains.com/plugin/20232-platformio-plus">:shopping:插件市场|Jetbrains Marketplace</a>
+点此进入jetbrains插件<a href="https://plugins.jetbrains.com/plugin/20232-platformio-plus">:shopping:插件市场|Jetbrains Marketplace</a>
 
 <a href="#en" >en</a>
 
+*使用gitcode的用户，如果支持该项目，请点star :star:  而不是 关注通知,后者只会让你收到关于该项目的动态的邮件通知。*
 
+### 功能
 
-> clion platformio 插件增强
->
-> 提供platformio的命令界面封装。
->
-> 将platformio的home嵌入clion。
+* 提供platformio的命令界面封装。
+
+* 将platformio的home嵌入clion。
+
+* 支持platformio.ini 属性提示/自动补充。
 
 <img alt="pioHome" src="https://plugins.jetbrains.com/files/20232/screenshot_fdb9cbfa-74a1-4337-82bf-fd786cd403b1" />
 
@@ -25,7 +27,7 @@
 
 <img src="https://github.com/yunyizhi/clion-platformio-plus/blob/1.0-dev/readme-resources/market.png" />
 
-中国用户如果需要离线包可以在这里下载[:arrow_down:离线0.0.1.4-beta安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/fccfb9619de525bd1721494132fbc6ea/platformio-plus-0.0.1.4-beta.zip)
+中国用户如果需要离线包可以在这里下载[:arrow_down:0.0.2.1离线安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/dc22bc4b5ceaf0e6e47c0029f74f82fb/platformio-plus-0.0.2.1-beta.zip)
 详情可见发行版。
 
 ### <a id ="en" >Description from Bing translation</a>
@@ -35,3 +37,5 @@ Provides Clion with some graphical support for platformio.
 * Encapsulate commands for platformio builds into a tree structure like the tree of gradle plugins.
 * And enables Clion to support platform home.
 This plugin works with Clion's PlatformIO project But it's not a replacement for 'Platformio for Clion'.
+
+* Support platformio.ini prompting/autocomplete.
