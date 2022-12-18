@@ -53,6 +53,12 @@
 
         <completion.contributor language="Ini"
                                 implementationClass="org.btik.platformioplus.ini.completion.PlatformioIniCompletionContributor"/>
+        <editorFloatingToolbarProvider id="pioIni"
+                                       implementation="org.btik.platformioplus.ini.reload.PlatformioIniFloatingToolbarProvider"/>
+        <projectService serviceImplementation="org.btik.platformioplus.ini.reload.ToolBarStatusImpl"
+                        serviceInterface="org.btik.platformioplus.ini.reload.ToolBarStatus"
+        />
+        <psi.treeChangeListener implementation="org.btik.platformioplus.ini.reload.IniPsiTreeChangeListener"/>
     </extensions>
     <projectListeners>
         <listener
@@ -67,5 +73,12 @@
                 icon="AllIcons.Actions.Refresh">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
         </action>
+        <group id="pio.re-init">
+
+            <action id="re-init.do" class="org.btik.platformioplus.ini.reload.PlatformioIniChangeAnAction"
+                    icon="/pioplus/platformio_ini_reload.svg" text="Reload Changes"/>
+            <action id="re-init.cancel" class="org.btik.platformioplus.ini.reload.PlatformioIniChangeCloseAnAction"
+                    icon="AllIcons.Actions.Close" text="Close"/>
+        </group>
     </actions>
 </idea-plugin>
