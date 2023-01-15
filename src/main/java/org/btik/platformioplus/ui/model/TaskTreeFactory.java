@@ -20,18 +20,19 @@ import static org.btik.platformioplus.util.Note.*;
  * @author lustre
  * @since 2022/10/20 22:41
  */
-public class TreeLoader {
+public class TaskTreeFactory {
     private static final HashMap<String, Function<Element, XmlNode>> factories = new HashMap<>();
 
     static {
-        factories.put(PIO_TASK_TREE_NODE, TreeLoader::newFolder);
-        factories.put(COMMAND_NODE, TreeLoader::newCmd);
+        factories.put(PIO_TASK_TREE_NODE, TaskTreeFactory::newFolder);
+        factories.put(COMMAND_NODE, TaskTreeFactory::newCmd);
+        factories.put(LOCK_COMMAND_NODE, TaskTreeFactory::newLockCmd);
     }
 
     public static DefaultMutableTreeNode load() {
         Element documentElement;
         try {
-            Document treeConf = DomUtil.parse(TreeLoader.class.getResourceAsStream("/pioplus/defaultTree.xml"));
+            Document treeConf = DomUtil.parse(TaskTreeFactory.class.getResourceAsStream("/pioplus/defaultTree.xml"));
             documentElement = treeConf.getDocumentElement();
 
         } catch (Exception e) {
@@ -78,16 +79,25 @@ public class TreeLoader {
 
     private static XmlNode newFolder(Element element) {
         String name = element.getAttribute(NAME);
-        return new XmlNode(element,
-                new DefaultMutableTreeNode(new PioTaskTreeNode(name)));
+        return buildNode(element, new PioTaskTreeNode(name));
     }
 
     private static XmlNode newCmd(Element element) {
         String name = element.getAttribute(NAME);
         String parameters = element.getAttribute(PARAMETERS);
+        return buildNode(element, new CommandNode(name, parameters));
+    }
+
+    private static XmlNode newLockCmd(Element element) {
+        String name = element.getAttribute(NAME);
+        String parameters = element.getAttribute(PARAMETERS);
+        String lock = element.getAttribute(LOCK);
+        return buildNode(element, new LockCommandNode(name, parameters, lock));
+    }
+
+    private static XmlNode buildNode(Element element, PioTaskTreeNode taskTreeNode) {
         return new XmlNode(element,
-                new DefaultMutableTreeNode(
-                        new CommandNode(name, parameters)));
+                new DefaultMutableTreeNode(taskTreeNode));
     }
 
 }

@@ -3,7 +3,7 @@ package org.btik.platformioplus.ui;
 import com.intellij.ui.treeStructure.Tree;
 import org.btik.platformioplus.execute.TreeNodeCmdExecutor;
 import org.btik.platformioplus.ui.model.CommandNode;
-import org.btik.platformioplus.ui.model.TreeLoader;
+import org.btik.platformioplus.ui.model.TaskTreeFactory;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,7 +32,7 @@ public class PioPlusToolWindow {
 
 
     private void createUIComponents() {
-        tree = new Tree(TreeLoader.load());
+        tree = new Tree(TaskTreeFactory.load());
         tree.setCellRenderer(new IconCellRenderer());
         tree.addMouseListener(new MouseAdapter() {
             @Override

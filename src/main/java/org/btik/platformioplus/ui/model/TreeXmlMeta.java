@@ -20,9 +20,13 @@ public interface TreeXmlMeta {
 
     String PARAMETERS = "parameters";
 
+    String LOCK = "lock";
+
     // type
     String PIO_TASK_TREE_NODE = "PioTaskTreeNode";
 
     String COMMAND_NODE = "CommandNode";
+
+    String LOCK_COMMAND_NODE = "LockCommandNode";
 
 }

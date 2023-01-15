@@ -2,7 +2,6 @@ package org.btik.platformioplus.ini.completion;
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.notification.NotificationType;
-import org.btik.platformioplus.ui.model.TreeLoader;
 import org.btik.platformioplus.util.DomUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,7 +32,7 @@ public class PlatformioIniMetaFactory {
     public void load() {
         Element documentElement;
         try {
-            Document treeConf = DomUtil.parse(TreeLoader.class.getResourceAsStream("/pioplus/platformioIniMeta.xml"));
+            Document treeConf = DomUtil.parse(PlatformioIniMetaFactory.class.getResourceAsStream("/pioplus/platformioIniMeta.xml"));
             documentElement = treeConf.getDocumentElement();
 
         } catch (Exception e) {

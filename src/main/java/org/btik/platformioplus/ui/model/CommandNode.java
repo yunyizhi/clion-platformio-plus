@@ -8,23 +8,12 @@ public class CommandNode extends PioTaskTreeNode {
 
     private final String command;
 
-    private String warningMessage;
-
     public CommandNode(String displayName, String command) {
         super(displayName);
         this.command = command;
     }
 
-    public CommandNode(String displayName, String command, String warningMessage) {
-        this(displayName, command);
-        this.warningMessage = warningMessage;
-    }
-
     public String getCommand() {
         return command;
-    }
-
-    public String getWarningMessage() {
-        return warningMessage;
     }
 }
