@@ -96,4 +96,9 @@ public class PlatformioIniChangeAnAction extends AnAction implements ChangeHandl
         ToolBarStatus service = project.getService(ToolBarStatus.class);
         service.setVisible(false);
     }
+
+    @Override
+    public Project getProject() {
+        return this.project;
+    }
 }

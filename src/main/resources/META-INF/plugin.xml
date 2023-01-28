@@ -54,11 +54,13 @@
         <completion.contributor language="Ini"
                                 implementationClass="org.btik.platformioplus.ini.completion.PlatformioIniCompletionContributor"/>
         <editorFloatingToolbarProvider id="pioIni"
-                                       implementation="org.btik.platformioplus.ini.reload.PlatformioIniFloatingToolbarProvider"/>
+                                       implementation="org.btik.platformioplus.ini.reload.PlatformioIniFloatingToolbarProvider"
+
+        />
         <projectService serviceImplementation="org.btik.platformioplus.ini.reload.ToolBarStatusImpl"
                         serviceInterface="org.btik.platformioplus.ini.reload.ToolBarStatus"
         />
-        <psi.treeChangeListener implementation="org.btik.platformioplus.ini.reload.IniPsiTreeChangeListener"/>
+        <psi.treeChangeListener implementation="org.btik.platformioplus.ini.reload.IniPsiTreeChangeListener" />
     </extensions>
     <projectListeners>
         <listener

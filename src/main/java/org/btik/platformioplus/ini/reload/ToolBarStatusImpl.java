@@ -14,7 +14,7 @@ public class ToolBarStatusImpl implements ToolBarStatus {
 
     private final HashSet<FloatingToolbarComponent> floatingToolbarComponents = new HashSet<>();
 
-    private boolean isVisible = true;
+    private boolean isVisible = false;
 
     @Override
     public void setVisible(boolean visible) {
@@ -37,7 +37,7 @@ public class ToolBarStatusImpl implements ToolBarStatus {
     @Override
     public void register(FloatingToolbarComponent component) {
         floatingToolbarComponents.add(component);
-        component.scheduleShow();
+        component.scheduleHide();
     }
 
 }

@@ -40,8 +40,9 @@ public class LockCommandProcessListener implements ProcessListener {
         if (!isAlive()) {
             return;
         }
+
         processHandler.destroyProcess();
-        processHandler.detachProcess();
+        processHandler.removeProcessListener(this);
 
     }
 
