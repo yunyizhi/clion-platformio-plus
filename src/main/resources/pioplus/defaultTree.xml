@@ -35,6 +35,7 @@
         </folder>
         <folder name="Miscellaneous" type="PioTaskTreeNode">
             <executable name="Upgrade PlatformIO Core" parameters=" upgrade" type="CommandNode"/>
+            <executable name="System Info" parameters=" system info" type="CommandNode"/>
         </folder>
     </root>
 </pio-task-tree>

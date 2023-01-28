@@ -1,4 +1,4 @@
-package org.btik.platformioplus.ui.model;
+package org.btik.platformioplus.ui.task.tree.model;
 
 /**
  * 任务树用户对象

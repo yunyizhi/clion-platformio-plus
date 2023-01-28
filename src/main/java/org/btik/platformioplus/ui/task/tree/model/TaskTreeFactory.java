@@ -1,4 +1,4 @@
-package org.btik.platformioplus.ui.model;
+package org.btik.platformioplus.ui.task.tree.model;
 
 import com.intellij.notification.NotificationType;
 import org.btik.platformioplus.util.DomUtil;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.function.Function;
 
-import static org.btik.platformioplus.ui.model.TreeXmlMeta.*;
+import static org.btik.platformioplus.ui.task.tree.model.TreeXmlMeta.*;
 import static org.btik.platformioplus.util.DomUtil.eachChildrenElement;
 import static org.btik.platformioplus.util.DomUtil.getFirstElementByName;
 import static org.btik.platformioplus.util.Note.*;

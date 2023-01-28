@@ -1,4 +1,4 @@
-package org.btik.platformioplus.ui.action;
+package org.btik.platformioplus.ui.home.action;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;

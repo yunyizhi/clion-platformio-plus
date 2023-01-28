@@ -47,7 +47,7 @@
         <Key>check_flags</Key>
         <Key>check_severity</Key>
         <Key>check_skip_packages</Key>
-        <Key>Test options</Key>
+        <!--Test options -->
         <Key>test_framework</Key>
         <Key>test_filter</Key>
         <Key>test_ignore</Key>

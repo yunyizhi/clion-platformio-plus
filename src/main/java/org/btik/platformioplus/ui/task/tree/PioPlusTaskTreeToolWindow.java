@@ -1,9 +1,9 @@
-package org.btik.platformioplus.ui;
+package org.btik.platformioplus.ui.task.tree;
 
 import com.intellij.ui.treeStructure.Tree;
-import org.btik.platformioplus.execute.TreeNodeCmdExecutor;
-import org.btik.platformioplus.ui.model.CommandNode;
-import org.btik.platformioplus.ui.model.TaskTreeFactory;
+import org.btik.platformioplus.ui.task.tree.execute.TreeNodeCmdExecutor;
+import org.btik.platformioplus.ui.task.tree.model.CommandNode;
+import org.btik.platformioplus.ui.task.tree.model.TaskTreeFactory;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,13 +15,13 @@ import java.awt.event.MouseEvent;
  * @author lustre
  * @since 2022/10/7 21:44
  */
-public class PioPlusToolWindow {
+public class PioPlusTaskTreeToolWindow {
 
     private JPanel pioToolWinContent;
 
     private Tree tree;
 
-    public PioPlusToolWindow() {
+    public PioPlusTaskTreeToolWindow() {
 //
     }
 

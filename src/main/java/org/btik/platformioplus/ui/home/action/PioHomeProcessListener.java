@@ -1,4 +1,4 @@
-package org.btik.platformioplus.ui.action;
+package org.btik.platformioplus.ui.home.action;
 
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
@@ -87,8 +87,7 @@ public class PioHomeProcessListener implements ProcessListener {
         }
         processHandler.destroyProcess();
         if (isAlive()) {
-            if (processHandler instanceof OSProcessHandler) {
-                OSProcessHandler osProcessHandler = (OSProcessHandler) processHandler;
+            if (processHandler instanceof OSProcessHandler osProcessHandler) {
                 Process process = osProcessHandler.getProcess();
                 process.destroy();
                 if (isAlive()) {

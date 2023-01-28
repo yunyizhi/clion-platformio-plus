@@ -1,8 +1,8 @@
-package org.btik.platformioplus.ui;
+package org.btik.platformioplus.ui.task.tree;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
-import org.btik.platformioplus.ui.model.CommandNode;
+import org.btik.platformioplus.ui.task.tree.model.CommandNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
