@@ -22,6 +22,7 @@ public class LockCommandProcessListener implements ProcessListener {
 
     @Override
     public void processTerminated(@NotNull ProcessEvent event) {
+        processHandler.removeProcessListener(this);
         this.processHandler = null;
         TreeNodeCmdExecutor.unlock(lock, this);
     }
@@ -40,9 +41,7 @@ public class LockCommandProcessListener implements ProcessListener {
         if (!isAlive()) {
             return;
         }
-
         processHandler.destroyProcess();
-        processHandler.removeProcessListener(this);
 
     }
 

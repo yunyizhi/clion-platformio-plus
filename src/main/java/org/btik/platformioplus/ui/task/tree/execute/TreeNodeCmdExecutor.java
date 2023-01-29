@@ -61,7 +61,7 @@ public class TreeNodeCmdExecutor {
     static void unlock(String lock, LockCommandProcessListener listener) {
         LOCK_PROCESS_MAP.compute(lock, (key, oldVal) -> {
             // 当锁命令的监听器是自身时注销掉，而不是自身时，则无需操作
-            if(oldVal == null || oldVal == listener){
+            if (oldVal == null || oldVal == listener) {
                 return null;
             }
             return oldVal;

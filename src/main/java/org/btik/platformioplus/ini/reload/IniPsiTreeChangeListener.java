@@ -1,7 +1,5 @@
 package org.btik.platformioplus.ini.reload;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -13,16 +11,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static org.btik.platformioplus.ini.reload.ChangeHandler.RE_INIT_DO;
 
 /**
  * @author lustre
  * @since 2022/12/18 16:07
  */
 public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
-
-    private ChangeHandler changeHandler;
-
 
 
     @Override
@@ -76,15 +70,12 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
         if (file == null) {
             return;
         }
-        Project project = changeHandler.getProject();
-        if (project == null) {
-            return;
-        }
         if (!Objects.equals(file.getName(), PioConf.FILE_NAME)) {
             return;
         }
         Project fileProject = file.getProject();
-        if (fileProject != project) {
+        ChangeHandler changeHandler = fileProject.getService(ToolBarStatus.class).getChangeHandler();
+        if (changeHandler == null) {
             return;
         }
         PsiElement parent = event.getParent();
@@ -107,12 +98,5 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
     @Override
     public void propertyChanged(@NotNull PsiTreeChangeEvent event) {
 
-    }
-
-    public IniPsiTreeChangeListener() {
-        AnAction action = ActionManager.getInstance().getAction(RE_INIT_DO);
-        if (action instanceof ChangeHandler) {
-            this.changeHandler = (ChangeHandler) action;
-        }
     }
 }

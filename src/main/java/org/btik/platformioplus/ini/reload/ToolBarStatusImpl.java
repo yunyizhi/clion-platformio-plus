@@ -1,10 +1,13 @@
 package org.btik.platformioplus.ini.reload;
 
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
 
 
-
 import java.util.HashSet;
+
+import static org.btik.platformioplus.ini.reload.ChangeHandler.RE_INIT_DO;
 
 /**
  * @author lustre
@@ -15,6 +18,13 @@ public class ToolBarStatusImpl implements ToolBarStatus {
     private final HashSet<FloatingToolbarComponent> floatingToolbarComponents = new HashSet<>();
 
     private boolean isVisible = false;
+
+    private ChangeHandler changeHandler;
+
+    @Override
+    public ChangeHandler getChangeHandler() {
+        return changeHandler;
+    }
 
     @Override
     public void setVisible(boolean visible) {
@@ -40,4 +50,11 @@ public class ToolBarStatusImpl implements ToolBarStatus {
         component.scheduleHide();
     }
 
+    public ToolBarStatusImpl() {
+        AnAction action = ActionManager.getInstance().getAction(RE_INIT_DO);
+        if (action instanceof ChangeHandler) {
+            this.changeHandler = (ChangeHandler) action;
+        }
+
+    }
 }
