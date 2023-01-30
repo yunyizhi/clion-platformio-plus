@@ -1,11 +1,11 @@
 package org.btik.platformioplus.ini.reload;
 
-import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import static org.btik.platformioplus.ini.reload.ChangeHandler.RE_INIT_DO;
 
 /**
  * @author lustre
@@ -14,9 +14,11 @@ import static org.btik.platformioplus.ini.reload.ChangeHandler.RE_INIT_DO;
 public class PlatformioIniChangeCloseAnAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        AnAction action = ActionManager.getInstance().getAction(RE_INIT_DO);
-        if (action instanceof PlatformioIniChangeAnAction platformioIniChangeAnAction) {
-            platformioIniChangeAnAction.saveChangeAndHide(e);
+        Project project = e.getData(CommonDataKeys.PROJECT);
+        if (project == null) {
+            return;
         }
+        ToolBarStatus service = project.getService(ToolBarStatus.class);
+        service.saveChangeAndHide();
     }
 }

@@ -8,9 +8,8 @@ import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
  */
 public interface ToolBarStatus {
 
-    ChangeHandler getChangeHandler();
-
-    void setVisible(boolean visible);
+    void update(CharSequence charSequence);
+    void saveChangeAndHide();
 
 
     void register(FloatingToolbarComponent component);

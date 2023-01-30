@@ -1,13 +1,11 @@
 package org.btik.platformioplus.ini.reload;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 
-import static org.btik.platformioplus.ini.reload.ChangeHandler.RE_INIT_DO;
 
 /**
  * @author lustre
@@ -19,15 +17,17 @@ public class ToolBarStatusImpl implements ToolBarStatus {
 
     private boolean isVisible = false;
 
-    private ChangeHandler changeHandler;
 
-    @Override
-    public ChangeHandler getChangeHandler() {
-        return changeHandler;
-    }
+    private CharSequence lastSaveCharSequence = "";
 
-    @Override
-    public void setVisible(boolean visible) {
+    private CharSequence lastUnSaveCharSequence = "";
+
+
+    private volatile boolean fileChange;
+
+
+
+    private void setVisible(boolean visible) {
         if (visible == isVisible) {
             return;
         }
@@ -50,11 +50,20 @@ public class ToolBarStatusImpl implements ToolBarStatus {
         component.scheduleHide();
     }
 
-    public ToolBarStatusImpl() {
-        AnAction action = ActionManager.getInstance().getAction(RE_INIT_DO);
-        if (action instanceof ChangeHandler) {
-            this.changeHandler = (ChangeHandler) action;
-        }
+    @Override
+    public void update(CharSequence charSequence) {
+        lastUnSaveCharSequence = charSequence;
 
+        // 文件回退则隐藏，否则依然存在差异则显示
+        fileChange = !Objects.equals(lastSaveCharSequence, charSequence);
+        setVisible(fileChange);
     }
+
+    @Override
+    public void saveChangeAndHide() {
+        lastSaveCharSequence = lastUnSaveCharSequence;
+        fileChange = false;
+        setVisible(false);
+    }
+
 }

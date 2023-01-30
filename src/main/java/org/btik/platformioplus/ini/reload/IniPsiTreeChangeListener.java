@@ -73,11 +73,7 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
         if (!Objects.equals(file.getName(), PioConf.FILE_NAME)) {
             return;
         }
-        Project fileProject = file.getProject();
-        ChangeHandler changeHandler = fileProject.getService(ToolBarStatus.class).getChangeHandler();
-        if (changeHandler == null) {
-            return;
-        }
+
         PsiElement parent = event.getParent();
         if (parent instanceof IniSection) {
             parent = parent.getParent();
@@ -85,7 +81,12 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
         if (parent == null) {
             return;
         }
-        changeHandler.update(parent.getText());
+        Project fileProject = file.getProject();
+        ToolBarStatus toolBarStatus = fileProject.getService(ToolBarStatus.class);
+        if (toolBarStatus == null) {
+            return;
+        }
+        toolBarStatus.update(parent.getText());
 
 
     }
