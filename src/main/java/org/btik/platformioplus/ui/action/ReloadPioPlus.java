@@ -39,4 +39,9 @@ public class ReloadPioPlus extends AnAction {
                     && PioConf.FILE_NAME.equals(file.getName()));
         }
     }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
+    }
 }

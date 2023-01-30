@@ -21,6 +21,13 @@
     <li>And enables Clion to support platform home.</li>
     <li>Support platformio.ini prompting/autocomplete.</li>
 </ul>
+<h3>中文</h3>
+为Clion提供了一些对platformio的图形化操作支持
+<ul>
+    <li>提供类似gradle插件的树形结构，在树上点击对应命令节点执行相关命令。</li>
+    <li>集成platformio Home到clion</li>
+    <li>platformio.ini 提示/自动补全</li>
+</ul>
 
 
 <p>
