@@ -27,7 +27,7 @@
 
 <img src="https://github.com/yunyizhi/clion-platformio-plus/blob/1.0-dev/readme-resources/market.png" />
 
-中国用户如果需要离线包可以在这里下载[:arrow_down:0.0.2.1离线安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/dc22bc4b5ceaf0e6e47c0029f74f82fb/platformio-plus-0.0.2.1-beta.zip)
+中国用户如果需要离线包可以在这里下载[:arrow_down:0.0.2.2离线安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/b924fb3b5a93a4baa8b7b362ad27c068/platformio-plus-0.0.2.2-beta.zip)
 详情可见发行版。
 
 ### <a id ="en" >Description from Bing translation</a>
