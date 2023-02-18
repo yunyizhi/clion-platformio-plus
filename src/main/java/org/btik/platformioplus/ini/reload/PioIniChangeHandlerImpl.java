@@ -1,9 +1,13 @@
 package org.btik.platformioplus.ini.reload;
 
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
+import org.btik.platformioplus.ui.task.tree.model.EnvNode;
 
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -11,7 +15,7 @@ import java.util.Objects;
  * @author lustre
  * @since 2022/12/18 13:40
  */
-public class ToolBarStatusImpl implements ToolBarStatus {
+public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     private final HashSet<FloatingToolbarComponent> floatingToolbarComponents = new HashSet<>();
 
@@ -25,6 +29,11 @@ public class ToolBarStatusImpl implements ToolBarStatus {
 
     private volatile boolean fileChange;
 
+    private final List<String> envs = new ArrayList<>();
+
+    private DefaultMutableTreeNode envNode;
+
+    private Runnable treeUpdateUI;
 
 
     private void setVisible(boolean visible) {
@@ -66,4 +75,29 @@ public class ToolBarStatusImpl implements ToolBarStatus {
         setVisible(false);
     }
 
+    @Override
+    public List<String> getEnvs() {
+        return envs;
+    }
+
+    @Override
+    public void fireEnvsChange() {
+        if (envNode == null) {
+            return;
+        }
+        if (treeUpdateUI == null) {
+            return;
+        }
+        envNode.removeAllChildren();
+        for (String env : envs) {
+            envNode.add(new DefaultMutableTreeNode(new EnvNode(env)));
+        }
+        treeUpdateUI.run();
+    }
+
+    @Override
+    public void bindEnvNode(DefaultMutableTreeNode envNode, Runnable updateUI) {
+        this.envNode = envNode;
+        this.treeUpdateUI = updateUI;
+    }
 }

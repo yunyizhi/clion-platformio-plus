@@ -96,6 +96,10 @@ public class TaskTreeFactory {
     }
 
     private static XmlNode buildNode(Element element, PioTaskTreeNode taskTreeNode) {
+        String iconPath = element.getAttribute(ICON);
+        String id = element.getAttribute(ID);
+        taskTreeNode.setId(id);
+        taskTreeNode.setIcon(iconPath);
         return new XmlNode(element,
                 new DefaultMutableTreeNode(taskTreeNode));
     }

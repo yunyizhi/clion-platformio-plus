@@ -9,6 +9,7 @@ import ini4idea.lang.psi.IniSection;
 import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -82,11 +83,23 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
             return;
         }
         Project fileProject = file.getProject();
-        ToolBarStatus toolBarStatus = fileProject.getService(ToolBarStatus.class);
-        if (toolBarStatus == null) {
+        PioIniChangeHandler pioIniChangeHandler = fileProject.getService(PioIniChangeHandler.class);
+        if (pioIniChangeHandler == null) {
             return;
         }
-        toolBarStatus.update(parent.getText());
+        List<String> envs = pioIniChangeHandler.getEnvs();
+        envs.clear();
+        @NotNull PsiElement[] children = parent.getChildren();
+        for (PsiElement child : children) {
+            if (child instanceof IniSection section) {
+                String name = section.getNameText();
+                if (name != null && name.startsWith("[env:")) {
+                    envs.add(name.substring(5, name.length() - 1));
+                }
+            }
+        }
+        pioIniChangeHandler.fireEnvsChange();
+        pioIniChangeHandler.update(parent.getText());
 
 
     }

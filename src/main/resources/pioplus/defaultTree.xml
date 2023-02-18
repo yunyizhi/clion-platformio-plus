@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <pio-task-tree>
-    <root name="Tasks" type="PioTaskTreeNode">
+    <root name="Tasks" type="PioTaskTreeNode" icon="/pioplus/platformio_13.svg">
+        <folder name="Environments" id="envs" type="PioTaskTreeNode" icon="/pioplus/profilesClosed.svg" />
         <folder name="General" type="PioTaskTreeNode">
             <executable name="Re init" parameters=" init --ide clion" type="CommandNode"/>
             <executable name="Build" parameters=" run" type="CommandNode"/>

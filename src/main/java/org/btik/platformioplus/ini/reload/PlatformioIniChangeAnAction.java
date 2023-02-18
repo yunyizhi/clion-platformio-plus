@@ -40,7 +40,7 @@ public class PlatformioIniChangeAnAction extends AnAction {
         if (project == null) {
             return;
         }
-        ToolBarStatus service = project.getService(ToolBarStatus.class);
+        PioIniChangeHandler service = project.getService(PioIniChangeHandler.class);
         service.saveChangeAndHide();
 
     }

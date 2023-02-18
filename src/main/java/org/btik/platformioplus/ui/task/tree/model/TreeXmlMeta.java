@@ -14,9 +14,12 @@ public interface TreeXmlMeta {
 
     String EXECUTABLE_TAG = "executable";
     // attrs
+    String ID = "id";
     String NAME = "name";
 
     String TYPE = "type";
+
+    String ICON = "icon";
 
     String PARAMETERS = "parameters";
 

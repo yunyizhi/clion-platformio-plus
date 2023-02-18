@@ -17,7 +17,7 @@ public class PioPlusTaskTreeToolWindowFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        PioPlusTaskTreeToolWindow pioPlusTaskTreeToolWindow = new PioPlusTaskTreeToolWindow();
+        PioPlusTaskTreeToolWindow pioPlusTaskTreeToolWindow = new PioPlusTaskTreeToolWindow(project);
         ContentFactory contentFactory =  ApplicationManager.getApplication().getService(ContentFactory.class);
         Content content = contentFactory.createContent(pioPlusTaskTreeToolWindow.getContent(), "Tasks", false);
         toolWindow.getContentManager().addContent(content);
