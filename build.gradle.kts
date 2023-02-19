@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.12.0"
+    id("org.jetbrains.intellij") version "1.13.0"
 }
 
 group = "org.btik"
-version = "0.0.2.2-beta"
+version = "0.0.3.0-beta"
 
 repositories {
     mavenCentral()

@@ -1,6 +1,7 @@
 package org.btik.platformioplus.ui.task.tree;
 
 import com.intellij.openapi.util.IconLoader;
+import org.btik.platformioplus.ui.task.tree.model.EnvNode;
 import org.btik.platformioplus.ui.task.tree.model.PioTaskTreeNode;
 
 import javax.swing.*;
@@ -20,51 +21,65 @@ public class IconCellRenderer extends DefaultTreeCellRenderer {
         ijIconMap.put("ij:icons.MavenIcons#ProfilesClosed", null);
     }
 
-    JLabel label = new JLabel();
+    JLabel label ;
+
+    private JCheckBox checkBox;
 
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-        if (node == null)
+        if (node == null) {
             return null;
-        if (selected) {
-            label.setOpaque(false);
-            label.setBackground(getBackgroundSelectionColor());
-        } else {
-            label.setOpaque(true);
-            label.setBackground(getBackgroundNonSelectionColor());
-            label.setForeground(getTextNonSelectionColor());
         }
-        label.setText(node.toString());
 
+        IconTextItem<?> iconTextItem;
         Object userObject = node.getUserObject();
+        if (userObject instanceof EnvNode) {
+            checkBox = new JCheckBox();
+            iconTextItem = new IconTextItem<>(checkBox);
+        } else {
+            label = new JLabel();
+            iconTextItem = new IconTextItem<>(label);
+        }
+        JComponent component = iconTextItem.getComponent();
+        if (selected) {
+
+            component.setOpaque(false);
+            component.setBackground(getBackgroundSelectionColor());
+        } else {
+            component.setOpaque(true);
+            component.setBackground(getBackgroundNonSelectionColor());
+            component.setForeground(getTextNonSelectionColor());
+        }
+
+        iconTextItem.setText(node.toString());
         if (!(userObject instanceof PioTaskTreeNode taskTreeNode)) {
-            return label;
+            return component;
         }
         String icon = taskTreeNode.getIcon();
         // 优先使用配置的图标
-        if (icon != null && !icon.isEmpty() && setIconFromConf(icon)) {
-            return label;
+        if (icon != null && !icon.isEmpty() && setIconFromConf(icon, iconTextItem)) {
+            return component;
         }
         // 设置类级别的默认的图标
-        label.setIcon(taskTreeNode.getMetaIcon());
+        iconTextItem.setIcon(taskTreeNode.getMetaIcon());
 
-        return label;
+        return component;
 
     }
 
-    private boolean setIconFromConf(String icon) {
+    private boolean setIconFromConf(String icon, IconTextItem<?> iconTextItem) {
         // ij: 命令空间则是 使用内部的图标 ,否则使用的资源目录的图标文件
         if (icon.startsWith("ij:")) {
             Icon ijIcon = ijIconMap.get(icon);
             if (ijIcon == null) {
                 return false;
             }
-            label.setIcon(ijIcon);
+            iconTextItem.setIcon(ijIcon);
         } else {
-            label.setIcon(IconLoader.getIcon(icon, getClass()));
+            iconTextItem.setIcon(IconLoader.getIcon(icon, getClass()));
         }
         return true;
     }
