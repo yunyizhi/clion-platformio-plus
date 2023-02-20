@@ -1,7 +1,7 @@
 package org.btik.platformioplus.ui.task.tree;
 
 import com.intellij.openapi.util.IconLoader;
-import org.btik.platformioplus.ui.task.tree.model.EnvNode;
+import com.intellij.ui.CheckedTreeNode;
 import org.btik.platformioplus.ui.task.tree.model.PioTaskTreeNode;
 
 import javax.swing.*;
@@ -21,9 +21,10 @@ public class IconCellRenderer extends DefaultTreeCellRenderer {
         ijIconMap.put("ij:icons.MavenIcons#ProfilesClosed", null);
     }
 
-    JLabel label ;
+    JLabel label = new JLabel();
 
-    private JCheckBox checkBox;
+
+    private final JCheckBox checkBox = new JCheckBox();
 
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -36,11 +37,10 @@ public class IconCellRenderer extends DefaultTreeCellRenderer {
 
         IconTextItem<?> iconTextItem;
         Object userObject = node.getUserObject();
-        if (userObject instanceof EnvNode) {
-            checkBox = new JCheckBox();
+        if (node instanceof CheckedTreeNode checkedTreeNode) {
+            checkBox.setSelected(checkedTreeNode.isChecked());
             iconTextItem = new IconTextItem<>(checkBox);
         } else {
-            label = new JLabel();
             iconTextItem = new IconTextItem<>(label);
         }
         JComponent component = iconTextItem.getComponent();

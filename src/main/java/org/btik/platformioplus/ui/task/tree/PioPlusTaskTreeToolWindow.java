@@ -1,8 +1,15 @@
 package org.btik.platformioplus.ui.task.tree;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiUtilCore;
+import com.intellij.ui.CheckedTreeNode;
 import com.intellij.ui.treeStructure.Tree;
 import org.btik.platformioplus.ini.reload.PioIniChangeHandler;
+import org.btik.platformioplus.setting.PioConf;
 import org.btik.platformioplus.ui.task.tree.execute.TreeNodeCmdExecutor;
 import org.btik.platformioplus.ui.task.tree.model.CommandNode;
 import org.btik.platformioplus.ui.task.tree.model.PioTaskTreeNode;
@@ -10,11 +17,11 @@ import org.btik.platformioplus.ui.task.tree.model.TaskTreeFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static javax.swing.tree.TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION;
 
 /**
  * @author lustre
@@ -46,17 +53,26 @@ public class PioPlusTaskTreeToolWindow {
             return;
         }
         tree = new Tree(root);
-        tree.setCellRenderer(new IconCellRenderer());
-        bindEnvNode(root);
+        IconCellRenderer cellRenderer = new IconCellRenderer();
+        tree.setCellRenderer(cellRenderer);
+        tree.getSelectionModel().setSelectionMode(DISCONTIGUOUS_TREE_SELECTION);
+
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+                if (path == null) {
+                    return;
+                }
+                DefaultMutableTreeNode lastPathComponent = (DefaultMutableTreeNode) path.getLastPathComponent();
+                if (lastPathComponent instanceof CheckedTreeNode checkedTreeNode) {
+                    checkedTreeNode.setChecked(!checkedTreeNode.isChecked());
+                    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+
+                    model.nodeChanged(checkedTreeNode);
+                    tree.updateUI();
+                }
                 if (e.getClickCount() == 2) {
-                    TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-                    if (path == null) {
-                        return;
-                    }
-                    DefaultMutableTreeNode lastPathComponent = (DefaultMutableTreeNode) path.getLastPathComponent();
                     Object userObject = lastPathComponent.getUserObject();
                     if (userObject instanceof CommandNode) {
                         TreeNodeCmdExecutor.execute(e.getComponent(), (CommandNode) userObject);
@@ -64,7 +80,28 @@ public class PioPlusTaskTreeToolWindow {
                 }
             }
         });
+        bindEnvNode(root);
+        loadEnv();
 
+    }
+
+    /**
+     * 加载已存在的环境
+     */
+    private void loadEnv() {
+        PioIniChangeHandler pioIniChangeHandler = project.getService(PioIniChangeHandler.class);
+        if (pioIniChangeHandler == null) {
+            return;
+        }
+        VirtualFile[] contentRoots = ProjectRootManager.getInstance(project).getContentRoots();
+        for (VirtualFile contentRoot : contentRoots) {
+            VirtualFile pioIni = contentRoot.findChild(PioConf.FILE_NAME);
+            if (pioIni != null) {
+                PsiFile pioIniPsiFile = PsiUtilCore.getPsiFile(project, pioIni);
+                pioIniChangeHandler.loadEnvInFile(pioIniPsiFile.getChildren());
+                break;
+            }
+        }
     }
 
     /**

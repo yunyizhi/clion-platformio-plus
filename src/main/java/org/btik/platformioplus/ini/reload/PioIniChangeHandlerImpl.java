@@ -1,14 +1,15 @@
 package org.btik.platformioplus.ini.reload;
 
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
+import com.intellij.psi.PsiElement;
+import com.intellij.ui.CheckedTreeNode;
+import ini4idea.lang.psi.IniSection;
 import org.btik.platformioplus.ui.task.tree.model.EnvNode;
+import org.jetbrains.annotations.NotNull;
 
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 /**
@@ -29,7 +30,9 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     private volatile boolean fileChange;
 
-    private final List<String> envs = new ArrayList<>();
+    private final List<CheckedTreeNode> envs = new ArrayList<>();
+
+    private final HashMap<String, CheckedTreeNode> envMap = new HashMap<>();
 
     private DefaultMutableTreeNode envNode;
 
@@ -76,28 +79,40 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
     }
 
     @Override
-    public List<String> getEnvs() {
+    public List<CheckedTreeNode> getEnvs() {
         return envs;
-    }
-
-    @Override
-    public void fireEnvsChange() {
-        if (envNode == null) {
-            return;
-        }
-        if (treeUpdateUI == null) {
-            return;
-        }
-        envNode.removeAllChildren();
-        for (String env : envs) {
-            envNode.add(new DefaultMutableTreeNode(new EnvNode(env)));
-        }
-        treeUpdateUI.run();
     }
 
     @Override
     public void bindEnvNode(DefaultMutableTreeNode envNode, Runnable updateUI) {
         this.envNode = envNode;
         this.treeUpdateUI = updateUI;
+    }
+
+    @Override
+    public void loadEnvInFile(@NotNull PsiElement[] children) {
+        envs.clear();
+        for (PsiElement child : children) {
+            if (child instanceof IniSection section) {
+                String name = section.getNameText();
+                if (name != null && name.startsWith("[env:")) {
+                    String envName = name.substring(5, name.length() - 1);
+                    CheckedTreeNode checkedTreeNode = envMap.get(envName);
+                    if (checkedTreeNode == null) {
+                        checkedTreeNode = new CheckedTreeNode(new EnvNode(envName));
+                        checkedTreeNode.setChecked(false);
+                    }
+                    envs.add(checkedTreeNode);
+                }
+            }
+        }
+
+        envNode.removeAllChildren();
+        envMap.clear();
+        for (CheckedTreeNode env : envs) {
+            envNode.add(env);
+            envMap.put(env.toString(), env);
+        }
+        treeUpdateUI.run();
     }
 }
