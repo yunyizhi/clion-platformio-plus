@@ -2,7 +2,7 @@
 
 
 
-点此进入jetbrains插件<a href="https://plugins.jetbrains.com/plugin/20232-platformio-plus">:shopping:插件市场|Jetbrains Marketplace</a>
+点此进入jetbrains插件<a href="https://plugins.jetbrains.com/plugin/20232-platformio-plus">🛍️插件市场|Jetbrains Marketplace</a>
 
 <a href="#en" >en</a>
 
@@ -23,11 +23,11 @@
 
 若是后添加platformio.ini，可以右键该文件选择 Reload PioPlus来重新加载该插件的界面。
 
-### 安装 :wrench:
+### 安装 🔧
 
 <img src="https://github.com/yunyizhi/clion-platformio-plus/blob/1.0-dev/readme-resources/market.png" />
 
-中国用户如果需要离线包可以在这里下载[:arrow_down:0.0.2.2离线安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/b924fb3b5a93a4baa8b7b362ad27c068/platformio-plus-0.0.2.2-beta.zip)
+中国用户如果需要离线包可以在这里下载[⬇️0.0.3.0离线安装包](https://gitcode.net/qq_26700087/clion-platformio-plus/uploads/0cddae01e88490c7640e503f80e7547a/platformio-plus-0.0.3.0-beta.zip)
 详情可见发行版。
 
 ### <a id ="en" >Description from Bing translation</a>
