@@ -21,6 +21,16 @@ public class PioTaskTreeNode {
 
     private String id;
 
+    private String toolTip;
+
+    public String getToolTip() {
+        return toolTip;
+    }
+
+    public void setToolTip(String toolTip) {
+        this.toolTip = toolTip;
+    }
+
     public void setIcon(String icon) {
         this.icon = icon;
     }

@@ -58,6 +58,10 @@ public class IconCellRenderer extends DefaultTreeCellRenderer {
         if (!(userObject instanceof PioTaskTreeNode taskTreeNode)) {
             return component;
         }
+        String toolTip = taskTreeNode.getToolTip();
+        if (toolTip != null && !toolTip.isEmpty()) {
+            component.setToolTipText(toolTip);
+        }
         String icon = taskTreeNode.getIcon();
         // 优先使用配置的图标
         if (icon != null && !icon.isEmpty() && setIconFromConf(icon, iconTextItem)) {

@@ -38,6 +38,8 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     private Runnable treeUpdateUI;
 
+    private final byte[] envLock = new byte[0];
+
 
     private void setVisible(boolean visible) {
         if (visible == isVisible) {
@@ -79,8 +81,14 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
     }
 
     @Override
-    public List<CheckedTreeNode> getEnvs() {
-        return envs;
+    public List<String> getEnvs() {
+        synchronized (envLock) {
+            return envs.stream().
+                    filter(CheckedTreeNode::isChecked)
+                    .map(DefaultMutableTreeNode::toString)
+                    .toList();
+        }
+
     }
 
     @Override
@@ -91,27 +99,29 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     @Override
     public void loadEnvInFile(@NotNull PsiElement[] children) {
-        envs.clear();
-        for (PsiElement child : children) {
-            if (child instanceof IniSection section) {
-                String name = section.getNameText();
-                if (name != null && name.startsWith("[env:")) {
-                    String envName = name.substring(5, name.length() - 1);
-                    CheckedTreeNode checkedTreeNode = envMap.get(envName);
-                    if (checkedTreeNode == null) {
-                        checkedTreeNode = new CheckedTreeNode(new EnvNode(envName));
-                        checkedTreeNode.setChecked(false);
+        synchronized (envLock) {
+            envs.clear();
+            for (PsiElement child : children) {
+                if (child instanceof IniSection section) {
+                    String name = section.getNameText();
+                    if (name != null && name.startsWith("[env:")) {
+                        String envName = name.substring(5, name.length() - 1);
+                        CheckedTreeNode checkedTreeNode = envMap.get(envName);
+                        if (checkedTreeNode == null) {
+                            checkedTreeNode = new CheckedTreeNode(new EnvNode(envName));
+                            checkedTreeNode.setChecked(false);
+                        }
+                        envs.add(checkedTreeNode);
                     }
-                    envs.add(checkedTreeNode);
                 }
             }
-        }
 
-        envNode.removeAllChildren();
-        envMap.clear();
-        for (CheckedTreeNode env : envs) {
-            envNode.add(env);
-            envMap.put(env.toString(), env);
+            envNode.removeAllChildren();
+            envMap.clear();
+            for (CheckedTreeNode env : envs) {
+                envNode.add(env);
+                envMap.put(env.toString(), env);
+            }
         }
         treeUpdateUI.run();
     }

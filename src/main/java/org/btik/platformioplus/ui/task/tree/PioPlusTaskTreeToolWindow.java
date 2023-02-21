@@ -3,7 +3,6 @@ package org.btik.platformioplus.ui.task.tree;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.ui.CheckedTreeNode;
@@ -20,6 +19,8 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.function.Supplier;
 
 import static javax.swing.tree.TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION;
 
@@ -56,7 +57,7 @@ public class PioPlusTaskTreeToolWindow {
         IconCellRenderer cellRenderer = new IconCellRenderer();
         tree.setCellRenderer(cellRenderer);
         tree.getSelectionModel().setSelectionMode(DISCONTIGUOUS_TREE_SELECTION);
-
+        Supplier<List<String>> getEnvsFunction = project.getService(PioIniChangeHandler.class)::getEnvs;
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -64,6 +65,7 @@ public class PioPlusTaskTreeToolWindow {
                 if (path == null) {
                     return;
                 }
+                // 设置复选框选中
                 DefaultMutableTreeNode lastPathComponent = (DefaultMutableTreeNode) path.getLastPathComponent();
                 if (lastPathComponent instanceof CheckedTreeNode checkedTreeNode) {
                     checkedTreeNode.setChecked(!checkedTreeNode.isChecked());
@@ -72,10 +74,11 @@ public class PioPlusTaskTreeToolWindow {
                     model.nodeChanged(checkedTreeNode);
                     tree.updateUI();
                 }
+                // 执行命令节点
                 if (e.getClickCount() == 2) {
                     Object userObject = lastPathComponent.getUserObject();
                     if (userObject instanceof CommandNode) {
-                        TreeNodeCmdExecutor.execute(e.getComponent(), (CommandNode) userObject);
+                        TreeNodeCmdExecutor.execute(e.getComponent(), (CommandNode) userObject, getEnvsFunction);
                     }
                 }
             }

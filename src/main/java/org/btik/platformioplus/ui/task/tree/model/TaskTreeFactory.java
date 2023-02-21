@@ -2,6 +2,7 @@ package org.btik.platformioplus.ui.task.tree.model;
 
 import com.intellij.notification.NotificationType;
 import org.btik.platformioplus.util.DomUtil;
+import org.btik.platformioplus.util.Note;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -85,21 +86,24 @@ public class TaskTreeFactory {
     private static XmlNode newCmd(Element element) {
         String name = element.getAttribute(NAME);
         String parameters = element.getAttribute(PARAMETERS);
-        return buildNode(element, new CommandNode(name, parameters));
+        CommandNode taskTreeNode = new CommandNode(name, parameters);
+        taskTreeNode.setEnvParamKey(element.getAttribute(ENVIRONMENT));
+        return buildNode(element, taskTreeNode);
     }
 
     private static XmlNode newLockCmd(Element element) {
         String name = element.getAttribute(NAME);
         String parameters = element.getAttribute(PARAMETERS);
         String lock = element.getAttribute(LOCK);
-        return buildNode(element, new LockCommandNode(name, parameters, lock));
+        LockCommandNode taskTreeNode = new LockCommandNode(name, parameters, lock);
+        taskTreeNode.setEnvParamKey(element.getAttribute(ENVIRONMENT));
+        return buildNode(element, taskTreeNode);
     }
 
     private static XmlNode buildNode(Element element, PioTaskTreeNode taskTreeNode) {
-        String iconPath = element.getAttribute(ICON);
-        String id = element.getAttribute(ID);
-        taskTreeNode.setId(id);
-        taskTreeNode.setIcon(iconPath);
+        taskTreeNode.setToolTip(Note.getMsg(element.getAttribute(TOOL_TIP)));
+        taskTreeNode.setId(element.getAttribute(ID));
+        taskTreeNode.setIcon(element.getAttribute(ICON));
         return new XmlNode(element,
                 new DefaultMutableTreeNode(taskTreeNode));
     }

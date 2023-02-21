@@ -10,6 +10,17 @@ public class CommandNode extends PioTaskTreeNode {
 
     private final String command;
 
+    private String envParamKey;
+
+
+    public String getEnvParamKey() {
+        return envParamKey;
+    }
+
+    public void setEnvParamKey(String envParamKey) {
+        this.envParamKey = envParamKey;
+    }
+
     @Override
     public Icon getMetaIcon() {
         return icons.ExternalSystemIcons.Task;

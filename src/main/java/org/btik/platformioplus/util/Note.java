@@ -19,6 +19,9 @@ public class Note extends DynamicBundle {
     }
 
     public static String getMsg(String key) {
+        if (key == null || key.isEmpty()) {
+            return null;
+        }
         return INSTANCE.getResourceBundle().getString(key);
     }
 

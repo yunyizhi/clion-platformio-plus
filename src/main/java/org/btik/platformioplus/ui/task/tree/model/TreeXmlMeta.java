@@ -21,6 +21,10 @@ public interface TreeXmlMeta {
 
     String ICON = "icon";
 
+    String TOOL_TIP = "toolTip";
+
+    String ENVIRONMENT = "environment";
+
     String PARAMETERS = "parameters";
 
     String LOCK = "lock";

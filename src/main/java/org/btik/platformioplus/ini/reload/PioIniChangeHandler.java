@@ -2,7 +2,6 @@ package org.btik.platformioplus.ini.reload;
 
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
 import com.intellij.psi.PsiElement;
-import com.intellij.ui.CheckedTreeNode;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -24,7 +23,7 @@ public interface PioIniChangeHandler {
     /**
      *用于更新环境列表，需要返回原始引用
      */
-    List<CheckedTreeNode> getEnvs();
+    List<String> getEnvs();
 
     void bindEnvNode(DefaultMutableTreeNode envNode, Runnable updateUI);
 

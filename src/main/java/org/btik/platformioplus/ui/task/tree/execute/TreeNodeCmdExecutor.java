@@ -8,7 +8,9 @@ import org.btik.platformioplus.ui.task.tree.model.CommandNode;
 import org.btik.platformioplus.ui.task.tree.model.LockCommandNode;
 
 import java.awt.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * @author lustre
@@ -19,31 +21,32 @@ public class TreeNodeCmdExecutor {
     private static final ConcurrentHashMap<String, LockCommandProcessListener> LOCK_PROCESS_MAP = new ConcurrentHashMap<>();
 
 
-    public static void execute(Component component, CommandNode commandNode) {
+    public static void execute(Component component, CommandNode commandNode, Supplier<List<String>> getEnvsFunction) {
         String platformioLocation = PioConf.findPlatformio();
         if (platformioLocation == null) {
             PioConf.notifyPlatformioNotFound();
             return;
         }
+        String command = buildCommand(commandNode, getEnvsFunction);
         if (commandNode instanceof LockCommandNode lockCommandNode) {
-            executeLockCommand(component, lockCommandNode, platformioLocation);
+            executeLockCommand(component, lockCommandNode, platformioLocation, command);
             return;
         }
         Tool tool = new Tool();
         tool.setName(commandNode.toString());
         tool.setProgram(platformioLocation);
         tool.setUseConsole(true);
-        tool.setParameters(commandNode.getCommand());
+        tool.setParameters(command);
         tool.execute(null, DataManager.getInstance().getDataContext(component),
                 ExecutionEnvironment.getNextUnusedExecutionId(), null);
     }
 
-    private static void executeLockCommand(Component component, LockCommandNode lockCommandNode, String platformioLocation) {
+    private static void executeLockCommand(Component component, LockCommandNode lockCommandNode, String platformioLocation, String command) {
         Tool tool = new Tool();
         tool.setName(lockCommandNode.toString());
         tool.setProgram(platformioLocation);
         tool.setUseConsole(true);
-        tool.setParameters(lockCommandNode.getCommand());
+        tool.setParameters(command);
         String lock = lockCommandNode.getLock();
         LockCommandProcessListener listener = LOCK_PROCESS_MAP.compute(lock, (key, oldVal) -> {
             if (oldVal == null) {
@@ -66,6 +69,19 @@ public class TreeNodeCmdExecutor {
             }
             return oldVal;
         });
+    }
+
+    private static String buildCommand(CommandNode commandNode, Supplier<List<String>> getEnvsFunction) {
+        String envParamKey = commandNode.getEnvParamKey();
+        if (null == envParamKey || envParamKey.isEmpty()) {
+            return commandNode.getCommand();
+        }
+
+        StringBuilder envParamsBuilder = new StringBuilder();
+        for (String env : getEnvsFunction.get()) {
+            envParamsBuilder.append(envParamKey).append(env).append(' ');
+        }
+        return commandNode.getCommand() + envParamsBuilder;
     }
 
 }
