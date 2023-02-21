@@ -33,12 +33,15 @@ tasks {
     patchPluginXml {
         sinceBuild.set("222.*")
         changeNotes.set(
-            "<h3>0.0.2.2</h3>\n" +
-                    "<p>en:Modify and optimize some issues.</p>\n" +
-                    "<p>中文:修改和优化一些问题</p>\n" +
-                    "<h3>0.0.2.1</h3>\n" +
-                    "<p>en:Support platformio.ini prompting/autocomplete.</p>\n" +
-                    "<p>中文:支持platformio.ini提示/自动补全</p>"
+            """<h3>0.0.3.0</h3>
+               <p>en:When executing commands using the task tree, multiple environment configurations existing in platformio.ini can be checked. This feature is independent of the `default_envs` in platformio.ini.</p>
+                <p>中文:任务树执行命令，支持勾选platformio.ini的多环境配置。该功能与platformio.ini的`default_envs`无关</p>
+                <h3>0.0.2.2</h3>
+                <p>en:Modify and optimize some issues.</p>
+                <p>中文:修改和优化一些问题</p>
+                <h3>0.0.2.1</h3>
+                <p>en:Support platformio.ini prompting/autocomplete.</p>
+                <p>中文:支持platformio.ini提示/自动补全</p>"""
         )
     }
 
