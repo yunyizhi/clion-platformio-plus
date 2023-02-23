@@ -18,7 +18,7 @@
 
 <img alt="pioHome" src="https://plugins.jetbrains.com/files/20232/screenshot_fdb9cbfa-74a1-4337-82bf-fd786cd403b1" />
 
-<img alt="pioTask" src="https://plugins.jetbrains.com/files/20232/screenshot_5cb3b4c8-9f5c-443c-ba20-a2d6200f3ffb" />
+<img alt="pioTask" src="https://plugins.jetbrains.com/files/20232/screenshot_2a464907-64ff-4719-9796-2bb5ce28bea6" />
 项目中含platformio.ini则可以加载对应 的工具窗口。
 
 若是后添加platformio.ini，可以右键该文件选择 Reload PioPlus来重新加载该插件的界面。
