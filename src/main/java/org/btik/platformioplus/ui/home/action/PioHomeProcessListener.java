@@ -52,6 +52,7 @@ public class PioHomeProcessListener implements ProcessListener {
         }
         if (platformIoPlusService != null) {
             platformIoPlusService.deregister(SHUTDOWN_HOOK_ID);
+            platformIoPlusService.pioHomeUrl(null);
         }
 
     }
@@ -65,6 +66,7 @@ public class PioHomeProcessListener implements ProcessListener {
         }
         String[] split = text.split("=>");
         String url = split[1].trim();
+        platformIoPlusService.pioHomeUrl(url);
         myBrowser.loadURL(url);
     }
 

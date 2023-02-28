@@ -23,6 +23,8 @@ public class PlatformIoPlusServiceImpl implements Disposable, PlatformIoPlusServ
 
     private boolean isEnable;
 
+    private static String pioHomeUrl;
+
     @Override
     public void dispose() {
 
@@ -82,5 +84,16 @@ public class PlatformIoPlusServiceImpl implements Disposable, PlatformIoPlusServ
                         getMsg("load.pio.plus.failed"), NotificationType.WARNING).notify(null);
             }
         }
+    }
+
+    @Override
+    public String pioHomeUrl() {
+        return pioHomeUrl;
+    }
+
+    @Override
+    public String pioHomeUrl(String pioHomeUrl) {
+        PlatformIoPlusServiceImpl.pioHomeUrl = pioHomeUrl;
+        return PlatformIoPlusServiceImpl.pioHomeUrl;
     }
 }

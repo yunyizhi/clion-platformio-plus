@@ -20,4 +20,8 @@ public interface PlatformIoPlusService {
 
     void enableUIComponent();
 
+    String pioHomeUrl();
+
+    String pioHomeUrl(String pioHomeUrl);
+
 }
