@@ -115,11 +115,15 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
                     }
                 }
             }
+            if (envNode != null) {
+                envNode.removeAllChildren();
+            }
 
-            envNode.removeAllChildren();
             envMap.clear();
             for (CheckedTreeNode env : envs) {
-                envNode.add(env);
+                if (envNode != null) {
+                    envNode.add(env);
+                }
                 envMap.put(env.toString(), env);
             }
         }
