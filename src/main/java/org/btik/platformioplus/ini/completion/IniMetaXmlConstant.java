@@ -22,7 +22,7 @@ public interface IniMetaXmlConstant {
 
     String FILTER = "filter";
 // key tip
-    String ENV_SECTION_PREFIX = "[env:";
+    String ENV_SECTION_PREFIX = "[env";
 
     String ENV_SECTION_GROUP_NAME = "[env:]";
 

@@ -91,7 +91,13 @@
             <value>1024000</value>
             <value>2000000</value>
         </Key>
-        <Key name="monitor_parity"/>
+        <Key name="monitor_parity">
+            <value>N</value>
+            <value>E</value>
+            <value>O</value>
+            <value>S</value>
+            <value>M</value>
+        </Key>
         <Key name="monitor_filters">
             <value toolTip="Remove typical terminal control codes from input">default</value>
             <value toolTip="Apply different colors for received and echo">colorize</value>
@@ -116,12 +122,28 @@
                 esp8266_exception_decoder
             </value>
         </Key>
-        <Key name="monitor_rts"/>
-        <Key name="monitor_dtr"/>
-        <Key name="monitor_eol"/>
-        <Key name="monitor_raw"/>
+        <Key name="monitor_rts">
+            <value>0</value>
+            <value>1</value>
+        </Key>
+        <Key name="monitor_dtr">
+            <value>0</value>
+            <value>1</value>
+        </Key>
+        <Key name="monitor_eol">
+            <value>CR</value>
+            <value>LF</value>
+            <value>CRLF</value>
+        </Key>
+        <Key name="monitor_raw">
+            <value>yes</value>
+            <value>no</value>
+        </Key>
         <Key name="monitor_echo"/>
-        <Key name="monitor_encoding"/>
+        <Key name="monitor_encoding">
+            <value>hexlify</value>
+            <value>UTF-8</value>
+        </Key>
         <!-- Check options-->
         <Key name="check_tool"/>
         <Key name="check_patterns"/>
@@ -143,7 +165,13 @@
         <Key name="debug_init_cmds"/>
         <Key name="debug_extra_cmds"/>
         <Key name="debug_load_cmds"/>
-        <Key name="debug_load_mode"/>
+        <Key name="debug_load_mode">
+            <value toolTip="load for the each debugging session, default">always</value>
+            <value toolTip="load only when firmware was modified">modified</value>
+            <value toolTip="do not load firmware automatically. You are responsible to pre-flash target with debugging firmware in this case.">
+                manual
+            </value>
+        </Key>
         <Key name="debug_server"/>
         <Key name="debug_port"/>
         <Key name="debug_speed"/>
