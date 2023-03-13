@@ -99,6 +99,9 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     @Override
     public void loadEnvInFile(@NotNull PsiElement[] children) {
+        if(envNode == null){
+            return;
+        }
         synchronized (envLock) {
             envs.clear();
             for (PsiElement child : children) {
@@ -115,15 +118,10 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
                     }
                 }
             }
-            if (envNode != null) {
-                envNode.removeAllChildren();
-            }
-
+            envNode.removeAllChildren();
             envMap.clear();
             for (CheckedTreeNode env : envs) {
-                if (envNode != null) {
-                    envNode.add(env);
-                }
+                envNode.add(env);
                 envMap.put(env.toString(), env);
             }
         }

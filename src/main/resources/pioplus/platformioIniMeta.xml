@@ -1,100 +1,181 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <IniMeta>
-    <Section name="env">
+    <Section name="env:" desc="[env:*]">
         <!-- Platform options-->
-        <Key>platform</Key>
-        <Key>platform_packages</Key>
-        <Key>framework</Key>
-        <Key>board</Key>
-        <Key>board_build.mcu</Key>
-        <Key>board_build.f_cpu</Key>
-        <Key>board_build.ldscript</Key>
+        <Key name="platform">
+        </Key>
+        <Key name="platform_packages"/>
+        <Key name="framework"/>
+        <Key name="board"/>
+        <Key name="board_build.mcu"/>
+        <Key name="board_build.f_cpu"/>
+        <Key name="board_build.ldscript"/>
         <!--  Build options-->
-        <Key>build_type</Key>
-        <Key>build_flags</Key>
-        <Key>build_src_flags</Key>
-        <Key>build_unflags</Key>
-        <Key>build_src_filter</Key>
-        <Key>targets</Key>
+        <Key name="build_type">
+            <value toolTip="
+            Default configuration. A “release” configuration of your firmware/program does not contain symbolic debug information and is optimized for the firmware size or speed (depending on Development Platforms)"
+            >release
+            </value>
+            <value toolTip="A “test” configuration extends a build environment with PIO_UNIT_TESTING macro and with extra flags provided by the Unit Testing framework"
+            >test
+            </value>
+            <value toolTip="A “debug” configuration of your firmware/program is compiled with full symbolic debug information and no optimization. Optimization complicates debugging because the relationship between source code and generated instructions is more complex"
+            >debug
+            </value>
+        </Key>
+        <Key name="build_flags"/>
+        <Key name="build_src_flags"/>
+        <Key name="build_unflags"/>
+        <Key name="build_src_filter"/>
+        <Key name="targets"/>
         <!--  Library options-->
-        <Key>lib_deps</Key>
-        <Key>lib_ignore</Key>
-        <Key>lib_extra_dirs</Key>
-        <Key>lib_ldf_mode</Key>
-        <Key>lib_compat_mode</Key>
-        <Key>lib_archive</Key>
+        <Key name="lib_deps"/>
+        <Key name="lib_ignore"/>
+        <Key name="lib_extra_dirs"/>
+        <Key name="lib_ldf_mode"/>
+        <Key name="lib_compat_mode"/>
+        <Key name="lib_archive"/>
         <!-- Upload options-->
-        <Key>upload_port</Key>
-        <Key>upload_protocol</Key>
-        <Key>upload_speed</Key>
-        <Key>upload_flags</Key>
-        <Key>upload_resetmethod</Key>
-        <Key>upload_command</Key>
+        <Key name="upload_port"/>
+        <Key name="upload_protocol"/>
+        <Key name="upload_speed">
+            <value>300</value>
+            <value>600</value>
+            <value>750</value>
+            <value>1200</value>
+            <value>2400</value>
+            <value>4800</value>
+            <value>9600</value>
+            <value>14400</value>
+            <value>19200</value>
+            <value>28800</value>
+            <value>38400</value>
+            <value>57600</value>
+            <value>115200</value>
+            <value>128000</value>
+            <value>230400</value>
+            <value>256000</value>
+            <value>468000</value>
+            <value>512000</value>
+            <value>921600</value>
+            <value>1000000</value>
+            <value>1024000</value>
+            <value>2000000</value>
+        </Key>
+        <Key name="upload_flags"/>
+        <Key name="upload_resetmethod"/>
+        <Key name="upload_command"/>
         <!-- Monitor options-->
-        <Key>monitor_port</Key>
-        <Key>monitor_speed</Key>
-        <Key>monitor_parity</Key>
-        <Key>monitor_filters</Key>
-        <Key>monitor_rts</Key>
-        <Key>monitor_dtr</Key>
-        <Key>monitor_eol</Key>
-        <Key>monitor_raw</Key>
-        <Key>monitor_echo</Key>
-        <Key>monitor_encoding</Key>
+        <Key name="monitor_port"/>
+        <Key name="monitor_speed">
+            <value>300</value>
+            <value>600</value>
+            <value>750</value>
+            <value>1200</value>
+            <value>2400</value>
+            <value>4800</value>
+            <value>9600</value>
+            <value>14400</value>
+            <value>19200</value>
+            <value>28800</value>
+            <value>38400</value>
+            <value>57600</value>
+            <value>115200</value>
+            <value>128000</value>
+            <value>230400</value>
+            <value>256000</value>
+            <value>468000</value>
+            <value>512000</value>
+            <value>921600</value>
+            <value>1000000</value>
+            <value>1024000</value>
+            <value>2000000</value>
+        </Key>
+        <Key name="monitor_parity"/>
+        <Key name="monitor_filters">
+            <value toolTip="Remove typical terminal control codes from input">default</value>
+            <value toolTip="Apply different colors for received and echo">colorize</value>
+            <value toolTip="Print what is sent and received">debug</value>
+            <value toolTip="Do-nothing: forward all data unchanged">direct</value>
+            <value toolTip="Show a hexadecimal representation of the data (code point of each character)">hexlify
+            </value>
+            <value toolTip="Log data to a file &quot;platformio-device-monitor-%date%.log&quot; located in the current working directory">
+                log2file
+            </value>
+            <value toolTip="Remove all control codes, incl. CR+LF">nocontrol</value>
+            <value toolTip="Show decimal code for all non-ASCII characters and replace most control codes">printable
+            </value>
+            <value toolTip="Add timestamp with milliseconds for each new line">time</value>
+            <value toolTip="Send a text to device on ENTER">send_on_enter</value>
+            <value filter="esp32Platform"
+                   toolTip="Custom filter for `platform_espressif32` which decodes crash exception">
+                esp32_exception_decoder
+            </value>
+            <value filter="esp8266Platform"
+                   toolTip="Custom filter for `platform_espressif8266` which decodes crash exception">
+                esp8266_exception_decoder
+            </value>
+        </Key>
+        <Key name="monitor_rts"/>
+        <Key name="monitor_dtr"/>
+        <Key name="monitor_eol"/>
+        <Key name="monitor_raw"/>
+        <Key name="monitor_echo"/>
+        <Key name="monitor_encoding"/>
         <!-- Check options-->
-        <Key>check_tool</Key>
-        <Key>check_patterns</Key>
-        <Key>check_flags</Key>
-        <Key>check_severity</Key>
-        <Key>check_skip_packages</Key>
+        <Key name="check_tool"/>
+        <Key name="check_patterns"/>
+        <Key name="check_flags"/>
+        <Key name="check_severity"/>
+        <Key name="check_skip_packages"/>
         <!--Test options -->
-        <Key>test_framework</Key>
-        <Key>test_filter</Key>
-        <Key>test_ignore</Key>
-        <Key>test_port</Key>
-        <Key>test_speed</Key>
-        <Key>test_build_src</Key>
-        <Key>test_testing_command</Key>
+        <Key name="test_framework"/>
+        <Key name="test_filter"/>
+        <Key name="test_ignore"/>
+        <Key name="test_port"/>
+        <Key name="test_speed"/>
+        <Key name="test_build_src"/>
+        <Key name="test_testing_command"/>
         <!-- Debugging options-->
-        <Key>debug_tool</Key>
-        <Key>debug_build_flags</Key>
-        <Key>debug_init_break</Key>
-        <Key>debug_init_cmds</Key>
-        <Key>debug_extra_cmds</Key>
-        <Key>debug_load_cmds</Key>
-        <Key>debug_load_mode</Key>
-        <Key>debug_server</Key>
-        <Key>debug_port</Key>
-        <Key>debug_speed</Key>
-        <Key>debug_svd_path</Key>
-        <Key>debug_server_ready_pattern</Key>
-        <Key>debug_test</Key>
+        <Key name="debug_tool"/>
+        <Key name="debug_build_flags"/>
+        <Key name="debug_init_break"/>
+        <Key name="debug_init_cmds"/>
+        <Key name="debug_extra_cmds"/>
+        <Key name="debug_load_cmds"/>
+        <Key name="debug_load_mode"/>
+        <Key name="debug_server"/>
+        <Key name="debug_port"/>
+        <Key name="debug_speed"/>
+        <Key name="debug_svd_path"/>
+        <Key name="debug_server_ready_pattern"/>
+        <Key name="debug_test"/>
         <!-- Advanced options-->
-        <Key>extends</Key>
-        <Key>extra_scripts</Key>
+        <Key name="extends"/>
+        <Key name="extra_scripts"/>
     </Section>
-    <Section name="platformio">
+    <Section name="platformio" desc="[platformio]">
         <!-- Generic options-->
-        <Key>description</Key>
-        <Key>default_envs</Key>
-        <Key>extra_configs</Key>
+        <Key name="description"/>
+        <Key name="default_envs"/>
+        <Key name="extra_configs"/>
         <!-- Directory options-->
-        <Key>core_dir</Key>
-        <Key>globallib_dir</Key>
-        <Key>platforms_dir</Key>
-        <Key>packages_dir</Key>
-        <Key>cache_dir</Key>
-        <Key>build_cache_dir</Key>
-        <Key>workspace_dir</Key>
-        <Key>build_dir</Key>
-        <Key>libdeps_dir</Key>
-        <Key>include_dir</Key>
-        <Key>src_dir</Key>
-        <Key>lib_dir</Key>
-        <Key>data_dir</Key>
-        <Key>test_dir</Key>
-        <Key>boards_dir</Key>
-        <Key>monitor_dir</Key>
-        <Key>shared_dir</Key>
+        <Key name="core_dir"/>
+        <Key name="globallib_dir"/>
+        <Key name="platforms_dir"/>
+        <Key name="packages_dir"/>
+        <Key name="cache_dir"/>
+        <Key name="build_cache_dir"/>
+        <Key name="workspace_dir"/>
+        <Key name="build_dir"/>
+        <Key name="libdeps_dir"/>
+        <Key name="include_dir"/>
+        <Key name="src_dir"/>
+        <Key name="lib_dir"/>
+        <Key name="data_dir"/>
+        <Key name="test_dir"/>
+        <Key name="boards_dir"/>
+        <Key name="monitor_dir"/>
+        <Key name="shared_dir"/>
     </Section>
 </IniMeta>

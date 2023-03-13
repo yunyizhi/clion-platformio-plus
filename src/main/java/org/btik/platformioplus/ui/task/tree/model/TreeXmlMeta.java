@@ -36,4 +36,8 @@ public interface TreeXmlMeta {
 
     String LOCK_COMMAND_NODE = "LockCommandNode";
 
+    String RES_BUNDLE_EXP_START = "${";
+
+    String RES_BUNDLE_EXP_END = "}";
+
 }

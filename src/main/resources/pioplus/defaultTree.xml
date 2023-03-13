@@ -2,7 +2,7 @@
 <pio-task-tree>
     <root name="Tasks" type="PioTaskTreeNode" icon="/pioplus/platformio_13.svg">
         <folder name="Environments" id="envs" type="PioTaskTreeNode" icon="/pioplus/profilesClosed.svg"
-                toolTip="task.env.note"/>
+                toolTip="${task.env.note}"/>
         <folder name="General" type="PioTaskTreeNode">
             <executable name="Re init" parameters=" init --ide clion" type="CommandNode"
                         environment=" --environment "
@@ -19,6 +19,8 @@
             <executable name="Clean" parameters=" run --target clean" type="CommandNode" environment=" --environment "/>
             <executable name="Clean All" parameters=" run --target cleanall" type="CommandNode"
                         environment=" --environment "/>
+            <executable name="List Targets"  parameters=" run --list-targets" type="CommandNode" environment=" --environment "
+                        toolTip="List available project targets"/>
         </folder>
         <folder name="Dependencies" type="PioTaskTreeNode">
             <executable name="List" parameters=" pkg list" type="CommandNode" environment=" --environment "/>

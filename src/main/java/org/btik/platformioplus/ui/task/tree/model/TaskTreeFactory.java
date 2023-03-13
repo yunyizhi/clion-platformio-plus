@@ -101,7 +101,11 @@ public class TaskTreeFactory {
     }
 
     private static XmlNode buildNode(Element element, PioTaskTreeNode taskTreeNode) {
-        taskTreeNode.setToolTip(Note.getMsg(element.getAttribute(TOOL_TIP)));
+        String toolTip = element.getAttribute(TOOL_TIP);
+        if (toolTip.startsWith(RES_BUNDLE_EXP_START) && toolTip.endsWith(RES_BUNDLE_EXP_END)) {
+            toolTip = Note.getMsg(toolTip.substring(RES_BUNDLE_EXP_START.length(), toolTip.length() - 1));
+        }
+        taskTreeNode.setToolTip(toolTip);
         taskTreeNode.setId(element.getAttribute(ID));
         taskTreeNode.setIcon(element.getAttribute(ICON));
         return new XmlNode(element,
