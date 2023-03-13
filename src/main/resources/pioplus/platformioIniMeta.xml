@@ -27,7 +27,10 @@
         <Key name="build_src_flags"/>
         <Key name="build_unflags"/>
         <Key name="build_src_filter"/>
-        <Key name="targets"/>
+        <Key name="targets">
+            <value toolTip="automatically start pio device monitor after successful build operation. You can configure monitor using Monitor options.">monitor</value>
+            <value toolTip="dump current build environment">envdump</value>
+        </Key>
         <!--  Library options-->
         <Key name="lib_deps"/>
         <Key name="lib_ignore"/>
