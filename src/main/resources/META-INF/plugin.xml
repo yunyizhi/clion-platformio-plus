@@ -57,7 +57,7 @@
         <projectService serviceInterface="org.btik.platformioplus.service.PlatformIoPlusService"
                         serviceImplementation="org.btik.platformioplus.service.impl.PlatformIoPlusServiceImpl"/>
         <postStartupActivity implementation="org.btik.platformioplus.service.PlatformIoPlusInit" order="last"/>
-
+        <vfs.asyncListener implementation="org.btik.platformioplus.service.PlatformIoPlusInit" />
         <completion.contributor language="Ini"
                                 implementationClass="org.btik.platformioplus.ini.completion.PlatformioIniCompletionContributor"/>
         <editorFloatingToolbarProvider id="pioIni"
