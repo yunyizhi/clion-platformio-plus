@@ -30,7 +30,15 @@ public class PlatformioIniCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        PsiElement iniSection = parameters.getPosition().getParent().getParent().getParent().getParent();
+                        PsiElement tempParent;
+                        if ((tempParent = parameters.getPosition().getParent()) == null
+                                || (tempParent = tempParent.getParent()) == null
+                                || (tempParent = tempParent.getParent()) == null
+                                || (tempParent = tempParent.getParent()) == null) {
+                            return;
+                        }
+
+                        PsiElement iniSection = tempParent;
                         if (!(iniSection instanceof IniSection section)) {
                             return;
                         }
@@ -68,7 +76,12 @@ public class PlatformioIniCompletionContributor extends CompletionContributor {
             @Override
             protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
                 HashMap<String, Set<PioIniItemBuilder>> values = PlatformioIniMetaFactory.getValues();
-                PsiElement envPropertyElement = parameters.getPosition().getParent().getParent();
+                PsiElement tempParent;
+                if ((tempParent = parameters.getPosition().getParent()) == null
+                        || (tempParent = tempParent.getParent()) == null) {
+                    return;
+                }
+                PsiElement envPropertyElement = tempParent;
                 if (!(envPropertyElement instanceof IniProperty iniProperty)) {
                     return;
                 }

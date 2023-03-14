@@ -33,10 +33,8 @@
 <p>
     This plugin works with Clion's PlatformIO project
     But it's not a replacement for '<strong>Platformio for Clion</strong>'.</p>
-<ul>
-    <li><a href="https://gitcode.net/qq_26700087/clion-platformio-plus">gitcode</a></li>
-    <li><a href="https://github.com/yunyizhi/clion-platformio-plus">github</a></li>
-</ul>
+    <p>If you enjoy using "Clion Platformio Plus", please star this project on <a href="https://github.com/yunyizhi/clion-platformio-plus">GitHub</a>!</p>
+    <p>👉支持这个项目，帮忙点个star⭐:<a href="https://github.com/yunyizhi/clion-platformio-plus">GitHub</a>或者<a href="https://gitcode.net/qq_26700087/clion-platformio-plus">GitCode</a></p>
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.

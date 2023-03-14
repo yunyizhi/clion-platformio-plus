@@ -5,6 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.util.IconLoader;
 import org.btik.platformioplus.ini.completion.entity.PioIniItemBuilder;
 import org.btik.platformioplus.ini.completion.filter.IniTipFilters;
 import org.btik.platformioplus.util.DomUtil;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class PlatformioIniMetaFactory {
     private final HashMap<String, Set<PioIniItemBuilder>> values = new HashMap<>();
 
     public void load() {
+        Icon icon = IconLoader.getIcon("/pioplus/platformio_13.svg", getClass());
         Element documentElement;
         try {
             Document treeConf = DomUtil.parse(PlatformioIniMetaFactory.class.getResourceAsStream("/pioplus/platformioIniMeta.xml"));
@@ -52,7 +55,7 @@ public class PlatformioIniMetaFactory {
         eachByTagName(documentElement, SECTION, (section) -> {
             String sectionName = section.getAttribute(NAME);
             // 创建section名称的提示
-            sections.add(LookupElementBuilder.create(sectionName));
+            sections.add(LookupElementBuilder.create(sectionName).withIcon(icon).bold());
             String desc = section.getAttribute(DESC);
             String sectionKey = '[' + sectionName + ']';
             eachByTagName(section, KEY, (key) -> {
@@ -63,6 +66,7 @@ public class PlatformioIniMetaFactory {
                         .add(LookupElementBuilder
                                 .create(keyName).withInsertHandler(PlatformioIniMetaFactory::fixKeyTipSuffix)
                                 .withTypeText(desc, true)
+                                .withIcon(icon)
                                 .bold());
 
                 eachByTagName(key, VALUE, (value) -> {
@@ -72,6 +76,7 @@ public class PlatformioIniMetaFactory {
                             .add(new PioIniItemBuilder(LookupElementBuilder
                                     .create(valueName)
                                     .withTypeText(keyName)
+                                    .withIcon(icon)
                                     .bold(), IniTipFilters.getFilter(filter)));
                 });
             });

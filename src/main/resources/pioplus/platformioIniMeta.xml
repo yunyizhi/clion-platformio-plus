@@ -209,4 +209,5 @@
         <Key name="monitor_dir"/>
         <Key name="shared_dir"/>
     </Section>
+    <Section name="env" desc="[env]"/>
 </IniMeta>
