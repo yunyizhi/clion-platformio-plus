@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.13.0"
+    id("org.jetbrains.intellij") version "1.13.3"
 }
 
 group = "org.btik"
-version = "0.0.4.0-beta"
+version = "0.0.4.1-beta"
 
 repositories {
     mavenCentral()
@@ -17,10 +17,10 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.3")
+    version.set("2023.1")
     type.set("CL") // Target IDE Platform
 
-    plugins.set(listOf("com.jetbrains.plugins.ini4idea:223.7571.233"))
+    plugins.set(listOf("com.jetbrains.plugins.ini4idea:231.8109.150"))
 }
 
 tasks {
