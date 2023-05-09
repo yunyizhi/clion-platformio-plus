@@ -3,10 +3,13 @@ package org.btik.platformioplus.service;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.startup.ProjectActivity;
 import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.vfs.AsyncFileListener;
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
 import com.intellij.util.PathUtilRt;
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
 import org.btik.platformioplus.ini.completion.PlatformioIniMetaFactory;
 import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +23,7 @@ import java.util.stream.Stream;
  * @author lustre
  * @since 2022/10/23 16:50
  */
-public class PlatformIoPlusInit implements StartupActivity, AsyncFileListener {
-
-    @Override
-    public void runActivity(@NotNull Project project) {
-        PlatformioIniMetaFactory.INSTANCE.load();
-        setEnable(project);
-    }
+public class PlatformIoPlusInit implements ProjectActivity, AsyncFileListener {
 
     private static void setEnable(@NotNull Project project) {
         boolean enabled =
@@ -51,6 +48,14 @@ public class PlatformIoPlusInit implements StartupActivity, AsyncFileListener {
             }
         }
 
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Object execute(@NotNull Project project, @NotNull Continuation<? super Unit> continuation) {
+        PlatformioIniMetaFactory.INSTANCE.load();
+        setEnable(project);
         return null;
     }
 }

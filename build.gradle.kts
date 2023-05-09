@@ -20,7 +20,8 @@ intellij {
     version.set("2023.1")
     type.set("CL") // Target IDE Platform
 
-    plugins.set(listOf("com.jetbrains.plugins.ini4idea:231.8109.150"))
+    plugins.set(listOf("com.jetbrains.plugins.ini4idea:231.8109.150"
+        ,"com.intellij.clion", "com.intellij.cidr.base"))
 }
 
 tasks {

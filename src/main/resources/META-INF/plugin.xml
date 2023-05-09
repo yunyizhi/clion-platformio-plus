@@ -41,6 +41,8 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.plugins.ini4idea</depends>
+    <depends>com.intellij.modules.clion</depends>
+    <depends>com.intellij.modules.clion.cmake</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->

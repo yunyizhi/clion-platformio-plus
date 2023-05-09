@@ -30,10 +30,7 @@ public class PioBuildTypeStatusBarWidgetFactory implements StatusBarWidgetFactor
     @Override
     public boolean isAvailable(@NotNull Project project) {
         PlatformIoPlusService service = project.getService(PlatformIoPlusService.class);
-        if (service == null) {
-            return false;
-        }
-        return service.isEnable();
+        return service != null;
     }
 
     @Override
