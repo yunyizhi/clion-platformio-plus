@@ -15,6 +15,7 @@ import com.intellij.openapi.wm.impl.status.TextPanel;
 import com.intellij.ui.ClickListener;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.ui.JBUI;
+import com.jetbrains.cidr.cpp.cmake.CMakeSettings;
 import com.jetbrains.cidr.cpp.cmake.model.CMakeModelConfigurationData;
 import com.jetbrains.cidr.cpp.cmake.workspace.CMakeWorkspace;
 import org.btik.platformioplus.service.PlatformIoPlusService;
@@ -24,17 +25,21 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * @author lustre
  * @since 2023/3/16 0:28
  */
-public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements StatusBarWidget.Multiframe, CustomStatusBarWidget {
+public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements StatusBarWidget.Multiframe, CustomStatusBarWidget ,BuildTypeChangeListener{
 
     private final TextPanel.WithIconAndArrows myComponent;
 
+    private final Project project;
+
     public PioBuildTypeStatusBarWidget(Project project) {
         super(project);
+        this.project = project;
         myComponent = new TextPanel.WithIconAndArrows();
         myComponent.setBorder(JBUI.CurrentTheme.StatusBar.Widget.border());
         myComponent.setIcon(IconLoader.getIcon("/pioplus/pio_cmake.svg", getClass()));
@@ -50,8 +55,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
     @Override
     public void install(@NotNull StatusBar statusBar) {
         super.install(statusBar);
-        myComponent.setText("pioCmake");
-        myComponent.setVisible(true);
+
         myComponent.setToolTipText(SysConf.get("pio.cmake.build.type.widget.name"));
         new ClickListener() {
             @Override
@@ -60,6 +64,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
                 return true;
             }
         }.installOn(myComponent, true);
+       update();
     }
 
     private void setEnable(boolean enable) {
@@ -73,15 +78,23 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
 
 
     private void showSelectBuildTypePopup(){
-        SelectBuildTypeAction selectBuildTypeAction = new SelectBuildTypeAction();
-        JComponent where = getComponent();
-        DataContext dataContext = DataManager.getInstance().getDataContext(where);
-        DefaultActionGroup popupActionGroup = selectBuildTypeAction.createPopupActionGroup(where, dataContext);
-        ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup("BuildType",
-                popupActionGroup, dataContext, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, false);
-        RelativePoint pos = JBPopupFactory.getInstance().guessBestPopupLocation(where);
-        popup.showInScreenCoordinates(where, pos.getScreenPoint());
+        CMakeWorkspace cmakeWorkspace = CMakeWorkspace.getInstance(project);
+        List<CMakeModelConfigurationData> cMakeModelConfigurationData = cmakeWorkspace.getModelConfigurationData();
+        DefaultActionGroup actionGroup = new DefaultActionGroup();
+        if (!cMakeModelConfigurationData.isEmpty()) {
+            List<String> buildTypes = cMakeModelConfigurationData.get(0).getRegisteredBuildTypes();
+            for (String buildType : buildTypes) {
+                actionGroup.add(new CheckBuildTypeAction(buildType, this));
+            }
+        }
+        JComponent component = getComponent();
+        DataContext dataContext = DataManager.getInstance().getDataContext(component);
+        ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup(SysConf.get("pio.cmake.build.type.widget.title"),
+                actionGroup, dataContext, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, false);
+        RelativePoint pos = JBPopupFactory.getInstance().guessBestPopupLocation(component);
+        popup.showInScreenCoordinates(component, pos.getScreenPoint());
     }
+
 
     @NotNull
     @Override
@@ -92,5 +105,15 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
     @Override
     public JComponent getComponent() {
         return myComponent;
+    }
+
+    @Override
+    public void update() {
+        CMakeWorkspace cmakeWorkspace = CMakeWorkspace.getInstance(project);
+        List<CMakeSettings.Profile> profiles = cmakeWorkspace.getSettings().getProfiles();
+        if(!profiles.isEmpty()){
+            myComponent.setText(profiles.get(0).getBuildType());
+            myComponent.setVisible(true);
+        }
     }
 }
