@@ -61,7 +61,7 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
     @Override
     public void register(FloatingToolbarComponent component) {
         floatingToolbarComponents.add(component);
-        component.scheduleHide();
+        component.hideImmediately();
     }
 
     @Override

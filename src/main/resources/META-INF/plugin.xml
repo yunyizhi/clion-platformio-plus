@@ -62,7 +62,6 @@
                                 implementationClass="org.btik.platformioplus.ini.completion.PlatformioIniCompletionContributor"/>
         <editorFloatingToolbarProvider id="pioIni"
                                        implementation="org.btik.platformioplus.ini.reload.PlatformioIniFloatingToolbarProvider"
-
         />
         <projectService serviceImplementation="org.btik.platformioplus.ini.reload.PioIniChangeHandlerImpl"
                         serviceInterface="org.btik.platformioplus.ini.reload.PioIniChangeHandler"
@@ -70,6 +69,7 @@
         <psi.treeChangeListener implementation="org.btik.platformioplus.ini.reload.IniPsiTreeChangeListener"/>
         <statusBarWidgetFactory
                 implementation="org.btik.platformioplus.setting.cmake.build.type.PioBuildTypeStatusBarWidgetFactory"/>
+        <configurationType implementation="org.btik.platformioplus.run.config.PioPlusRunConfigType"/>
     </extensions>
     <projectListeners>
         <listener
