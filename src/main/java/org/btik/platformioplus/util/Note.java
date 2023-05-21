@@ -25,6 +25,10 @@ public class Note extends DynamicBundle {
         return INSTANCE.getResourceBundle().getString(key);
     }
 
+    public static String $note(String key) {
+        return getMsg(key);
+    }
+
     public static String getMsgF(String key, Object... o) {
         return String.format(getMsg(key), o);
     }

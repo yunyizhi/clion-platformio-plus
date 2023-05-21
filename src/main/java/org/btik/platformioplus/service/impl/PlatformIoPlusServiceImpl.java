@@ -4,6 +4,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
 import org.btik.platformioplus.service.PlatformIoPlusService;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,14 +55,17 @@ public class PlatformIoPlusServiceImpl implements Disposable, PlatformIoPlusServ
     @Override
     public void setEnable(boolean enable) {
         this.isEnable = enable;
-        for (Consumer<Boolean> booleanConsumer : UI_ENABLE_FUN) {
-            try {
-                booleanConsumer.accept(enable);
-            } catch (Exception e) {
-                NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
-                        getMsg("load.pio.plus.failed"), NotificationType.WARNING).notify(null);
+        EventQueue.invokeLater(() -> {
+            for (Consumer<Boolean> booleanConsumer : UI_ENABLE_FUN) {
+                try {
+                    booleanConsumer.accept(enable);
+                } catch (Exception e) {
+                    NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+                            getMsg("load.pio.plus.failed"), NotificationType.WARNING).notify(null);
+                }
             }
-        }
+        });
+
     }
 
     @Override
