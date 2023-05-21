@@ -19,8 +19,11 @@ public class CheckBuildTypeAction extends AnAction implements DumbAware {
 
     private final BuildTypeChangeListener buildTypeChangeListener;
 
-    public CheckBuildTypeAction(@Nullable @NlsActions.ActionText String text, BuildTypeChangeListener buildTypeChangeListener) {
-        super(text);
+    private final String buildType;
+
+    public CheckBuildTypeAction(@Nullable @NlsActions.ActionText String buildType, BuildTypeChangeListener buildTypeChangeListener) {
+        super(buildType);
+        this.buildType = buildType;
         this.buildTypeChangeListener = buildTypeChangeListener;
     }
 
@@ -33,7 +36,6 @@ public class CheckBuildTypeAction extends AnAction implements DumbAware {
         }
         CMakeWorkspace cmakeWorkspace = CMakeWorkspace.getInstance(project);
         CMakeSettings settings = cmakeWorkspace.getSettings();
-        String buildType = e.getPresentation().getText();
         settings.setProfiles(Collections.singletonList(new CMakeSettings.Profile(buildType)), true);
         buildTypeChangeListener.update();
 

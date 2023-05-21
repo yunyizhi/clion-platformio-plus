@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.4.1-beta"
+version = "0.0.5.0-beta"
 
 repositories {
     mavenCentral()
@@ -17,11 +17,14 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.1")
+    version.set("2023.1.2")
     type.set("CL") // Target IDE Platform
 
-    plugins.set(listOf("com.jetbrains.plugins.ini4idea:231.8109.150"
-        ,"com.intellij.clion", "com.intellij.cidr.base"))
+    plugins.set(
+        listOf(
+            "com.jetbrains.plugins.ini4idea:231.8109.150", "com.intellij.clion", "com.intellij.cidr.base"
+        )
+    )
 }
 
 tasks {
@@ -34,7 +37,16 @@ tasks {
     patchPluginXml {
         sinceBuild.set("222.*")
         changeNotes.set(
-            """<h3>0.0.4.0</h3>
+            """<h3>0.0.5.0</h3>
+                en:
+                <p>Support Run Configuration</p>
+                <p>Added a menu to switch the current `CMAKE_BUILD_TYPE` in the status bar.</p>
+                <p>Fixed the issue where Floating Toolbar could not be automatically displayed after version 2023.</p>
+                中文:
+                <p>支持运行配置。</p>
+                <p>在状态栏增加了切换当前`CMAKE_BUILD_TYPE`的菜单。</p>
+                <p>修复了悬浮工具栏在2023版后的不能自动显示的问题。</p>
+                <h3>0.0.4.0</h3>
                 en:
                 <p>Fixed some issues.</p>
                 <p>Added some static hints about auto-completion of the value of the 'platformio.ini' property</p>

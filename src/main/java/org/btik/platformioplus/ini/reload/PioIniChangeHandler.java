@@ -1,5 +1,6 @@
 package org.btik.platformioplus.ini.reload;
 
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public interface PioIniChangeHandler {
     void saveChangeAndHide();
 
 
-    void register(FloatingToolbarComponent component);
+    void register(FloatingToolbarComponent component, @NotNull DataContext dataContext);
 
     /**
      *用于更新环境列表，需要返回原始引用

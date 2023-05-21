@@ -1,15 +1,14 @@
 package org.btik.platformioplus.setting.cmake.build.type;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.StatusBarWidgetFactory;
 import org.btik.platformioplus.service.PlatformIoPlusService;
-import org.btik.platformioplus.util.SysConf;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import static org.btik.platformioplus.util.SysConf.$sys;
 
 /**
  * @author lustre
@@ -19,12 +18,12 @@ public class PioBuildTypeStatusBarWidgetFactory implements StatusBarWidgetFactor
 
     @Override
     public @NotNull @NonNls String getId() {
-        return SysConf.get("pio.cmake.build.type.widget.factory.id");
+        return $sys("pio.cmake.build.type.widget.factory.id");
     }
 
     @Override
     public @NotNull @NlsContexts.ConfigurableName String getDisplayName() {
-        return SysConf.get("pio.cmake.build.type.widget.factory.name");
+        return $sys("pio.cmake.build.type.widget.factory.name");
     }
 
     @Override
@@ -38,13 +37,4 @@ public class PioBuildTypeStatusBarWidgetFactory implements StatusBarWidgetFactor
         return new PioBuildTypeStatusBarWidget(project);
     }
 
-    @Override
-    public void disposeWidget(@NotNull StatusBarWidget widget) {
-        Disposer.dispose(widget);
-    }
-
-    @Override
-    public boolean canBeEnabledOn(@NotNull StatusBar statusBar) {
-        return true;
-    }
 }

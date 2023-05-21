@@ -19,13 +19,14 @@ import com.jetbrains.cidr.cpp.cmake.CMakeSettings;
 import com.jetbrains.cidr.cpp.cmake.model.CMakeModelConfigurationData;
 import com.jetbrains.cidr.cpp.cmake.workspace.CMakeWorkspace;
 import org.btik.platformioplus.service.PlatformIoPlusService;
-import org.btik.platformioplus.util.SysConf;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
+
+import static org.btik.platformioplus.util.SysConf.$sys;
 
 /**
  * @author lustre
@@ -49,14 +50,14 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
 
     @Override
     public @NotNull @NonNls String ID() {
-        return SysConf.get("pio.cmake.build.type.widget.id");
+        return $sys("pio.cmake.build.type.widget.id");
     }
 
     @Override
     public void install(@NotNull StatusBar statusBar) {
         super.install(statusBar);
 
-        myComponent.setToolTipText(SysConf.get("pio.cmake.build.type.widget.name"));
+        myComponent.setToolTipText($sys("pio.cmake.build.type.widget.name"));
         new ClickListener() {
             @Override
             public boolean onClick(@NotNull MouseEvent event, int clickCount) {
@@ -89,7 +90,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
         }
         JComponent component = getComponent();
         DataContext dataContext = DataManager.getInstance().getDataContext(component);
-        ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup(SysConf.get("pio.cmake.build.type.widget.title"),
+        ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup($sys("pio.cmake.build.type.widget.title"),
                 actionGroup, dataContext, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, false);
         RelativePoint pos = JBPopupFactory.getInstance().guessBestPopupLocation(component);
         popup.showInScreenCoordinates(component, pos.getScreenPoint());

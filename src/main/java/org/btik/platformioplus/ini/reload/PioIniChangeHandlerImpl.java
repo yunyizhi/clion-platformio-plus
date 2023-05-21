@@ -1,15 +1,21 @@
 package org.btik.platformioplus.ini.reload;
 
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.toolbar.floating.FloatingToolbarComponent;
 import com.intellij.psi.PsiElement;
 import com.intellij.ui.CheckedTreeNode;
 import ini4idea.lang.psi.IniSection;
+import org.btik.platformioplus.setting.PioConf;
 import org.btik.platformioplus.ui.task.tree.model.EnvNode;
 import org.jetbrains.annotations.NotNull;
 
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 
 /**
@@ -47,21 +53,33 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
         }
         isVisible = visible;
         if (visible) {
-            for (FloatingToolbarComponent floatingToolbarComponent : floatingToolbarComponents) {
-                floatingToolbarComponent.scheduleShow();
-            }
+            EventQueue.invokeLater(() -> {
+                for (FloatingToolbarComponent floatingToolbarComponent : floatingToolbarComponents) {
+                    floatingToolbarComponent.scheduleShow();
+                }
+            });
             return;
         }
+        EventQueue.invokeLater(() -> {
+            for (FloatingToolbarComponent floatingToolbarComponent : floatingToolbarComponents) {
+                floatingToolbarComponent.scheduleHide();
+            }
+        });
 
-        for (FloatingToolbarComponent floatingToolbarComponent : floatingToolbarComponents) {
-            floatingToolbarComponent.scheduleHide();
-        }
+
     }
 
     @Override
-    public void register(FloatingToolbarComponent component) {
+    public void register(FloatingToolbarComponent component, @NotNull DataContext dataContext) {
         floatingToolbarComponents.add(component);
         component.hideImmediately();
+        Editor editor = dataContext.getData(CommonDataKeys.EDITOR);
+        if (editor == null) {
+            return;
+        }
+        if (PioConf.FILE_NAME.equals(editor.getVirtualFile().getName())) {
+            lastSaveCharSequence = editor.getDocument().getText();
+        }
     }
 
     @Override
@@ -99,7 +117,7 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     @Override
     public void loadEnvInFile(@NotNull PsiElement[] children) {
-        if(envNode == null){
+        if (envNode == null) {
             return;
         }
         synchronized (envLock) {
