@@ -16,6 +16,7 @@ import com.intellij.ui.ClickListener;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.ui.JBUI;
 import com.jetbrains.cidr.cpp.cmake.CMakeSettings;
+import com.jetbrains.cidr.cpp.cmake.CMakeSettingsListener;
 import com.jetbrains.cidr.cpp.cmake.model.CMakeModelConfigurationData;
 import com.jetbrains.cidr.cpp.cmake.workspace.CMakeWorkspace;
 import org.btik.platformioplus.service.PlatformIoPlusService;
@@ -32,11 +33,13 @@ import static org.btik.platformioplus.util.SysConf.$sys;
  * @author lustre
  * @since 2023/3/16 0:28
  */
-public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements StatusBarWidget.Multiframe, CustomStatusBarWidget ,BuildTypeChangeListener{
+public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements StatusBarWidget.Multiframe, CustomStatusBarWidget, BuildTypeChangeListener {
 
     private final TextPanel.WithIconAndArrows myComponent;
 
     private final Project project;
+
+    private static PioBuildTypeStatusBarWidget pioBuildTypeStatusBarWidget;
 
     public PioBuildTypeStatusBarWidget(Project project) {
         super(project);
@@ -46,6 +49,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
         myComponent.setIcon(IconLoader.getIcon("/pioplus/pio_cmake.svg", getClass()));
         PlatformIoPlusService service = project.getService(PlatformIoPlusService.class);
         service.registerUIComponent(this::setEnable);
+        pioBuildTypeStatusBarWidget = this;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
                 return true;
             }
         }.installOn(myComponent, true);
-       update();
+        update();
     }
 
     private void setEnable(boolean enable) {
@@ -78,7 +82,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
     }
 
 
-    private void showSelectBuildTypePopup(){
+    private void showSelectBuildTypePopup() {
         CMakeWorkspace cmakeWorkspace = CMakeWorkspace.getInstance(project);
         List<CMakeModelConfigurationData> cMakeModelConfigurationData = cmakeWorkspace.getModelConfigurationData();
         DefaultActionGroup actionGroup = new DefaultActionGroup();
@@ -112,9 +116,25 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
     public void update() {
         CMakeWorkspace cmakeWorkspace = CMakeWorkspace.getInstance(project);
         List<CMakeSettings.Profile> profiles = cmakeWorkspace.getSettings().getProfiles();
-        if(!profiles.isEmpty()){
+        if (!profiles.isEmpty()) {
             myComponent.setText(profiles.get(0).getBuildType());
             myComponent.setVisible(true);
+        }
+    }
+
+    /**
+     * 当使用settings更新了buildType,状态栏也要更新
+     */
+    public static class UpdateHook implements CMakeSettingsListener {
+
+
+        @Override
+        public void profilesChanged(@NotNull List<CMakeSettings.Profile> old, @NotNull List<CMakeSettings.Profile> current) {
+            CMakeSettingsListener.super.profilesChanged(old, current);
+            PioBuildTypeStatusBarWidget pioBuildTypeStatusBarWidget0 = pioBuildTypeStatusBarWidget;
+            if (pioBuildTypeStatusBarWidget0 != null) {
+                pioBuildTypeStatusBarWidget0.update();
+            }
         }
     }
 }

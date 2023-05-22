@@ -41,6 +41,8 @@
                         environment=" --environment "/>
             <executable name="Compilation Database" parameters=" run --target compiledb " type="CommandNode"
                         environment=" --environment "/>
+            <executable name="Env Dump" parameters=" run --target envdump " type="CommandNode"
+                        environment=" --environment "/>
         </folder>
         <folder name="Remote Development" type="PioTaskTreeNode">
             <executable name="Remote Upload" parameters=" remote run --target upload " type="CommandNode"

@@ -75,6 +75,8 @@
         <listener
                 class="org.btik.platformioplus.ui.home.action.OpenPioHomeListener"
                 topic="com.intellij.openapi.wm.ex.ToolWindowManagerListener"/>
+        <listener class="org.btik.platformioplus.setting.cmake.build.type.PioBuildTypeStatusBarWidget$UpdateHook"
+                  topic="com.jetbrains.cidr.cpp.cmake.CMakeSettingsListener"/>
     </projectListeners>
 
 
