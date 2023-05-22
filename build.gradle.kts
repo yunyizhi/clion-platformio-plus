@@ -39,7 +39,7 @@ tasks {
         changeNotes.set(
             """<h3>0.0.5.0</h3>
                 en:
-                <p>Support Run Configuration</p>
+                <p>Support Run Configuration.</p>
                 <p>Added a menu to switch the current `CMAKE_BUILD_TYPE` in the status bar.</p>
                 <p>Fixed the issue where Floating Toolbar could not be automatically displayed after version 2023.</p>
                 中文:
@@ -49,7 +49,7 @@ tasks {
                 <h3>0.0.4.0</h3>
                 en:
                 <p>Fixed some issues.</p>
-                <p>Added some static hints about auto-completion of the value of the 'platformio.ini' property</p>
+                <p>Added some static hints about auto-completion of the value of the 'platformio.ini' property.</p>
                 中文:
                 <p>修复了一些问题。</p>
                 <p>增加了一些对 `platformio.ini` 的属性的值自动补全的相关静态提示</p>

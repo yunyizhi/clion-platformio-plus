@@ -39,8 +39,6 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
 
     private final Project project;
 
-    private static PioBuildTypeStatusBarWidget pioBuildTypeStatusBarWidget;
-
     public PioBuildTypeStatusBarWidget(Project project) {
         super(project);
         this.project = project;
@@ -49,7 +47,7 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
         myComponent.setIcon(IconLoader.getIcon("/pioplus/pio_cmake.svg", getClass()));
         PlatformIoPlusService service = project.getService(PlatformIoPlusService.class);
         service.registerUIComponent(this::setEnable);
-        pioBuildTypeStatusBarWidget = this;
+        service.setCurrentCmakeBuildTypeListener(this);
     }
 
     @Override
@@ -126,14 +124,18 @@ public class PioBuildTypeStatusBarWidget extends EditorBasedWidget implements St
      * 当使用settings更新了buildType,状态栏也要更新
      */
     public static class UpdateHook implements CMakeSettingsListener {
+        @NotNull
+        private final Project myProject;
 
+        public UpdateHook(@NotNull Project project) {
+            myProject = project;
+        }
 
         @Override
         public void profilesChanged(@NotNull List<CMakeSettings.Profile> old, @NotNull List<CMakeSettings.Profile> current) {
-            CMakeSettingsListener.super.profilesChanged(old, current);
-            PioBuildTypeStatusBarWidget pioBuildTypeStatusBarWidget0 = pioBuildTypeStatusBarWidget;
-            if (pioBuildTypeStatusBarWidget0 != null) {
-                pioBuildTypeStatusBarWidget0.update();
+            PlatformIoPlusService service = myProject.getService(PlatformIoPlusService.class);
+            if (service != null) {
+                service.updateBuildType();
             }
         }
     }
