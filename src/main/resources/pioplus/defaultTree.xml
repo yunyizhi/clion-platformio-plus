@@ -15,6 +15,9 @@
             <executable name="Upload and Monitor"
                         parameters=" run --target upload --target monitor" type="LockCommandNode" lock="dev"
                         environment=" --environment "/>
+            <executable name="Build and Upload Filesystem Image"
+                        parameters=" run --target buildfs --target uploadfs" type="LockCommandNode" lock="dev"
+                        environment=" --environment "/>
             <executable name="Devices" parameters=" device list" type="CommandNode"/>
             <executable name="Clean" parameters=" run --target clean" type="CommandNode" environment=" --environment "/>
             <executable name="Clean All" parameters=" run --target cleanall" type="CommandNode"
