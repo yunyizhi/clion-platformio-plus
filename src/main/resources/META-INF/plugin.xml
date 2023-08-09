@@ -42,7 +42,7 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.plugins.ini4idea</depends>
     <depends>com.intellij.modules.clion</depends>
-    <depends>com.intellij.modules.clion.cmake</depends>
+    <depends>intellij.clion.embedded.platformio</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
@@ -67,16 +67,12 @@
                         serviceInterface="org.btik.platformioplus.ini.reload.PioIniChangeHandler"
         />
         <psi.treeChangeListener implementation="org.btik.platformioplus.ini.reload.IniPsiTreeChangeListener"/>
-        <statusBarWidgetFactory
-                implementation="org.btik.platformioplus.setting.cmake.build.type.PioBuildTypeStatusBarWidgetFactory"/>
         <configurationType implementation="org.btik.platformioplus.run.config.PioPlusRunConfigType"/>
     </extensions>
     <projectListeners>
         <listener
                 class="org.btik.platformioplus.ui.home.action.OpenPioHomeListener"
                 topic="com.intellij.openapi.wm.ex.ToolWindowManagerListener"/>
-        <listener class="org.btik.platformioplus.setting.cmake.build.type.PioBuildTypeStatusBarWidget$UpdateHook"
-                  topic="com.jetbrains.cidr.cpp.cmake.CMakeSettingsListener" />
     </projectListeners>
 
 

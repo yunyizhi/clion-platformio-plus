@@ -4,7 +4,7 @@
         <folder name="Environments" id="envs" type="PioTaskTreeNode" icon="/pioplus/profilesClosed.svg"
                 toolTip="${task.env.note}"/>
         <folder name="General" type="PioTaskTreeNode">
-            <executable name="Re init" parameters=" init --ide clion" type="CommandNode"
+            <executable name="Re init" parameters=" init " type="CommandNode"
                         environment=" --environment "
             />
             <executable name="Build" parameters=" run" type="CommandNode" environment=" --environment "/>

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.5.0-beta"
+version = "0.0.6.0-beta"
 
 repositories {
     mavenCentral()
@@ -17,12 +17,15 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.1.2")
+    version.set("2023.2")
     type.set("CL") // Target IDE Platform
 
     plugins.set(
         listOf(
-            "com.jetbrains.plugins.ini4idea:231.8109.150", "com.intellij.clion", "com.intellij.cidr.base"
+            "com.jetbrains.plugins.ini4idea:232.8660.158",
+            "com.intellij.clion",
+            "com.intellij.cidr.base",
+            "intellij.clion.embedded.platformio:232.8660.142"
         )
     )
 }
@@ -35,9 +38,12 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("222.*")
+        sinceBuild.set("232")
         changeNotes.set(
-            """<h3>0.0.5.0</h3>
+            """<h3>0.0.6.0</h3>
+                Compatible with PlatformIO for CLion 232.8660.142.<br>
+                兼容官方PlatformIO插件232.8660.142
+                <h3>0.0.5.0</h3>
                 en:
                 <p>Support Run Configuration.</p>
                 <p>Added a menu to switch the current `CMAKE_BUILD_TYPE` in the status bar.</p>

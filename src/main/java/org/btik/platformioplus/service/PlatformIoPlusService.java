@@ -1,7 +1,5 @@
 package org.btik.platformioplus.service;
 
-import org.btik.platformioplus.setting.cmake.build.type.BuildTypeChangeListener;
-
 import java.util.function.Consumer;
 
 /**
@@ -19,10 +17,6 @@ public interface PlatformIoPlusService {
     boolean isEnable();
 
     void registerUIComponent(Consumer<Boolean> setEnable);
-
-    void setCurrentCmakeBuildTypeListener(BuildTypeChangeListener buildTypeChangeListener);
-
-    void updateBuildType();
 
     void enableUIComponent();
 

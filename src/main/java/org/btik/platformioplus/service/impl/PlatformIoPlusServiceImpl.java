@@ -3,7 +3,6 @@ package org.btik.platformioplus.service.impl;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
 import org.btik.platformioplus.service.PlatformIoPlusService;
-import org.btik.platformioplus.setting.cmake.build.type.BuildTypeChangeListener;
 
 import java.awt.*;
 import java.util.Collections;
@@ -22,8 +21,6 @@ public class PlatformIoPlusServiceImpl implements Disposable, PlatformIoPlusServ
     private final ConcurrentHashMap<String, Runnable> shutdownCallback = new ConcurrentHashMap<>();
 
     private final Set<Consumer<Boolean>> UI_ENABLE_FUN = Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-    private BuildTypeChangeListener buildTypeChangeListener;
 
     private boolean isEnable;
 
@@ -79,19 +76,6 @@ public class PlatformIoPlusServiceImpl implements Disposable, PlatformIoPlusServ
     @Override
     public void registerUIComponent(Consumer<Boolean> setEnable) {
         UI_ENABLE_FUN.add(setEnable);
-    }
-
-    @Override
-    public void setCurrentCmakeBuildTypeListener(BuildTypeChangeListener buildTypeChangeListener) {
-        this.buildTypeChangeListener = buildTypeChangeListener;
-    }
-
-    @Override
-    public void updateBuildType() {
-        if (this.buildTypeChangeListener != null) {
-            this.buildTypeChangeListener.update();
-        }
-
     }
 
     @Override
