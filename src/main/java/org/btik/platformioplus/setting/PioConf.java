@@ -5,12 +5,13 @@ import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.util.SystemInfo;
+import com.intellij.util.SystemProperties;
 import org.btik.platformioplus.util.Note;
 import org.btik.platformioplus.util.SysConf;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import static org.btik.platformioplus.util.Note.NOTIFICATION_GROUP;
 
@@ -24,23 +25,53 @@ public class PioConf {
 
     public static final String FILE_NAME = "platformio.ini";
 
+    private static final String[][] DEFAULT_PIO_PATH = {
+            {".platformio", "penv", "Scripts"},
+            {".platformio", "penv", "bin"},
+            {".pio", "penv", "Scripts"},
+            {".pio", "penv", "bin"}
+    };
+
     @NotNull
     public static String getPioLocation() {
         return PropertiesComponent.getInstance().getValue(PIO_LOCATION_KEY, "").trim();
     }
 
     public static String findPlatformio() {
+        String result;
+        Path path;
+        // 读取settings
         String platformioLocation = getPioLocation();
         if (!platformioLocation.isEmpty()) {
-            return new File(platformioLocation).canExecute() ? platformioLocation : null;
+            path = Path.of(platformioLocation, "penv", "Scripts");
+            result = getExecutablePath(path);
+            if (null != result) {
+                return result;
+            }
+            return Path.of(platformioLocation, "penv", "bin").resolve("platformio").toString();
         }
-        if (SystemInfo.isWindows) {
-            platformioLocation = PathEnvironmentVariableUtil.findExecutableInWindowsPath("platformio", null);
-        } else {
-            File file = PathEnvironmentVariableUtil.findInPath("platformio");
-            platformioLocation = file == null ? null : file.getAbsolutePath();
+        // 从PATH变量中找 platformio
+        File pio = PathEnvironmentVariableUtil.findExecutableInPathOnAnyOS("platformio");
+        if (pio != null) {
+            return pio.toPath().toString();
         }
-        return platformioLocation;
+        // 从当前用户安装目录下的 .platformio 或者 .pio目录查找
+        String userHome = SystemProperties.getUserHome();
+        for (String[] folderPath : DEFAULT_PIO_PATH) {
+            path = Path.of(userHome, folderPath);
+            result = getExecutablePath(path);
+            if (null != result) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    private static String getExecutablePath(Path path) {
+        if (path.toFile().exists()) {
+            return path.resolve("platformio").toString();
+        }
+        return null;
     }
 
     public static void openInstallGuide() {

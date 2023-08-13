@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.6.0-beta"
+version = "0.0.6.1-beta"
 
 repositories {
     mavenCentral()
