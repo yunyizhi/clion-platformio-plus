@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.6.1-beta"
+version = "0.0.6.2-beta"
 
 repositories {
     mavenCentral()
@@ -17,15 +17,15 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.2")
+    version.set("2023.3")
     type.set("CL") // Target IDE Platform
 
     plugins.set(
         listOf(
-            "com.jetbrains.plugins.ini4idea:232.8660.158",
+            "com.jetbrains.plugins.ini4idea:233.11799.244",
             "com.intellij.clion",
             "com.intellij.cidr.base",
-            "intellij.clion.embedded.platformio:232.8660.142"
+            "intellij.clion.embedded.platformio:233.11799.171"
         )
     )
 }

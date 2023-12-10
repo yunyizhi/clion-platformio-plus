@@ -1,5 +1,6 @@
 package org.btik.platformioplus.ui.task.tree;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.CheckedTreeNode;
 import org.btik.platformioplus.ui.task.tree.model.PioTaskTreeNode;
@@ -19,6 +20,7 @@ public class IconCellRenderer extends DefaultTreeCellRenderer {
 
     static {
         ijIconMap.put("ij:icons.MavenIcons#ProfilesClosed", null);
+        ijIconMap.put("ij:AllIcons.FileTypes.Config" , AllIcons.FileTypes.Config);
     }
 
     JLabel label = new JLabel();
