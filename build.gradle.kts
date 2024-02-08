@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.16.1"
 }
 
 group = "org.btik"
-version = "0.0.6.2-beta"
+version = "0.0.6.3-beta"
 
 repositories {
     mavenCentral()
@@ -39,8 +39,12 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("232")
+        untilBuild.set("241.*")
         changeNotes.set(
-            """<h3>0.0.6.0</h3>
+            """<h3>0.0.6.3</h3>
+                Fixed some issues.<br>
+                修复了一些问题.
+                <h3>0.0.6.0</h3>
                 Compatible with PlatformIO for CLion 232.8660.142.<br>
                 兼容官方PlatformIO插件232.8660.142
                 <h3>0.0.5.0</h3>
