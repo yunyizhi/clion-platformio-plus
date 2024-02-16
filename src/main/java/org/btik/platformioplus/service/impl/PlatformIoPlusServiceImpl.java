@@ -2,6 +2,8 @@ package org.btik.platformioplus.service.impl;
 
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
 import org.btik.platformioplus.service.PlatformIoPlusService;
 
 import java.awt.*;

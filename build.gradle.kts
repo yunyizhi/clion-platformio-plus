@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.6.3-beta"
+version = "0.0.6.4-beta"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.3")
+    version.set("2023.3.4")
     type.set("CL") // Target IDE Platform
 
     plugins.set(
@@ -41,9 +41,23 @@ tasks {
         sinceBuild.set("232")
         untilBuild.set("241.*")
         changeNotes.set(
-            """<h3>0.0.6.3</h3>
-                Fixed some issues.<br>
-                修复了一些问题.
+            """<h3>0.0.6.4</h3>
+                en:
+                <p>Fixed the issue introduced in version 0.0.6.3.</p>
+                中文:
+                <p>修复了0.0.6.3引入的问题</p>
+                <h3>0.0.6.3</h3>
+                en:
+                <ul>
+                    <li>Fixed some issues.</li>
+                    <li>Introduced the issue where the Pio Plus tool window is unavailable after a project is created and opened.</li>
+                </ul>
+                <br>
+                中文:
+                <ul>
+                    <li>修复了一些问题.</li>
+                    <li>引入了创建项目打开没有Pio Plus 的工具窗口的问题.</li>
+                </ul>
                 <h3>0.0.6.0</h3>
                 Compatible with PlatformIO for CLion 232.8660.142.<br>
                 兼容官方PlatformIO插件232.8660.142

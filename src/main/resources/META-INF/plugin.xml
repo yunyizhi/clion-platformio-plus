@@ -49,14 +49,14 @@
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="PlatformIO Plus" displayType="BALLOON" bundle="messages.PlatformioPlusBundle"
                            key="notification.group.platformio-plus"/>
+        <projectService serviceInterface="org.btik.platformioplus.service.PlatformIoPlusService"
+                        serviceImplementation="org.btik.platformioplus.service.impl.PlatformIoPlusServiceImpl"/>
+        <postStartupActivity implementation="org.btik.platformioplus.service.PlatformIoPlusInit"/>
         <toolWindow id="Pio Plus Tasks" icon="/pioplus/platformio_13.svg" anchor="right"
                     factoryClass="org.btik.platformioplus.ui.task.tree.PioPlusTaskTreeToolWindowFactory"/>
         <toolWindow id="Pio Home" factoryClass="org.btik.platformioplus.ui.home.PioHomeToolWindowFactory"
-                    anchor="right" icon="/pioplus/platformio_13.svg" doNotActivateOnStart="true"
+                    anchor="right" icon="/pioplus/platformio_13.svg"
         />
-        <projectService serviceInterface="org.btik.platformioplus.service.PlatformIoPlusService"
-                        serviceImplementation="org.btik.platformioplus.service.impl.PlatformIoPlusServiceImpl"/>
-        <postStartupActivity implementation="org.btik.platformioplus.service.PlatformIoPlusInit" order="last"/>
         <vfs.asyncListener implementation="org.btik.platformioplus.service.PlatformIoPlusInit"/>
         <completion.contributor language="Ini"
                                 implementationClass="org.btik.platformioplus.ini.completion.PlatformioIniCompletionContributor"/>

@@ -7,6 +7,12 @@ import java.util.function.Consumer;
  * @since 2022/10/23 15:42
  */
 public interface PlatformIoPlusService {
+   String TASK_WINDOW = "Pio Plus Tasks";
+
+   String HOME_WINDOW = "Pio Home";
+
+   String[] WINDOW_ARRAY = new String[] {TASK_WINDOW, HOME_WINDOW};
+
 
     void registerShutdownHook(String id, Runnable shutdownHook);
 
