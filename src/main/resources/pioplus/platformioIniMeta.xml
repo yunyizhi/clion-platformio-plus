@@ -116,15 +116,38 @@
             </value>
             <value toolTip="Add timestamp with milliseconds for each new line">time</value>
             <value toolTip="Send a text to device on ENTER">send_on_enter</value>
-            <value filter="esp32Platform"
+            <value platform="espressif32"
                    toolTip="Custom filter for `platform_espressif32` which decodes crash exception">
                 esp32_exception_decoder
             </value>
-            <value filter="esp8266Platform"
+            <value platform="espressif8266"
                    toolTip="Custom filter for `platform_espressif8266` which decodes crash exception">
                 esp8266_exception_decoder
             </value>
         </Key>
+        <Key name="board_build.f_flash" platform="espressif32" framework="arduino"/>
+        <Key name="board_build.arduino.memory_type" platform="espressif32" framework="arduino">
+            <value>dio_qspi</value>
+            <value>opi_opi</value>
+            <value>qio_opi</value>
+            <value>dio_opi</value>
+            <value>opi_qspi</value>
+            <value>qio_qspi</value>
+        </Key>
+        <Key name="board_build.flash_mode" platform="espressif32" framework="arduino">
+            <value>dio</value>
+            <value>opi</value>
+            <value>qio</value>
+        </Key>
+        <Key name="board_upload.flash_size" platform="espressif32" framework="arduino">
+            <value>4MB</value>
+            <value>8MB</value>
+            <value>16MB</value>
+            <value>32MB</value>
+            <value>64MB</value>
+            <value>128MB</value>
+        </Key>
+        <Key name="board_upload.maximum_size" platform="espressif32" framework="arduino"/>
         <Key name="monitor_rts">
             <value>0</value>
             <value>1</value>

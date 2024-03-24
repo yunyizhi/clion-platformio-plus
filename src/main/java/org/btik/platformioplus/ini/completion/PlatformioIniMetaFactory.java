@@ -34,7 +34,7 @@ public class PlatformioIniMetaFactory {
     }
 
     public static PlatformioIniMetaFactory INSTANCE = new PlatformioIniMetaFactory();
-    private final HashMap<String, Set<LookupElementBuilder>> keys = new HashMap<>();
+    private final HashMap<String, Set<PioIniItemBuilder>> keys = new HashMap<>();
 
     private final Set<LookupElementBuilder> sections = new HashSet<>();
 
@@ -60,24 +60,26 @@ public class PlatformioIniMetaFactory {
             String sectionKey = '[' + sectionName + ']';
             eachByTagName(section, KEY, (key) -> {
                 String keyName = key.getAttribute(NAME);
-
+                String platform = key.getAttribute(PLATFORM);
+                String framework = key.getAttribute(FRAMEWORK);
                 keys.computeIfAbsent(sectionKey, (sectionName_) -> new HashSet<>())
                         // 创建 key的提示 并补全等号  "key ="
-                        .add(LookupElementBuilder
+                        .add(new PioIniItemBuilder(LookupElementBuilder
                                 .create(keyName).withInsertHandler(PlatformioIniMetaFactory::fixKeyTipSuffix)
                                 .withTypeText(desc, true)
                                 .withIcon(icon)
-                                .bold());
+                                .bold(), IniTipFilters.getFilter(platform, framework)));
 
                 eachByTagName(key, VALUE, (value) -> {
                     String valueName = value.getTextContent().trim();
-                    String filter = value.getAttribute(FILTER);
+                    String vplatform = value.getAttribute(PLATFORM);
+                    String vframework = value.getAttribute(FRAMEWORK);
                     values.computeIfAbsent(keyName, (keyName1) -> new HashSet<>())
                             .add(new PioIniItemBuilder(LookupElementBuilder
                                     .create(valueName)
                                     .withTypeText(keyName)
                                     .withIcon(icon)
-                                    .bold(), IniTipFilters.getFilter(filter)));
+                                    .bold(), IniTipFilters.getFilter(vplatform, vframework)));
                 });
             });
         });
@@ -94,7 +96,7 @@ public class PlatformioIniMetaFactory {
         editor.getCaretModel().moveToOffset(tailOffset + KEY_TIP_SKIP_LEN);
     }
 
-    public static HashMap<String, Set<LookupElementBuilder>> getKeys() {
+    public static HashMap<String, Set<PioIniItemBuilder>> getKeys() {
         return INSTANCE.keys;
     }
 

@@ -3,3 +3,4 @@
 *.md text eol=crlf
 *.bat text eol=crlf
 *.properties text eol=crlf
+*.xml text eol=crlf

@@ -38,10 +38,10 @@ public class PlatformioIniCompletionContributor extends CompletionContributor {
                             return;
                         }
 
-                        PsiElement iniSection = tempParent;
-                        if (!(iniSection instanceof IniSection section)) {
+                        if (!(tempParent instanceof IniSection section)) {
                             return;
                         }
+
                         String text = section.getNameText();
                         if (text == null) {
                             return;
@@ -49,12 +49,14 @@ public class PlatformioIniCompletionContributor extends CompletionContributor {
                         if (text.startsWith(ENV_SECTION_PREFIX)) {
                             text = ENV_SECTION_GROUP_NAME;
                         }
-                        Set<LookupElementBuilder> lookupElementBuilders = PlatformioIniMetaFactory.getKeys().get(text);
-                        if (lookupElementBuilders == null) {
+                        Set<PioIniItemBuilder> pioIniItemBuilders = PlatformioIniMetaFactory.getKeys().get(text);
+                        if (pioIniItemBuilders == null) {
                             return;
                         }
-                        for (LookupElementBuilder key : lookupElementBuilders) {
-                            resultSet.addElement(key);
+                        for (PioIniItemBuilder key : pioIniItemBuilders) {
+                            if (key.filter() == null || key.filter().test(section)) {
+                                resultSet.addElement(key.elementBuilder());
+                            }
                         }
                     }
                 }
@@ -91,8 +93,12 @@ public class PlatformioIniCompletionContributor extends CompletionContributor {
                 if (pioIniItemBuilders == null) {
                     return;
                 }
+                tempParent = tempParent.getParent();
+                if (!(tempParent instanceof IniSection section)) {
+                    return;
+                }
                 for (PioIniItemBuilder value : pioIniItemBuilders) {
-                    if (value.filter() == null || value.filter().test(envPropertyElement)) {
+                    if (value.filter() == null || value.filter().test(section)) {
                         result.addElement(value.elementBuilder());
                     }
                 }

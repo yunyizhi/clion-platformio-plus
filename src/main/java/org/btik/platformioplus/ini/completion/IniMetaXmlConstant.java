@@ -20,7 +20,9 @@ public interface IniMetaXmlConstant {
 
     String VALUE = "value";
 
-    String FILTER = "filter";
+    String PLATFORM = "platform";
+
+    String FRAMEWORK = "framework";
 // key tip
     String ENV_SECTION_PREFIX = "[env";
 
@@ -29,10 +31,4 @@ public interface IniMetaXmlConstant {
     String KEY_TIP_SUFFIX = " = ";
 
     int KEY_TIP_SKIP_LEN = KEY_TIP_SUFFIX.length();
-
-    String PLATFORM = "platform";
-
-    String ESPRESSIF_32 = "espressif32";
-
-    String ESPRESSIF_8266 = "espressif8266";
 }
