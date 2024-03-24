@@ -40,6 +40,19 @@ public class PlatformioIniMetaFactory {
 
     private final HashMap<String, Set<PioIniItemBuilder>> values = new HashMap<>();
 
+    static class Arg {
+        String text;
+
+        public Arg(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
     public void load() {
         Icon icon = IconLoader.getIcon("/pioplus/platformio_13.svg", getClass());
         Element documentElement;
@@ -81,6 +94,17 @@ public class PlatformioIniMetaFactory {
                                     .withIcon(icon)
                                     .bold(), IniTipFilters.getFilter(vplatform, vframework)));
                 });
+                eachByTagName(key, ARG, (arg) -> {
+                    String valueName = arg.getTextContent().trim();
+                    String vplatform = arg.getAttribute(PLATFORM);
+                    String vframework = arg.getAttribute(FRAMEWORK);
+                    values.computeIfAbsent(keyName, (keyName1) -> new HashSet<>())
+                            .add(new PioIniItemBuilder(LookupElementBuilder
+                                    .create(new Arg(valueName)).withInsertHandler(PlatformioIniMetaFactory::fixBuildFlag)
+                                    .withTypeText(keyName)
+                                    .withIcon(icon)
+                                    .bold(), IniTipFilters.getFilter(vplatform, vframework)));
+                });
             });
         });
 
@@ -94,6 +118,20 @@ public class PlatformioIniMetaFactory {
         Editor editor = context.getEditor();
         editor.getDocument().insertString(tailOffset, KEY_TIP_SUFFIX);
         editor.getCaretModel().moveToOffset(tailOffset + KEY_TIP_SKIP_LEN);
+    }
+
+    /**
+     * 减号不会被自动补全识别，在已输入-D xxx情况下补全时忽略了前面的-会导致 补全后出现 -- 这里删掉重复的 -
+     */
+    private static void fixBuildFlag(@NotNull InsertionContext context, @NotNull LookupElement item) {
+        int startOffset = context.getStartOffset();
+        var document = context.getDocument();
+        CharSequence charsSequence = document.getCharsSequence();
+        if (startOffset > 1 && startOffset < charsSequence.length()
+                && charsSequence.charAt(startOffset - 1) == '-'
+                && charsSequence.charAt(startOffset) == '-') {
+            document.deleteString(startOffset, startOffset + 1);
+        }
     }
 
     public static HashMap<String, Set<PioIniItemBuilder>> getKeys() {

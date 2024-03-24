@@ -23,7 +23,22 @@
             >debug
             </value>
         </Key>
-        <Key name="build_flags"/>
+        <Key name="build_flags">
+            <!--arg 标签将处理自动补全的-重复问题 -->
+            <arg platform="espressif32" framework="arduino">-D BOARD_HAS_PSRAM</arg>
+            <arg platform="espressif32" framework="arduino">-mfix-esp32-psram-cache-issue</arg>
+            <arg platform="espressif32" framework="arduino">-mfix-esp32-psram-cache-strategy=memw</arg>
+            <arg platform="espressif32" framework="arduino">-D CORE_DEBUG_LEVEL=ARDUHAL_LOG_LEVEL_INFO</arg>
+            <arg platform="espressif32" framework="arduino">-D CONFIG_ARDUHAL_LOG_COLORS=1</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_USB_CDC_ON_BOOT=1</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_USB_MSC_ON_BOOT=1</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_LOOP_STACK_SIZE=</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_RUNNING_CORE=</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_EVENT_RUNNING_CORE=</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_SERIAL_EVENT_TASK_STACK_SIZE=</arg>
+            <arg platform="espressif32" framework="arduino">-D ARDUINO_SERIAL_EVENT_TASK_PRIORITY=</arg>
+
+        </Key>
         <Key name="build_src_flags"/>
         <Key name="build_unflags"/>
         <Key name="build_src_filter"/>
@@ -148,6 +163,11 @@
             <value>128MB</value>
         </Key>
         <Key name="board_upload.maximum_size" platform="espressif32" framework="arduino"/>
+        <Key name="board_build.partitions" platform="espressif32" framework="arduino"/>
+        <Key name="board_build.extra_flags" platform="espressif32" framework="arduino">
+            <value>-D ARDUINO_USB_MODE=0</value>
+            <value>-D ARDUINO_USB_MODE=1</value>
+        </Key>
         <Key name="monitor_rts">
             <value>0</value>
             <value>1</value>

@@ -20,6 +20,8 @@ public interface IniMetaXmlConstant {
 
     String VALUE = "value";
 
+    String ARG = "arg";
+
     String PLATFORM = "platform";
 
     String FRAMEWORK = "framework";
