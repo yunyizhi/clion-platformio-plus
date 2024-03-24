@@ -3,6 +3,7 @@ package org.btik.platformioplus.ui.home.action;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
@@ -74,8 +75,8 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
         final DataContext dataContext = DataManager.getInstance().getDataContext(component);
 
         lastPioHomeProcessListener = new PioHomeProcessListener(component, CommonDataKeys.PROJECT.getData(dataContext));
-        tool.execute(null, dataContext, 0, lastPioHomeProcessListener);
 
 
+        ApplicationManager.getApplication().invokeLater(() -> tool.execute(null, dataContext, 0, lastPioHomeProcessListener));
     }
 }

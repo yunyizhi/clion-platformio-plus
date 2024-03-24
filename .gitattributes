@@ -1,0 +1,5 @@
+*.gradle.kts text eol=crlf
+*.java text eol=crlf
+*.md text eol=crlf
+*.bat text eol=crlf
+*.properties text eol=crlf

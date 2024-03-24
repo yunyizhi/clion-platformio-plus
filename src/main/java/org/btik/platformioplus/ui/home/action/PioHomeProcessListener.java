@@ -4,6 +4,7 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessListener;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.ui.jcef.JBCefApp;
@@ -20,6 +21,7 @@ import java.awt.*;
  * @since 2022/10/23 10:41
  */
 public class PioHomeProcessListener implements ProcessListener {
+    private static final Logger LOG = Logger.getInstance(PioHomeProcessListener.class);
     private JBCefBrowser myBrowser;
 
     private final JComponent component;
@@ -54,13 +56,14 @@ public class PioHomeProcessListener implements ProcessListener {
             platformIoPlusService.deregister(SHUTDOWN_HOOK_ID);
             platformIoPlusService.pioHomeUrl(null);
         }
+        LOG.info("exit code:" + processEvent.getExitCode() + " ,text:" + processEvent.getText());
 
     }
 
     @Override
     public void onTextAvailable(@NotNull ProcessEvent processEvent, @NotNull Key key) {
         String text = processEvent.getText();
-        System.out.print(text);
+        LOG.info(text);
         if (!text.contains(" URL => http://")) {
             return;
         }
