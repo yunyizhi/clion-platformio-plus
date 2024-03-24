@@ -33,4 +33,6 @@ public interface IniMetaXmlConstant {
     String KEY_TIP_SUFFIX = " = ";
 
     int KEY_TIP_SKIP_LEN = KEY_TIP_SUFFIX.length();
+
+    char ARG_SYMBOL = '-';
 }

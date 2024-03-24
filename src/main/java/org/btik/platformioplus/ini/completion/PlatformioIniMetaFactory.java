@@ -128,8 +128,8 @@ public class PlatformioIniMetaFactory {
         var document = context.getDocument();
         CharSequence charsSequence = document.getCharsSequence();
         if (startOffset > 1 && startOffset < charsSequence.length()
-                && charsSequence.charAt(startOffset - 1) == '-'
-                && charsSequence.charAt(startOffset) == '-') {
+                && charsSequence.charAt(startOffset - 1) == ARG_SYMBOL
+                && charsSequence.charAt(startOffset) == ARG_SYMBOL) {
             document.deleteString(startOffset, startOffset + 1);
         }
     }
