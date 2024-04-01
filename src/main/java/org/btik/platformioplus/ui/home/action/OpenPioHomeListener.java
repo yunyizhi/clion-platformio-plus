@@ -6,17 +6,22 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
 import com.intellij.tools.Tool;
-import com.intellij.ui.jcef.JBCefBrowser;
-import org.btik.platformioplus.service.PlatformIoPlusService;
+import com.intellij.ui.content.Content;
+import org.btik.platformioplus.service.PlatformIoHomeService;
 import org.btik.platformioplus.setting.PioConf;
+import org.btik.platformioplus.ui.home.PioHomeOptionPanel;
+import org.btik.platformioplus.ui.home.PioHomeToolWindow;
 import org.btik.platformioplus.util.ByteUtil;
 import org.btik.platformioplus.util.SysConf;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static org.btik.platformioplus.service.PlatformIoPlusConst.*;
 
 
 /**
@@ -37,7 +42,7 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
                 return;
             }
             if (!tryExistUrl(toolWindow.getProject(), toolWindow.getComponent())) {
-                openHome(toolWindow.getComponent());
+                openHome(toolWindow.getComponent(), toolWindow.getProject());
             }
 
         }
@@ -45,7 +50,7 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
     }
 
     private boolean tryExistUrl(@NotNull Project project, @NotNull JComponent component) {
-        PlatformIoPlusService service = project.getService(PlatformIoPlusService.class);
+        PlatformIoHomeService service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
         if (service == null) {
             return false;
         }
@@ -53,14 +58,19 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
         if (null == pioHomeUrl || pioHomeUrl.isEmpty()) {
             return false;
         }
-
-        JBCefBrowser jbCefBrowser = new JBCefBrowser();
-        component.add(jbCefBrowser.getComponent(), BorderLayout.CENTER);
-        jbCefBrowser.loadURL(pioHomeUrl);
+        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(HOME_WINDOW);
+        if (toolWindow == null) {
+            return false;
+        }
+        Content content = toolWindow.getContentManager().findContent(PIO_HOME_CONTENT_ID);
+        PioHomeToolWindow pioHomeOptionPanel = (PioHomeToolWindow) content.getComponent();
+        pioHomeOptionPanel.loadURL(pioHomeUrl);
+        Content optContent = toolWindow.getContentManager().findContent(PIO_HOME_OPT_CONTENT_ID);
+        PioHomeOptionPanel optContentComponent = (PioHomeOptionPanel) optContent.getComponent();
         return true;
     }
 
-    private void openHome(@NotNull JComponent component) {
+    private void openHome(@NotNull JComponent component, @NotNull Project project) {
         Tool tool = new Tool();
         tool.setName("Pio Home");
         String platformioLocation = PioConf.findPlatformio();
@@ -74,9 +84,7 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
 
         final DataContext dataContext = DataManager.getInstance().getDataContext(component);
 
-        lastPioHomeProcessListener = new PioHomeProcessListener(component, CommonDataKeys.PROJECT.getData(dataContext));
-
-
+        lastPioHomeProcessListener = new PioHomeProcessListener(component, project);
         ApplicationManager.getApplication().invokeLater(() -> tool.execute(null, dataContext, 0, lastPioHomeProcessListener));
     }
 }

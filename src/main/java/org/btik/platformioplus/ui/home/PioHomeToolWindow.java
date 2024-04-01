@@ -1,23 +1,26 @@
 package org.btik.platformioplus.ui.home;
 
-
+import com.intellij.ui.jcef.JBCefBrowser;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author lustre
  * @since 2022/10/15 10:02
  */
-public class PioHomeToolWindow {
+public class PioHomeToolWindow extends JPanel {
 
-    private JPanel base;
-
+    JBCefBrowser jbCefBrowser;
 
     public PioHomeToolWindow() {
-
+        super(new BorderLayout());
+        jbCefBrowser = new JBCefBrowser();
+        add(jbCefBrowser.getComponent(), BorderLayout.CENTER);
     }
 
-    public JPanel getContent() {
-        return base;
+    public void loadURL(String url) {
+        jbCefBrowser.loadURL(url);
     }
+
 }

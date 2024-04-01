@@ -5,14 +5,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.startup.ProjectActivity;
-import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.vfs.AsyncFileListener;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
 import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
 import com.intellij.util.PathUtilRt;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
@@ -25,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.btik.platformioplus.service.PlatformIoPlusService.WINDOW_ARRAY;
+import static org.btik.platformioplus.service.PlatformIoPlusConst.WINDOW_ARRAY;
 
 /**
  * @author lustre

@@ -4,17 +4,21 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessListener;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
-import com.intellij.ui.jcef.JBCefApp;
-import com.intellij.ui.jcef.JBCefBrowser;
-import org.btik.platformioplus.service.PlatformIoPlusService;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.ui.content.Content;
+import org.btik.platformioplus.service.PlatformIoHomeService;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.btik.platformioplus.ui.home.PioHomeToolWindow;
+import org.btik.platformioplus.ui.home.PioHomeOptionPanel;
 
 import javax.swing.*;
-import java.awt.*;
+
+import static org.btik.platformioplus.service.PlatformIoPlusConst.*;
 
 /**
  * @author lustre
@@ -22,63 +26,47 @@ import java.awt.*;
  */
 public class PioHomeProcessListener implements ProcessListener {
     private static final Logger LOG = Logger.getInstance(PioHomeProcessListener.class);
-    private JBCefBrowser myBrowser;
-
-    private final JComponent component;
 
     private ProcessHandler processHandler;
 
-    private PlatformIoPlusService platformIoPlusService;
-
-    private static final String SHUTDOWN_HOOK_ID = "PioHome";
+    private PioHomeToolWindow pioHomeToolWindow;
+    private PioHomeOptionPanel pioHomeOptionPanel;
 
     @Override
     public void startNotified(@NotNull ProcessEvent processEvent) {
-
-        if (!JBCefApp.isSupported()) {
-            component.add(new JLabel("your ide not support JCEF", SwingConstants.CENTER));
-        }
-        if (myBrowser == null) {
-            myBrowser = new JBCefBrowser();
-            component.add(myBrowser.getComponent(), BorderLayout.CENTER);
-            this.processHandler = processEvent.getProcessHandler();
-        }
-
-
+        this.processHandler = processEvent.getProcessHandler();
     }
 
     @Override
     public void processTerminated(@NotNull ProcessEvent processEvent) {
-        if (myBrowser != null) {
-            myBrowser.dispose();
-        }
-        if (platformIoPlusService != null) {
-            platformIoPlusService.deregister(SHUTDOWN_HOOK_ID);
-            platformIoPlusService.pioHomeUrl(null);
-        }
+        PlatformIoHomeService service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
+        service.pioHomeUrl(null);
         LOG.info("exit code:" + processEvent.getExitCode() + " ,text:" + processEvent.getText());
-
     }
 
     @Override
     public void onTextAvailable(@NotNull ProcessEvent processEvent, @NotNull Key key) {
         String text = processEvent.getText();
+        pioHomeOptionPanel.print(text);
         LOG.info(text);
         if (!text.contains(" URL => http://")) {
             return;
         }
         String[] split = text.split("=>");
         String url = split[1].trim();
-        platformIoPlusService.pioHomeUrl(url);
-        myBrowser.loadURL(url);
+        PlatformIoHomeService service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
+        service.pioHomeUrl(url);
+        pioHomeToolWindow.loadURL(url);
     }
 
 
-    public PioHomeProcessListener(JComponent component, @Nullable Project project) {
-        this.component = component;
-        if (project != null) {
-            platformIoPlusService = project.getService(PlatformIoPlusService.class);
-            platformIoPlusService.registerShutdownHook(SHUTDOWN_HOOK_ID, this::shutDown);
+    public PioHomeProcessListener(JComponent component, @NotNull Project project) {
+        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(HOME_WINDOW);
+        if (toolWindow != null) {
+            Content content = toolWindow.getContentManager().findContent(PIO_HOME_CONTENT_ID);
+            pioHomeToolWindow = (PioHomeToolWindow) content.getComponent();
+            Content optContent = toolWindow.getContentManager().findContent(PIO_HOME_OPT_CONTENT_ID);
+            pioHomeOptionPanel = (PioHomeOptionPanel) optContent.getComponent();
         }
 
     }

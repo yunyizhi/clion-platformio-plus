@@ -6,11 +6,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import org.btik.platformioplus.service.PlatformIoPlusService;
 import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
 
-import static org.btik.platformioplus.service.PlatformIoPlusService.WINDOW_ARRAY;
+import static org.btik.platformioplus.service.PlatformIoPlusConst.WINDOW_ARRAY;
 import static org.btik.platformioplus.util.Note.NOTIFICATION_GROUP;
 import static org.btik.platformioplus.util.Note.getMsg;
 
