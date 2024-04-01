@@ -165,8 +165,8 @@
         <Key name="board_upload.maximum_size" platform="espressif32" framework="arduino"/>
         <Key name="board_build.partitions" platform="espressif32" framework="arduino"/>
         <Key name="board_build.extra_flags" platform="espressif32" framework="arduino">
-            <value>-D ARDUINO_USB_MODE=0</value>
-            <value>-D ARDUINO_USB_MODE=1</value>
+            <arg>-D ARDUINO_USB_MODE=0</arg>
+            <arg>-D ARDUINO_USB_MODE=1</arg>
         </Key>
         <Key name="monitor_rts">
             <value>0</value>
