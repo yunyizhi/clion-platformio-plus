@@ -1,27 +1,26 @@
 package org.btik.platformioplus.ui.home.action;
 
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
-import com.intellij.tools.Tool;
 import com.intellij.ui.content.Content;
 import org.btik.platformioplus.service.PlatformIoHomeService;
-import org.btik.platformioplus.setting.PioConf;
 import org.btik.platformioplus.ui.home.PioHomeOptionPanel;
 import org.btik.platformioplus.ui.home.PioHomeToolWindow;
-import org.btik.platformioplus.util.ByteUtil;
-import org.btik.platformioplus.util.SysConf;
+import org.btik.platformioplus.ui.home.RunPioHomeTool;
+import org.btik.platformioplus.util.Note;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
 
 import static org.btik.platformioplus.service.PlatformIoPlusConst.*;
+import static org.btik.platformioplus.util.Note.NOTIFICATION_GROUP;
 
 
 /**
@@ -29,31 +28,28 @@ import static org.btik.platformioplus.service.PlatformIoPlusConst.*;
  * @since 2022/10/23 2:02
  */
 public class OpenPioHomeListener implements ToolWindowManagerListener {
+    private static final Logger LOG = Logger.getInstance(PioHomeProcessListener.class);
     private static final String ID = "Pio Home";
 
-    private PioHomeProcessListener lastPioHomeProcessListener;
+    PlatformIoHomeService service;
 
     @Override
     public void toolWindowShown(@NotNull ToolWindow toolWindow) {
         String id = toolWindow.getId();
-
-        if (ID.equals(id)) {
-            if (lastPioHomeProcessListener != null && lastPioHomeProcessListener.isAlive()) {
-                return;
-            }
-            if (!tryExistUrl(toolWindow.getProject(), toolWindow.getComponent())) {
-                openHome(toolWindow.getComponent(), toolWindow.getProject());
-            }
-
+        if (!ID.equals(id)) {
+            return;
+        }
+        if (service == null) {
+            service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
+        }
+        // 每次切换到Home window都刷一次
+        if (!tryExistUrl(toolWindow.getProject())) {
+            openHome(toolWindow.getComponent(), toolWindow.getProject());
         }
 
     }
 
-    private boolean tryExistUrl(@NotNull Project project, @NotNull JComponent component) {
-        PlatformIoHomeService service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
-        if (service == null) {
-            return false;
-        }
+    private boolean tryExistUrl(@NotNull Project project) {
         String pioHomeUrl = service.pioHomeUrl();
         if (null == pioHomeUrl || pioHomeUrl.isEmpty()) {
             return false;
@@ -67,24 +63,24 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
         pioHomeOptionPanel.loadURL(pioHomeUrl);
         Content optContent = toolWindow.getContentManager().findContent(PIO_HOME_OPT_CONTENT_ID);
         PioHomeOptionPanel optContentComponent = (PioHomeOptionPanel) optContent.getComponent();
+        optContentComponent.clearConsole();
+        service.readLog(optContentComponent::print);
         return true;
     }
 
     private void openHome(@NotNull JComponent component, @NotNull Project project) {
-        Tool tool = new Tool();
-        tool.setName("Pio Home");
-        String platformioLocation = PioConf.findPlatformio();
-        if (platformioLocation == null) {
-            PioConf.notifyPlatformioNotFound();
+        PioHomeProcessListener lastPioHomeProcessListener;
+        try {
+            lastPioHomeProcessListener = new PioHomeProcessListener(project);
+        } catch (Exception e) {
+            NOTIFICATION_GROUP
+                    .createNotification(Note.getMsg("unexpected.exception"),
+                            Note.getMsg("unexpected.exception"), NotificationType.ERROR)
+                    .notify(project);
+            LOG.info(e);
             return;
         }
-        tool.setProgram(platformioLocation);
-        tool.setUseConsole(false);
-        tool.setParameters(SysConf.getF("pio.home.parameters", ByteUtil.uuidStr(16)));
-
         final DataContext dataContext = DataManager.getInstance().getDataContext(component);
-
-        lastPioHomeProcessListener = new PioHomeProcessListener(component, project);
-        ApplicationManager.getApplication().invokeLater(() -> tool.execute(null, dataContext, 0, lastPioHomeProcessListener));
+        RunPioHomeTool.run(dataContext, lastPioHomeProcessListener);
     }
 }

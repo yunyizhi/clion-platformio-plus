@@ -1,6 +1,5 @@
 package org.btik.platformioplus.ui.home.action;
 
-import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessListener;
@@ -16,90 +15,66 @@ import org.jetbrains.annotations.NotNull;
 import org.btik.platformioplus.ui.home.PioHomeToolWindow;
 import org.btik.platformioplus.ui.home.PioHomeOptionPanel;
 
-import javax.swing.*;
-
 import static org.btik.platformioplus.service.PlatformIoPlusConst.*;
 
 /**
  * @author lustre
  * @since 2022/10/23 10:41
  */
-public class PioHomeProcessListener implements ProcessListener {
+public class PioHomeProcessListener implements ProcessListener  {
     private static final Logger LOG = Logger.getInstance(PioHomeProcessListener.class);
+    PlatformIoHomeService homeService;
 
-    private ProcessHandler processHandler;
+    private final PioHomeToolWindow pioHomeToolWindow;
+    private final PioHomeOptionPanel pioHomeOptionPanel;
 
-    private PioHomeToolWindow pioHomeToolWindow;
-    private PioHomeOptionPanel pioHomeOptionPanel;
+    private boolean firstLine = true;
 
     @Override
     public void startNotified(@NotNull ProcessEvent processEvent) {
-        this.processHandler = processEvent.getProcessHandler();
+        ProcessHandler processHandler = processEvent.getProcessHandler();
+        homeService.attachProcessHandler(processHandler);
     }
 
     @Override
     public void processTerminated(@NotNull ProcessEvent processEvent) {
-        PlatformIoHomeService service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
-        service.pioHomeUrl(null);
+        String log = "\nexit " + processEvent.getExitCode() + "\n";
+        homeService.printLog(log);
+        pioHomeOptionPanel.print(log);
         LOG.info("exit code:" + processEvent.getExitCode() + " ,text:" + processEvent.getText());
     }
 
     @Override
     public void onTextAvailable(@NotNull ProcessEvent processEvent, @NotNull Key key) {
+        if (firstLine) {
+            firstLine = false;
+            homeService.clearLog();
+            pioHomeOptionPanel.clearConsole();
+        }
         String text = processEvent.getText();
         pioHomeOptionPanel.print(text);
+        homeService.printLog(text);
         LOG.info(text);
         if (!text.contains(" URL => http://")) {
             return;
         }
         String[] split = text.split("=>");
         String url = split[1].trim();
-        PlatformIoHomeService service = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
-        service.pioHomeUrl(url);
-        pioHomeToolWindow.loadURL(url);
+
+        homeService.pioHomeUrl(url);
+        pioHomeToolWindow.loadURL(url, true);
     }
 
-
-    public PioHomeProcessListener(JComponent component, @NotNull Project project) {
+    public PioHomeProcessListener(@NotNull Project project) {
         ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(HOME_WINDOW);
-        if (toolWindow != null) {
-            Content content = toolWindow.getContentManager().findContent(PIO_HOME_CONTENT_ID);
-            pioHomeToolWindow = (PioHomeToolWindow) content.getComponent();
-            Content optContent = toolWindow.getContentManager().findContent(PIO_HOME_OPT_CONTENT_ID);
-            pioHomeOptionPanel = (PioHomeOptionPanel) optContent.getComponent();
+        if (toolWindow == null) {
+            throw new RuntimeException("Tool window not found");
         }
-
-    }
-
-    public void shutDown() {
-        if (processHandler == null) {
-            return;
-        }
-        if (!isAlive()) {
-            return;
-        }
-        processHandler.destroyProcess();
-        if (isAlive()) {
-            if (processHandler instanceof OSProcessHandler osProcessHandler) {
-                Process process = osProcessHandler.getProcess();
-                process.destroy();
-                if (isAlive()) {
-                    process.destroyForcibly();
-                }
-            }
-        }
-
-
-    }
-
-    public boolean isAlive() {
-        if (processHandler == null) {
-            return false;
-        }
-        if (processHandler instanceof OSProcessHandler) {
-            return ((OSProcessHandler) processHandler).getProcess().isAlive();
-        }
-        return processHandler.getExitCode() != null;
+        Content content = toolWindow.getContentManager().findContent(PIO_HOME_CONTENT_ID);
+        pioHomeToolWindow = (PioHomeToolWindow) content.getComponent();
+        Content optContent = toolWindow.getContentManager().findContent(PIO_HOME_OPT_CONTENT_ID);
+        pioHomeOptionPanel = (PioHomeOptionPanel) optContent.getComponent();
+        homeService = ApplicationManager.getApplication().getService(PlatformIoHomeService.class);
     }
 
 }

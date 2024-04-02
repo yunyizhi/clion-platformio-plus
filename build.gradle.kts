@@ -43,11 +43,15 @@ tasks {
         changeNotes.set(
             """<h3>0.0.7.0</h3>
                 en:
-                <p>Modify the filtering mechanism for auto-completion items configuration in platformio.ini, allowing for the addition of configuration items specific to platforms and frameworks.</p>
+                <p>Modify the filtering mechanism for auto-completion items configuration in platformio.ini, allowing for the addition
+                    of configuration items specific to platforms and frameworks.</p>
                 <p>Enhanced the configuration of auto-completion items for the ESP32 environment.</p>
+                <p>Add an <b>Options</b> page within PlatformIO Home that enables users to restart the <b>pio home</b> service and view
+                    its logs.</p>
                 中文:
                 <p>修改自动补全的配置机制，可以对目标platforms以及frameworks的环境添加自动完成项。</p>
                 <p>增加了一些对esp32特有配置的自动补全。</p>
+                <p>platformio home增加<b>Options</b>页，可以重启 <b>pio home</b> 和查看它的日志。</p>
                 <h3>0.0.6.4</h3>
                 en:
                 <p>Fixed the issue introduced in version 0.0.6.3.</p>

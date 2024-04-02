@@ -68,6 +68,7 @@
         <configurationType implementation="org.btik.platformioplus.run.config.PioPlusRunConfigType"/>
         <applicationService serviceInterface="org.btik.platformioplus.service.PlatformIoHomeService"
                             serviceImplementation="org.btik.platformioplus.service.impl.PlatformIoHomeServiceImpl"/>
+
     </extensions>
     <projectListeners>
         <listener
@@ -75,7 +76,11 @@
                 topic="com.intellij.openapi.wm.ex.ToolWindowManagerListener"/>
     </projectListeners>
 
-
+<applicationListeners>
+    <listener
+            topic="com.intellij.ide.AppLifecycleListener"
+            class="org.btik.platformioplus.service.impl.PlatformIoHomeShutDownHook"/>
+</applicationListeners>
     <actions>
         <action id="org.btik.platformioplus.ui.action.ReloadPioPlus"
                 class="org.btik.platformioplus.ui.action.ReloadPioPlus" text="Reload PioPlus"
@@ -91,7 +96,9 @@
         </group>
         <group id="pio.restartHome">
             <action id="pio.home.restart" class="org.btik.platformioplus.ui.home.action.RestartPioHomeAction"
-                    icon="AllIcons.Actions.Rerun" text="Reload Changes"/>
+                    icon="AllIcons.Actions.Rerun" text="Rerun Platformio Home"/>
+            <action id="pio.home.sync.log" class="org.btik.platformioplus.ui.home.action.RefreshLogAction"
+                    icon="AllIcons.Actions.Refresh" text="Synchronize PlatformIO Home Logs"/>
         </group>
     </actions>
 </idea-plugin>

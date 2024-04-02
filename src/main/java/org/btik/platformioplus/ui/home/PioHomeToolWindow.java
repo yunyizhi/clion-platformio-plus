@@ -4,6 +4,7 @@ import com.intellij.ui.jcef.JBCefBrowser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * @author lustre
@@ -11,7 +12,8 @@ import java.awt.*;
  */
 public class PioHomeToolWindow extends JPanel {
 
-    JBCefBrowser jbCefBrowser;
+    private final JBCefBrowser jbCefBrowser;
+    private String url;
 
     public PioHomeToolWindow() {
         super(new BorderLayout());
@@ -20,7 +22,20 @@ public class PioHomeToolWindow extends JPanel {
     }
 
     public void loadURL(String url) {
+        if (Objects.equals(this.url, url)) {
+            return;
+        }
+        this.url = url;
         jbCefBrowser.loadURL(url);
+    }
+
+    public void loadURL(String url, boolean forceLoad) {
+        if (forceLoad) {
+            this.url = url;
+            jbCefBrowser.loadURL(url);
+            return;
+        }
+        loadURL(url);
     }
 
 }

@@ -14,6 +14,6 @@ public interface PlatformIoPlusConst {
 
     String PIO_HOME_CONTENT_ID = "Pio Home";
 
-    String PIO_HOME_OPT_CONTENT_ID = "Option";
+    String PIO_HOME_OPT_CONTENT_ID = "Options";
 
 }
