@@ -40,6 +40,9 @@ public class PlatformioIniMetaFactory {
 
     private final HashMap<String, Set<PioIniItemBuilder>> values = new HashMap<>();
 
+    private final byte[] lock = new byte[0];
+    private volatile boolean loaded = false;
+
     static class Arg {
         String text;
 
@@ -54,6 +57,12 @@ public class PlatformioIniMetaFactory {
     }
 
     public void load() {
+        synchronized (lock) {
+            if (loaded) {
+                return;
+            }
+            loaded = true;
+        }
         Icon icon = IconLoader.getIcon("/pioplus/platformio_13.svg", getClass());
         Element documentElement;
         try {
