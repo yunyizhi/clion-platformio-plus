@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.btik"
-version = "0.0.7.0-beta"
+version = "0.0.7.1-beta"
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("232")
-        untilBuild.set("241.*")
+        untilBuild.set("242.*")
         changeNotes.set(
             """<h3>0.0.7.0</h3>
                 en:
