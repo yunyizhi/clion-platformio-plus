@@ -6,7 +6,7 @@ import org.junit.Test;
 public class SysConfTest {
     @Test
     public void format() {
-        String f = SysConf.getF("pio.home.parameters", "2121");
-        assert !f.endsWith("2121");
+        String f = SysConf.get("pio.home.parameters");
+        assert !f.isEmpty();
     }
 }

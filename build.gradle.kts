@@ -18,13 +18,16 @@ dependencies {
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     version.set("2023.3.4")
+    //version.set("2024.2")
     type.set("CL") // Target IDE Platform
 
     plugins.set(
         listOf(
+            // "com.jetbrains.plugins.ini4idea:242.20224.385",
             "com.jetbrains.plugins.ini4idea:233.11799.244",
             "com.intellij.clion",
             "com.intellij.cidr.base",
+            // "intellij.clion.embedded.platformio:242.20224.159"
             "intellij.clion.embedded.platformio:233.11799.171"
         )
     )
