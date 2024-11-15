@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.16.1"
+    id("org.jetbrains.intellij") version "1.17.4"
 }
 
 group = "org.btik"
-version = "0.0.7.1-beta"
+version = "0.0.7.2-beta"
 
 repositories {
     mavenCentral()
@@ -17,15 +17,15 @@ dependencies {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.3.4")
+    version.set("LATEST-EAP-SNAPSHOT")
     type.set("CL") // Target IDE Platform
 
     plugins.set(
         listOf(
-            "com.jetbrains.plugins.ini4idea:233.11799.244",
+            "com.jetbrains.plugins.ini4idea",
             "com.intellij.clion",
             "com.intellij.cidr.base",
-            "intellij.clion.embedded.platformio:233.11799.171"
+            "intellij.clion.embedded.platformio:243.21565.198"
         )
     )
 }
@@ -38,8 +38,8 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("232")
-        untilBuild.set("242.*")
+        sinceBuild.set("243")
+        untilBuild.set("243.*")
         changeNotes.set(
             """<h3>0.0.7.0</h3>
                 en:
