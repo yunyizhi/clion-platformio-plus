@@ -3,7 +3,6 @@ package org.btik.platformioplus.ui.home;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
-import org.btik.platformioplus.ui.home.action.PioHomeProcessListener;
 
 import javax.swing.*;
 import java.awt.*;
