@@ -22,7 +22,7 @@ public class Note extends DynamicBundle {
         if (key == null || key.isEmpty()) {
             return null;
         }
-        return INSTANCE.getResourceBundle().getString(key);
+        return INSTANCE.messageOrDefault(key, key);
     }
 
     public static String $note(String key) {
