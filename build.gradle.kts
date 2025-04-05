@@ -1,113 +1,89 @@
+import java.io.File
+
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.5.0"
 }
 
 group = "org.btik"
-version = "0.0.7.2-beta"
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://maven.aliyun.com/repository/public/")
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+    intellijPlatform {
+        defaultRepositories()
+        marketplace()
+    }
 }
+
 dependencies {
+    intellijPlatform {
+        clion("LATEST-EAP-SNAPSHOT", useInstaller = false)
+        bundledPlugins(
+            "com.intellij.cidr.base",
+            "com.intellij.clion",
+            "com.jetbrains.plugins.ini4idea"
+        )
+        plugins(
+            "intellij.clion.embedded.platformio:251.23774.112"
+        )
+        pluginVerifier()
+    }
     testImplementation("junit:junit:4.13.2")
 }
 
+intellijPlatform {
+    pluginConfiguration {
+        version = providers.gradleProperty("pluginVersion")
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    version.set("LATEST-EAP-SNAPSHOT")
-    type.set("CL") // Target IDE Platform
+        val changeNoteHtml = "changenote.html"
+        val changeNoteFile = File(changeNoteHtml)
 
-    plugins.set(
-        listOf(
-            "com.jetbrains.plugins.ini4idea",
-            "com.intellij.clion",
-            "com.intellij.cidr.base",
-            "intellij.clion.embedded.platformio:243.21565.198"
-        )
-    )
+        if (changeNoteFile.exists()) {
+            val fileContent = changeNoteFile.readText()
+            val bodyRegex = Regex("<body>(.*?)</body>", RegexOption.DOT_MATCHES_ALL)
+            val bodyContent = bodyRegex.find(fileContent)?.groupValues?.get(1)?.trim() ?: ""
+            changeNotes = bodyContent
+        } else {
+            println("Error: File '$changeNoteHtml' does not exist.")
+        }
+
+
+
+        ideaVersion {
+            sinceBuild = providers.gradleProperty("pluginSinceBuild")
+            untilBuild = providers.gradleProperty("pluginUntilBuild")
+        }
+    }
+
+    signing {
+        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+        privateKey = providers.environmentVariable("PRIVATE_KEY")
+        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+    }
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
+        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
+        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
+        channels = providers.gradleProperty("pluginVersion")
+            .map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
 }
 
+
 tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
-    }
-
-    patchPluginXml {
-        sinceBuild.set("243")
-        untilBuild.set("243.*")
-        changeNotes.set(
-            """<h3>0.0.7.0</h3>
-                en:
-                <p>Modify the filtering mechanism for auto-completion items configuration in platformio.ini, allowing for the addition
-                    of configuration items specific to platforms and frameworks.</p>
-                <p>Enhanced the configuration of auto-completion items for the ESP32 environment.</p>
-                <p>Add an <b>Options</b> page within PlatformIO Home that enables users to restart the <b>pio home</b> service and view
-                    its logs.</p>
-                中文:
-                <p>修改自动补全的配置机制，可以对目标platforms以及frameworks的环境添加自动完成项。</p>
-                <p>增加了一些对esp32特有配置的自动补全。</p>
-                <p>platformio home增加<b>Options</b>页，可以重启 <b>pio home</b> 和查看它的日志。</p>
-                <h3>0.0.6.4</h3>
-                en:
-                <p>Fixed the issue introduced in version 0.0.6.3.</p>
-                中文:
-                <p>修复了0.0.6.3引入的问题</p>
-                <h3>0.0.6.3</h3>
-                en:
-                <ul>
-                    <li>Fixed some issues.</li>
-                    <li>Introduced the issue where the Pio Plus tool window is unavailable after a project is created and opened.</li>
-                </ul>
-                <br>
-                中文:
-                <ul>
-                    <li>修复了一些问题.</li>
-                    <li>引入了创建项目打开没有Pio Plus 的工具窗口的问题.</li>
-                </ul>
-                <h3>0.0.6.0</h3>
-                Compatible with PlatformIO for CLion 232.8660.142.<br>
-                兼容官方PlatformIO插件232.8660.142
-                <h3>0.0.5.0</h3>
-                en:
-                <p>Support Run Configuration.</p>
-                <p>Added a menu to switch the current `CMAKE_BUILD_TYPE` in the status bar.</p>
-                <p>Fixed the issue where Floating Toolbar could not be automatically displayed after version 2023.</p>
-                中文:
-                <p>支持运行配置。</p>
-                <p>在状态栏增加了切换当前`CMAKE_BUILD_TYPE`的菜单。</p>
-                <p>修复了悬浮工具栏在2023版后的不能自动显示的问题。</p>
-                <h3>0.0.4.0</h3>
-                en:
-                <p>Fixed some issues.</p>
-                <p>Added some static hints about auto-completion of the value of the 'platformio.ini' property.</p>
-                中文:
-                <p>修复了一些问题。</p>
-                <p>增加了一些对 `platformio.ini` 的属性的值自动补全的相关静态提示</p>
-                <h3>0.0.3.0</h3>
-                <p>en:When executing commands using the task tree, multiple environment configurations existing in platformio.ini can be
-                    checked. This feature is independent of the `default_envs` in platformio.ini.</p>
-                <p>中文:任务树执行命令，支持勾选platformio.ini的多环境配置。该功能与platformio.ini的`default_envs`无关</p>
-                <h3>0.0.2.2</h3>
-                <p>en:Modify and optimize some issues.</p>
-                <p>中文:修改和优化一些问题</p>
-                <h3>0.0.2.1</h3>
-                <p>en:Support platformio.ini prompting/autocomplete.</p>
-                <p>中文:支持platformio.ini提示/自动补全</p>"""
-        )
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+    wrapper {
+        gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
 }
