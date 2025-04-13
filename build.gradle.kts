@@ -21,14 +21,14 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        clion("LATEST-EAP-SNAPSHOT", useInstaller = false)
+        clion("2024.3.5", useInstaller = false)
         bundledPlugins(
             "com.intellij.cidr.base",
             "com.intellij.clion",
             "com.jetbrains.plugins.ini4idea"
         )
         plugins(
-            "intellij.clion.embedded.platformio:251.23774.112"
+            "intellij.clion.embedded.platformio:243.21565.198"
         )
         pluginVerifier()
     }
@@ -50,7 +50,6 @@ intellijPlatform {
         } else {
             println("Error: File '$changeNoteHtml' does not exist.")
         }
-
 
 
         ideaVersion {
