@@ -30,6 +30,8 @@ public interface IniMetaXmlConstant {
 
     String ENV_SECTION_GROUP_NAME = "[env:]";
 
+    String PLATFORM_RULE = "PlatformRule";
+
     String KEY_TIP_SUFFIX = " = ";
 
     int KEY_TIP_SKIP_LEN = KEY_TIP_SUFFIX.length();
