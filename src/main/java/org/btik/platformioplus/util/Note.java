@@ -25,6 +25,10 @@ public class Note extends DynamicBundle {
         return INSTANCE.messageOrDefault(key, key);
     }
 
+    public static String $i18n(String key) {
+        return getMsg(key);
+    }
+
     public static String $note(String key) {
         return getMsg(key);
     }
