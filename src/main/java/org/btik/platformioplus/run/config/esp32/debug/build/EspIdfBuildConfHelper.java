@@ -2,7 +2,7 @@ package org.btik.platformioplus.run.config.esp32.debug.build;
 
 import com.intellij.openapi.project.Project;
 import com.jetbrains.cidr.execution.CidrBuildConfigurationHelper;
-import org.btik.espidf.service.IdfEnvironmentService;
+import org.btik.platformioplus.service.esp32.Esp32ProjectService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author lustre
  * @since 2024/9/3 0:28
  */
-public class EspIdfBuildConfHelper extends CidrBuildConfigurationHelper<EspIdfBuildConf, EspIdfBuildTarget> {
+public class EspIdfBuildConfHelper extends CidrBuildConfigurationHelper<EspIdfBuildConf, Esp32BuildTarget> {
 
     private final Project project;
 
@@ -20,7 +20,7 @@ public class EspIdfBuildConfHelper extends CidrBuildConfigurationHelper<EspIdfBu
     }
 
     @Override
-    public @NotNull List<EspIdfBuildTarget> getTargets() {
-        return project.getService(IdfEnvironmentService.class).getBuildTargets();
+    public @NotNull List<Esp32BuildTarget> getTargets() {
+        return project.getService(Esp32ProjectService.class).getBuildTargets();
     }
 }

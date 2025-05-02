@@ -68,7 +68,6 @@
                         serviceImplementation="org.btik.platformioplus.service.esp32.impl.Esp32ProjectServiceImpl"/>
         <psi.treeChangeListener implementation="org.btik.platformioplus.ini.reload.IniPsiTreeChangeListener"/>
         <configurationType implementation="org.btik.platformioplus.run.config.PioPlusRunConfigType"/>
-        <configurationType implementation="org.btik.platformioplus.run.config.esp32.debug.Esp32RunConfigType"/>
         <applicationService serviceInterface="org.btik.platformioplus.service.PlatformIoHomeService"
                             serviceImplementation="org.btik.platformioplus.service.impl.PlatformIoHomeServiceImpl"/>
         <applicationService serviceInterface="org.btik.platformioplus.service.SystemMetaService"

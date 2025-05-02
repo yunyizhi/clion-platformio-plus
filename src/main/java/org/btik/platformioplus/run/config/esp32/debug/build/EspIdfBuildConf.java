@@ -12,6 +12,6 @@ import static org.btik.platformioplus.util.Note.$i18n;
 public class EspIdfBuildConf implements CidrBuildConfiguration {
     @Override
     public @NotNull String getName() {
-        return $i18n("esp.idf.debug.type");
+        return $i18n("esp32.debug.type");
     }
 }

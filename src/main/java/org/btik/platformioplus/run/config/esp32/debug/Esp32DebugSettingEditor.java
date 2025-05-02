@@ -50,14 +50,14 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
 
         int rowIndex = 0;
 
-        wrapper.add(i18nLabel("esp.idf.debug.openocd.arguments"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.openocd.arguments"), createConstraints(rowIndex, 0));
         GridConstraints openocdArgConstraints = createConstraints(rowIndex, 1);
         openocdArgConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         openocdArgConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
         wrapper.add(arguments, openocdArgConstraints);
         rowIndex++;
 
-        wrapper.add(i18nLabel("esp.idf.debug.app_elf"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.app_elf"), createConstraints(rowIndex, 0));
         GridConstraints appElfConstraints = createConstraints(rowIndex, 1);
         appElfConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         appElfConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
@@ -66,25 +66,25 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         wrapper.add(appElf, appElfConstraints);
         rowIndex++;
 
-        wrapper.add(i18nLabel("esp.idf.debug.bootloader_elf"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.bootloader_elf"), createConstraints(rowIndex, 0));
         GridConstraints bootLoaderConstraints = createConstraints(rowIndex, 1);
         bootLoaderConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         bootLoaderConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
         bootloaderElf = new TextFieldFileChooser();
-        bootloaderElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("esp.idf.debug.bootloader_elf.select"));
+        bootloaderElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("esp32.debug.bootloader_elf.select"));
         wrapper.add(bootloaderElf, bootLoaderConstraints);
         rowIndex++;
 
-        wrapper.add(i18nLabel("esp.idf.debug.rom_elf"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.rom_elf"), createConstraints(rowIndex, 0));
         GridConstraints romElfConstraints = createConstraints(rowIndex, 1);
         romElfConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         romElfConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
         romElf = new TextFieldFileChooser();
-        romElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("esp.idf.debug.rom_elf.select"));
+        romElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("esp32.debug.rom_elf.select"));
         wrapper.add(romElf, romElfConstraints);
         rowIndex++;
 
-        wrapper.add(i18nLabel("esp.idf.debug.gdb"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.gdb"), createConstraints(rowIndex, 0));
         GridConstraints gdbArgConstraints = createConstraints(rowIndex, 1);
         gdbArgConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         gdbArgConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
@@ -94,7 +94,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         wrapper.add(gdb, gdbArgConstraints);
         rowIndex++;
 
-        wrapper.add(i18nLabel("esp.idf.debug.openocd.environment.variables"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.openocd.environment.variables"), createConstraints(rowIndex, 0));
         GridConstraints envConstraints = createConstraints(rowIndex, 1);
         envConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         envConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
@@ -103,7 +103,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
 
         wrapper.add(new JLabel(""), createConstraints(rowIndex, 0));
         wrapper.add(setDefault, createConstraints(rowIndex, 1));
-        setDefault.setText($i18n("esp.idf.debug.set.default"));
+        setDefault.setText($i18n("esp32.debug.set.default"));
 
         rootPanel.add(wrapper, BorderLayout.CENTER);
 

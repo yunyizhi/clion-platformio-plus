@@ -5,12 +5,17 @@ import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.IconLoader;
 import com.jetbrains.cidr.cpp.cmake.CMakeSettings;
 import com.jetbrains.cidr.cpp.cmake.workspace.CMakeWorkspace;
+import org.btik.platformioplus.icon.PlatformIoPlusIcon;
+import org.btik.platformioplus.run.config.PioPlusRunConfigType;
 import org.btik.platformioplus.run.config.esp32.debug.model.DebugConfigModel;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,7 +33,7 @@ public class Esp32RunConfigFactory extends ConfigurationFactory {
 
     private final static Logger log = Logger.getInstance(Esp32RunConfigFactory.class);
 
-    public Esp32RunConfigFactory(Esp32RunConfigType esp32RunConfigType) {
+    public Esp32RunConfigFactory(PioPlusRunConfigType esp32RunConfigType) {
         super(esp32RunConfigType);
     }
 
@@ -38,8 +43,18 @@ public class Esp32RunConfigFactory extends ConfigurationFactory {
     }
 
     @Override
+    public Icon getIcon() {
+        return PlatformIoPlusIcon.ESP32_16;
+    }
+
+    @Override
     public @NotNull @NonNls String getId() {
-        return $sys("esp.idf.run.config.type.factory.id");
+        return $sys("esp32.run.config.type.factory.id");
+    }
+
+    @Override
+    public @NotNull @Nls String getName() {
+        return $sys("esp32.debug.name");
     }
 
     private static DebugConfigModel parseDesc(File descFile) {
@@ -65,7 +80,7 @@ public class Esp32RunConfigFactory extends ConfigurationFactory {
         Path baseDir = Path.of(basePath);
 
         if (profiles.isEmpty()) {
-            return checkDescFile(baseDir.resolve($sys("esp.idf.build.project.build.dir")), fileName);
+            return checkDescFile(baseDir.resolve($sys("esp32.build.project.build.dir")), fileName);
         }
         File resolve;
         for (CMakeSettings.Profile profile : profiles) {
@@ -90,7 +105,7 @@ public class Esp32RunConfigFactory extends ConfigurationFactory {
     }
 
     public static DebugConfigModel syncProjectDesc(Project project) {
-        String projectDescFileName = $sys("esp.idf.build.project.description");
+        String projectDescFileName = $sys("esp32.build.project.description");
         File projectDescFile = getFileInCmakeBuildDir(project, projectDescFileName);
         if (projectDescFile == null) {
             return null;

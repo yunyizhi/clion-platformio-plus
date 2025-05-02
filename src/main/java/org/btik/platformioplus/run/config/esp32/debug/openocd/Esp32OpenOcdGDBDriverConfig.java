@@ -51,7 +51,7 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
     @NotNull
     @Override
     public BaseProcessHandler<?> createDebugProcessHandler(@NotNull GeneralCommandLine commandLine) throws ExecutionException {
-        var idfOpenOcd = new Esp32ConsoleRunProfile($i18n("esp.idf.debug.openocd.run.title"), PlatformIoPlusIcon.PIOPLUS_13, openOcdCli);
+        var idfOpenOcd = new Esp32ConsoleRunProfile($i18n("esp32.debug.openocd.run.title"), PlatformIoPlusIcon.PIOPLUS_13, openOcdCli);
         idfOpenOcd.addProcessListener(openOcdProcessListener);
         var environment = ExecutionEnvironmentBuilder.create(project, DefaultRunExecutor.getRunExecutorInstance(), idfOpenOcd).build();
         environment.setExecutionId(ExecutionEnvironment.getNextUnusedExecutionId());
@@ -80,7 +80,7 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
         var configDataModel = esp32RunConfig.getConfigDataModel();
         Map<String, String> envs = new HashMap<>(configDataModel.getEnvData().getEnvs());
 
-        openOcdCli.withInitialColumns(SysConf.getInt("esp.idf.pyt.cmd.cols", 120));
+        openOcdCli.withInitialColumns(SysConf.getInt("esp32.pyt.cmd.cols", 120));
         openOcdCli.setExePath(configDataModel.getOpenOcdPath());
         openOcdCli.withConsoleMode(true);
         openOcdCli.setWorkDirectory(project.getBasePath());

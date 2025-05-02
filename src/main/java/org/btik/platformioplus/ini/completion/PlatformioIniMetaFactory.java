@@ -6,6 +6,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.IconLoader;
+import org.btik.platformioplus.icon.PlatformIoPlusIcon;
 import org.btik.platformioplus.ini.completion.entity.PioIniItemBuilder;
 import org.btik.platformioplus.ini.completion.entity.PlatformRule;
 import org.btik.platformioplus.ini.completion.filter.IniTipFilters;
@@ -65,7 +66,7 @@ public class PlatformioIniMetaFactory {
             }
             loaded = true;
         }
-        Icon icon = IconLoader.getIcon("/pioplus/platformio_13.svg", getClass());
+        Icon icon = PlatformIoPlusIcon.PIOPLUS_13;
         Element documentElement;
         try {
             Document treeConf = DomUtil.parse(PlatformioIniMetaFactory.class.getResourceAsStream("/pioplus/platformioIniMeta.xml"));

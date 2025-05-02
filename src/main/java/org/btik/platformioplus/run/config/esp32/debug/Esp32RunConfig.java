@@ -19,9 +19,9 @@ import com.jetbrains.cidr.execution.CidrCommandLineState;
 import com.jetbrains.cidr.execution.ExecutableData;
 import com.jetbrains.cidr.lang.workspace.OCResolveConfiguration;
 
+import org.btik.platformioplus.run.config.esp32.debug.build.Esp32BuildTarget;
 import org.btik.platformioplus.run.config.esp32.debug.build.EspIdfBuildConf;
 import org.btik.platformioplus.run.config.esp32.debug.build.EspIdfBuildConfHelper;
-import org.btik.platformioplus.run.config.esp32.debug.build.EspIdfBuildTarget;
 import org.btik.platformioplus.run.config.esp32.debug.model.DebugConfigModel;
 import org.btik.platformioplus.service.SystemMetaService;
 import org.btik.platformioplus.util.ClassMetaUtils;
@@ -39,7 +39,7 @@ import static org.btik.platformioplus.util.SysConf.$sys;
  * @author lustre
  * @since 2024/9/2 21:17
  */
-public class Esp32RunConfig extends CLionRunConfiguration<EspIdfBuildConf, EspIdfBuildTarget> {
+public class Esp32RunConfig extends CLionRunConfiguration<EspIdfBuildConf, Esp32BuildTarget> {
 
     private ExecutableData executableData;
     private DebugConfigModel configDataModel;
@@ -47,7 +47,7 @@ public class Esp32RunConfig extends CLionRunConfiguration<EspIdfBuildConf, EspId
     private int thisHistoryHash = 0;
 
     public Esp32RunConfig(Project project, ConfigurationFactory factory) {
-        super(project, factory, $sys("esp.idf.debug.name"));
+        super(project, factory, $sys("esp32.debug.name"));
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Esp32RunConfig extends CLionRunConfiguration<EspIdfBuildConf, EspId
     }
 
     @Override
-    public @NotNull CidrBuildConfigurationHelper<EspIdfBuildConf, EspIdfBuildTarget> getHelper() {
+    public @NotNull CidrBuildConfigurationHelper<EspIdfBuildConf, Esp32BuildTarget> getHelper() {
         return new EspIdfBuildConfHelper(getProject());
     }
 

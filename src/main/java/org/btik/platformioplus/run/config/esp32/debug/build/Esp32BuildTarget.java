@@ -15,18 +15,18 @@ import static org.btik.platformioplus.util.Note.$i18n;
  * @author lustre
  * @since 2024/9/3 0:07
  */
-public class EspIdfBuildTarget implements CidrBuildTarget<EspIdfBuildConf> {
+public class Esp32BuildTarget implements CidrBuildTarget<EspIdfBuildConf> {
     private final String projectName;
     private final EspIdfBuildConf espIdfBuildConf;
 
-    public EspIdfBuildTarget(String projectName) {
+    public Esp32BuildTarget(String projectName) {
         this.projectName = projectName;
         this.espIdfBuildConf = new EspIdfBuildConf();
     }
 
     @Override
     public @NotNull String getName() {
-        return $i18n("esp.idf.debug.type");
+        return $i18n("esp32.debug.type");
     }
 
     @Override
