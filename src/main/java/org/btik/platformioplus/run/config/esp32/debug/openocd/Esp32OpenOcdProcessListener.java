@@ -4,7 +4,6 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessListener;
-import com.intellij.openapi.util.Key;
 import org.jetbrains.annotations.NotNull;
 
 public class Esp32OpenOcdProcessListener implements ProcessListener {
