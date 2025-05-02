@@ -73,7 +73,7 @@ public class Esp32Launcher extends CLionLauncher {
                 .withExePath(platformioLocation)
                 .withWorkDirectory(project.getBasePath())
                 .withCharset(Charset.forName(System.getProperty("sun.jnu.encoding", "UTF-8")))
-                .withParameters("upload");
+                .withParameters("run", "-t", "upload");
         return new KillableColoredProcessHandler(upload);
     }
 
@@ -82,7 +82,7 @@ public class Esp32Launcher extends CLionLauncher {
         Project project = getProject();
         @SystemIndependent final String projectPath = project.getBasePath();
 
-        DebuggerDriverConfiguration debuggerDriverConfiguration = new Esp32OpenOcdGDBDriverConfig(project, null, esp32RunConfig);
+        DebuggerDriverConfiguration debuggerDriverConfiguration = new Esp32OpenOcdGDBDriverConfig(project, esp32RunConfig);
 
         GeneralCommandLine commandLine = new GeneralCommandLine("").withWorkDirectory(project.getBasePath());
         TrivialRunParameters parameters = new TrivialRunParameters(debuggerDriverConfiguration, commandLine, ArchitectureType.UNKNOWN);

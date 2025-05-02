@@ -16,10 +16,6 @@ public class DebugConfigModel {
     private String target;
 
     @Serial
-    @SerializedName("bootloader_elf")
-    private String bootloaderElf;
-
-    @Serial
     @SerializedName("app_elf")
     private String appElf;
 
@@ -34,13 +30,6 @@ public class DebugConfigModel {
     @Expose(serialize = false, deserialize = false)
     @Serial
     private String gdbExe;
-
-    @Expose(serialize = false, deserialize = false)
-    private String romElfDir;
-
-    @Expose(serialize = false, deserialize = false)
-    @Serial
-    private String romElf;
 
     @Expose(serialize = false, deserialize = false)
     @Serial
@@ -79,14 +68,6 @@ public class DebugConfigModel {
         this.target = target;
     }
 
-    public String getBootloaderElf() {
-        return bootloaderElf;
-    }
-
-    public void setBootloaderElf(String bootloaderElf) {
-        this.bootloaderElf = bootloaderElf;
-    }
-
     public String getAppElf() {
         return appElf;
     }
@@ -95,21 +76,6 @@ public class DebugConfigModel {
         this.appElf = appElf;
     }
 
-    public String getRomElfDir() {
-        return romElfDir;
-    }
-
-    public void setRomElfDir(String romElfDir) {
-        this.romElfDir = romElfDir;
-    }
-
-    public String getRomElf() {
-        return romElf;
-    }
-
-    public void setRomElf(String romElf) {
-        this.romElf = romElf;
-    }
 
     public @NotNull String getOpenOcdPath() {
         return openOcdPath;

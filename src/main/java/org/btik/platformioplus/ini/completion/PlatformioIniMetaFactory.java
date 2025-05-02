@@ -5,7 +5,6 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.util.IconLoader;
 import org.btik.platformioplus.icon.PlatformIoPlusIcon;
 import org.btik.platformioplus.ini.completion.entity.PioIniItemBuilder;
 import org.btik.platformioplus.ini.completion.entity.PlatformRule;

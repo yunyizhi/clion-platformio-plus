@@ -17,7 +17,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
 import static org.btik.platformioplus.util.Note.$i18n;
 import static org.btik.platformioplus.util.UIUtils.createConstraints;
@@ -33,10 +32,9 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
 
     private final EnvironmentVariablesComponent envComponent;
 
+    private final TextFieldFileChooser openocdPath;
     private final JTextField arguments = new JTextField();
     private final TextFieldFileChooser appElf;
-    private final TextFieldFileChooser bootloaderElf;
-    private final TextFieldFileChooser romElf;
     private final TextFieldFileChooser gdb;
     private final JButton setDefault = new JButton();
     private final Project project;
@@ -49,6 +47,14 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         JPanel wrapper = new JPanel(new GridLayoutManager(7, 2, JBUI.insetsTop(16), -1, -1));
 
         int rowIndex = 0;
+        wrapper.add(i18nLabel("esp32.debug.openocd.path"), createConstraints(rowIndex, 0));
+        GridConstraints openocdPathConstraints = createConstraints(rowIndex, 1);
+        openocdPathConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
+        openocdPathConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
+        openocdPath = new TextFieldFileChooser();
+        openocdPath.addActionListener(project, FileChooserDescriptorFactory.singleFile(), $i18n("select.openocd.path"), $i18n("select.openocd.path.for.esp32"));
+        wrapper.add(openocdPath, openocdPathConstraints);
+        rowIndex++;
 
         wrapper.add(i18nLabel("esp32.debug.openocd.arguments"), createConstraints(rowIndex, 0));
         GridConstraints openocdArgConstraints = createConstraints(rowIndex, 1);
@@ -62,26 +68,8 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         appElfConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         appElfConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
         appElf = new TextFieldFileChooser();
-        appElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("select.idf.path.for.idf"));
+        appElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("select.elf.path.for.esp32"));
         wrapper.add(appElf, appElfConstraints);
-        rowIndex++;
-
-        wrapper.add(i18nLabel("esp32.debug.bootloader_elf"), createConstraints(rowIndex, 0));
-        GridConstraints bootLoaderConstraints = createConstraints(rowIndex, 1);
-        bootLoaderConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
-        bootLoaderConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
-        bootloaderElf = new TextFieldFileChooser();
-        bootloaderElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("esp32.debug.bootloader_elf.select"));
-        wrapper.add(bootloaderElf, bootLoaderConstraints);
-        rowIndex++;
-
-        wrapper.add(i18nLabel("esp32.debug.rom_elf"), createConstraints(rowIndex, 0));
-        GridConstraints romElfConstraints = createConstraints(rowIndex, 1);
-        romElfConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
-        romElfConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
-        romElf = new TextFieldFileChooser();
-        romElf.addActionListener(project, newElfFileChooser(), $i18n("select.elf.path"), $i18n("esp32.debug.rom_elf.select"));
-        wrapper.add(romElf, romElfConstraints);
         rowIndex++;
 
         wrapper.add(i18nLabel("esp32.debug.gdb"), createConstraints(rowIndex, 0));
@@ -94,7 +82,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         wrapper.add(gdb, gdbArgConstraints);
         rowIndex++;
 
-        wrapper.add(i18nLabel("esp32.debug.openocd.environment.variables"), createConstraints(rowIndex, 0));
+        wrapper.add(i18nLabel("esp32.debug.environment.variables"), createConstraints(rowIndex, 0));
         GridConstraints envConstraints = createConstraints(rowIndex, 1);
         envConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         envConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
@@ -135,21 +123,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         }
         appElf.setText(debugConfigModel.getAppElf());
         appElf.setRootDir(Esp32RunConfigFactory.getFileInCmakeBuildDir(project, "/"));
-        bootloaderElf.setText(debugConfigModel.getBootloaderElf());
         String target = debugConfigModel.getTarget();
-
-        String romElfDir = debugConfigModel.getRomElfDir();
-        String romElfPeFix = target + '_';
-        File romElfDirFile = new File(romElfDir);
-        String[] list = romElfDirFile.list();
-        if (list != null) {
-            for (String elfFiles : list) {
-                if (elfFiles.startsWith(romElfPeFix)) {
-                    romElf.setText(elfFiles);
-                }
-            }
-            romElf.setRootDir(romElfDirFile);
-        }
 
     }
 
@@ -163,9 +137,8 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         envComponent.setEnvData(configDataModel.getEnvData());
         arguments.setText(configDataModel.getOpenOcdArguments());
         appElf.setText(configDataModel.getAppElf());
-        romElf.setText(configDataModel.getRomElf());
-        bootloaderElf.setText(configDataModel.getBootloaderElf());
         gdb.setText(configDataModel.getGdbExe());
+        openocdPath.setText(configDataModel.getOpenOcdPath());
     }
 
     @Override
@@ -174,11 +147,10 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         DebugConfigModel debugConfigModel = configDataModel == null ? new DebugConfigModel() : configDataModel;
         esp32RunConfig.setConfigDataModel(debugConfigModel);
         debugConfigModel.setAppElf(appElf.getText());
-        debugConfigModel.setBootloaderElf(bootloaderElf.getText());
-        debugConfigModel.setRomElf(romElf.getText());
         debugConfigModel.setOpenOcdArguments(arguments.getText());
         debugConfigModel.setGdbExe(gdb.getText());
         debugConfigModel.setEnvData(envComponent.getEnvData());
+        debugConfigModel.setOpenOcdPath(openocdPath.getText());
     }
 
     @Override

@@ -14,16 +14,14 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.cidr.ArchitectureType;
-import com.jetbrains.cidr.cpp.execution.debugger.backend.CLionGDBDriverConfiguration;
-import com.jetbrains.cidr.cpp.toolchains.CPPToolchains;
 import com.jetbrains.cidr.execution.debugger.backend.DebuggerDriver;
 
+import com.jetbrains.cidr.execution.debugger.backend.gdb.GDBDriverConfiguration;
 import org.btik.platformioplus.icon.PlatformIoPlusIcon;
 import org.btik.platformioplus.run.config.esp32.debug.Esp32ConsoleRunProfile;
 import org.btik.platformioplus.run.config.esp32.debug.Esp32RunConfig;
 import org.btik.platformioplus.util.SysConf;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -33,7 +31,7 @@ import java.util.Map;
 
 import static org.btik.platformioplus.util.Note.$i18n;
 
-public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
+public class Esp32OpenOcdGDBDriverConfig extends GDBDriverConfiguration {
     private final Esp32RunConfig esp32RunConfig;
 
     private final Project project;
@@ -42,8 +40,7 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
 
     private final Esp32OpenOcdProcessListener openOcdProcessListener = new Esp32OpenOcdProcessListener();
 
-    public Esp32OpenOcdGDBDriverConfig(@NotNull Project project, @Nullable CPPToolchains.Toolchain toolchain, Esp32RunConfig esp32RunConfig) {
-        super(project, toolchain);
+    public Esp32OpenOcdGDBDriverConfig(@NotNull Project project, Esp32RunConfig esp32RunConfig) {
         this.project = project;
         this.esp32RunConfig = esp32RunConfig;
     }
@@ -51,7 +48,7 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
     @NotNull
     @Override
     public BaseProcessHandler<?> createDebugProcessHandler(@NotNull GeneralCommandLine commandLine) throws ExecutionException {
-        var idfOpenOcd = new Esp32ConsoleRunProfile($i18n("esp32.debug.openocd.run.title"), PlatformIoPlusIcon.PIOPLUS_13, openOcdCli);
+        var idfOpenOcd = new Esp32ConsoleRunProfile($i18n("esp32.debug.openocd.run.title"), PlatformIoPlusIcon.ESP32_16, openOcdCli);
         idfOpenOcd.addProcessListener(openOcdProcessListener);
         var environment = ExecutionEnvironmentBuilder.create(project, DefaultRunExecutor.getRunExecutorInstance(), idfOpenOcd).build();
         environment.setExecutionId(ExecutionEnvironment.getNextUnusedExecutionId());
@@ -87,7 +84,7 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
         openOcdCli.setCharset(Charset.forName(System.getProperty("sun.jnu.encoding", "UTF-8")));
         String openOcdArguments = configDataModel.getOpenOcdArguments();
         if (StringUtil.isNotEmpty(openOcdArguments)) {
-            openOcdCli.addParameters(openOcdArguments);
+            openOcdCli.addParameters(openOcdArguments.trim().split("\\s"));
         }
         openOcdCli.withEnvironment(envs);
         GeneralCommandLine commandLine = new GeneralCommandLine()
@@ -100,11 +97,6 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
                         "-iex", "set mi-async",
                         "-iex", "set confirm off");
 
-        String bootloaderElf = configDataModel.getBootloaderElf();
-        if (checkElf(bootloaderElf)) {
-            commandLine.addParameters("-iex", "add-symbol-file " + gdbConsolePath(bootloaderElf));
-        }
-
         String appElf = configDataModel.getAppElf();
         if (checkElf(appElf)) {
             commandLine.addParameters("-iex", "file " + gdbConsolePath(appElf));
@@ -115,6 +107,7 @@ public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
                 "target remote :3333",
                 "monitor reset halt",
                 "maintenance flush register-cache",
+                "break app_main"
         };
         for (String gdbCmd : connect) {
             commandLine.addParameters("-ex", gdbCmd);

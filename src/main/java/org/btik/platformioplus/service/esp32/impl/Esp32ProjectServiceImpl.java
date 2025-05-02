@@ -14,7 +14,7 @@ import java.util.List;
 public class Esp32ProjectServiceImpl implements Esp32ProjectService {
     private final Esp32BuildTarget esp32BuildTarget;
 
-    private Project project;
+    private final Project project;
 
     public Esp32ProjectServiceImpl(Project project) {
         this.project = project;
