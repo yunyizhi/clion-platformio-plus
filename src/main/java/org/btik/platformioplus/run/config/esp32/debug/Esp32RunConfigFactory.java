@@ -1,27 +1,28 @@
 package org.btik.platformioplus.run.config.esp32.debug;
 
-import com.google.gson.Gson;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.jetbrains.cidr.cpp.cmake.CMakeSettings;
-import com.jetbrains.cidr.cpp.cmake.workspace.CMakeWorkspace;
+import com.intellij.openapi.util.text.StringUtil;
 import org.btik.platformioplus.icon.PlatformIoPlusIcon;
+import org.btik.platformioplus.ini.PioIniSectionBean;
 import org.btik.platformioplus.run.config.PioPlusRunConfigType;
 import org.btik.platformioplus.run.config.esp32.debug.model.DebugConfigModel;
+import org.btik.platformioplus.run.config.esp32.system.Esp32DebugSysConf;
+import org.btik.platformioplus.service.PlatformIoIniStore;
+import org.btik.platformioplus.service.SystemMetaService;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Objects;
 
+import static org.btik.platformioplus.ini.PioIniMetaConst.MCU;
+import static org.btik.platformioplus.run.config.esp32.system.Esp32DebugSysConfMeta.TARGET_DEFAULT;
 import static org.btik.platformioplus.util.SysConf.$sys;
 
 /**
@@ -56,59 +57,40 @@ public class Esp32RunConfigFactory extends ConfigurationFactory {
         return $sys("esp32.debug.name");
     }
 
-    private static DebugConfigModel parseDesc(File descFile) {
-        Gson gson = new Gson();
-        String json;
-        try {
-            json = Files.readString(descFile.toPath());
-        } catch (IOException e) {
-            log.error(e);
+    public static DebugConfigModel getDebugConfigModel(Project project) {
+        PlatformIoIniStore service = project.getService(PlatformIoIniStore.class);
+        SystemMetaService sysConfService = ApplicationManager.getApplication().getService(SystemMetaService.class);
+        PioIniSectionBean currentSection = service.getCurrentSection();
+        if (currentSection == null) {
             return null;
         }
-        return gson.fromJson(json, DebugConfigModel.class);
-    }
-
-    public static File getFileInCmakeBuildDir(Project project, final String fileName) {
-        CMakeWorkspace instance = CMakeWorkspace.getInstance(project);
-        CMakeSettings settings = instance.getSettings();
-        List<CMakeSettings.Profile> profiles = settings.getProfiles();
+        String mcu = currentSection.getProperties().get(MCU);
+        if (StringUtil.isEmpty(mcu)) {
+            return null;
+        }
+        Esp32DebugSysConf esp32DebugSysConf = sysConfService.getEsp32DebugSysConf();
+        var targetConfig = esp32DebugSysConf.getTargetConfig(mcu);
+        if (targetConfig == null) {
+            targetConfig = esp32DebugSysConf.getTargetConfig(TARGET_DEFAULT);
+        }
+        if (targetConfig == null) {
+            return null;
+        }
+        DebugConfigModel debugConfigModel = new DebugConfigModel();
+        String openocdCfg = targetConfig.getOpenocdCfg();
+        if (Objects.equals(debugConfigModel.getTarget(), TARGET_DEFAULT)) {
+            openocdCfg = String.format(openocdCfg, mcu);
+        }
+        debugConfigModel.setOpenOcdArguments(openocdCfg);
+        debugConfigModel.setOpenOcdPath(esp32DebugSysConf.getOpenocdBinPath());
+        debugConfigModel.setGdbExe(targetConfig.getGdbPath());
         String basePath = project.getBasePath();
         if (basePath == null) {
-            return null;
+            return debugConfigModel;
         }
         Path baseDir = Path.of(basePath);
-
-        if (profiles.isEmpty()) {
-            return checkDescFile(baseDir.resolve($sys("esp32.build.project.build.dir")), fileName);
-        }
-        File resolve;
-        for (CMakeSettings.Profile profile : profiles) {
-            File generationDir = profile.getGenerationDir();
-            if (generationDir != null && (resolve = checkDescFile(baseDir.resolve(generationDir.getName()), fileName)) != null) {
-                return resolve;
-            }
-        }
-        return null;
-    }
-
-    private static File checkDescFile(Path buildDir, final String fileName) {
-        if (!Files.exists(buildDir)) {
-            return null;
-        }
-        if (Objects.equals("/", fileName)) {
-            return buildDir.toFile();
-        }
-        File projectDesc = buildDir.resolve(fileName).toFile();
-        return projectDesc.exists() && projectDesc.canRead() ? projectDesc : null;
-
-    }
-
-    public static DebugConfigModel syncProjectDesc(Project project) {
-        String projectDescFileName = $sys("esp32.build.project.description");
-        File projectDescFile = getFileInCmakeBuildDir(project, projectDescFileName);
-        if (projectDescFile == null) {
-            return null;
-        }
-        return parseDesc(projectDescFile);
+        debugConfigModel.setAppElf(baseDir.resolve($sys("platformio.out.dir")).resolve($sys("platformio.out.build.dir"))
+                .resolve(currentSection.getEnvName()).resolve($sys("platformio.out.elf")).toString());
+        return debugConfigModel;
     }
 }

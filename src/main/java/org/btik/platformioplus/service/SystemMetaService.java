@@ -1,5 +1,6 @@
 package org.btik.platformioplus.service;
 
+import org.btik.platformioplus.run.config.esp32.system.Esp32DebugSysConf;
 import org.btik.platformioplus.util.ClassMetaUtils;
 
 import java.util.List;
@@ -10,4 +11,6 @@ import java.util.List;
  */
 public interface SystemMetaService {
     List<ClassMetaUtils.PropOptMeta> getEsp32PropOptMetas();
+
+    Esp32DebugSysConf getEsp32DebugSysConf();
 }

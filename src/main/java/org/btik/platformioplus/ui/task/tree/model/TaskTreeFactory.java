@@ -55,7 +55,7 @@ public class TaskTreeFactory {
         XmlNode rootNode = newFolder(treeRoot);
         LinkedList<XmlNode> treeNodeQueue = new LinkedList<>();
         treeNodeQueue.add(rootNode);
-        while (treeNodeQueue.size() > 0) {
+        while (!treeNodeQueue.isEmpty()) {
             XmlNode xmlNode = treeNodeQueue.removeFirst();
             eachChildrenElement(xmlNode.element, (child) -> {
                 String type = child.getAttribute(TYPE);

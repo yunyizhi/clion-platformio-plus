@@ -74,21 +74,13 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
             return;
         }
 
-        PsiElement parent = event.getParent();
-        if (parent instanceof IniSection) {
-            parent = parent.getParent();
-        }
-        if (parent == null) {
-            return;
-        }
         Project fileProject = file.getProject();
         PioIniChangeHandler pioIniChangeHandler = fileProject.getService(PioIniChangeHandler.class);
         if (pioIniChangeHandler == null) {
             return;
         }
-        pioIniChangeHandler.loadEnvInFile(parent.getChildren());
-        pioIniChangeHandler.update(parent.getText());
-
+        pioIniChangeHandler.loadEnvInFile(file.getChildren());
+        pioIniChangeHandler.update(file.getText());
 
     }
 

@@ -2,6 +2,8 @@ package org.btik.platformioplus.service.impl;
 
 import org.btik.platformioplus.run.config.esp32.debug.model.DebugConfigModel;
 import org.btik.platformioplus.run.config.esp32.debug.model.Serial;
+import org.btik.platformioplus.run.config.esp32.system.Esp32DebugSysConf;
+import org.btik.platformioplus.run.config.esp32.system.Esp32DebugSysConfFactory;
 import org.btik.platformioplus.service.SystemMetaService;
 import org.btik.platformioplus.util.ClassMetaUtils;
 
@@ -18,9 +20,11 @@ import static org.btik.platformioplus.util.ClassMetaUtils.isMod;
 public class SystemMetaServiceImpl implements SystemMetaService {
 
     private List<ClassMetaUtils.PropOptMeta> propOptMetas;
+    private final Esp32DebugSysConf esp32DebugSysConf;
 
     public SystemMetaServiceImpl() {
         parseDebugModelSerialMeta();
+        esp32DebugSysConf = Esp32DebugSysConfFactory.load();
     }
 
     private void parseDebugModelSerialMeta() {
@@ -38,5 +42,10 @@ public class SystemMetaServiceImpl implements SystemMetaService {
     @Override
     public List<ClassMetaUtils.PropOptMeta> getEsp32PropOptMetas() {
         return propOptMetas;
+    }
+
+    @Override
+    public Esp32DebugSysConf getEsp32DebugSysConf() {
+        return esp32DebugSysConf;
     }
 }

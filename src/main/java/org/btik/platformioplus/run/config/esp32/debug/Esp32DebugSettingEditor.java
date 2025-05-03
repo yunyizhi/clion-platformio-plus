@@ -9,8 +9,10 @@ import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.util.ui.JBUI;
+import org.btik.platformioplus.ini.PioIniSectionBean;
 import org.btik.platformioplus.run.config.esp32.components.TextFieldFileChooser;
 import org.btik.platformioplus.run.config.esp32.debug.model.DebugConfigModel;
+import org.btik.platformioplus.service.PlatformIoIniStore;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -33,7 +35,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
     private final EnvironmentVariablesComponent envComponent;
 
     private final TextFieldFileChooser openocdPath;
-    private final JTextField arguments = new JTextField();
+    private final JTextField openOcdArguments = new JTextField();
     private final TextFieldFileChooser appElf;
     private final TextFieldFileChooser gdb;
     private final JButton setDefault = new JButton();
@@ -60,7 +62,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         GridConstraints openocdArgConstraints = createConstraints(rowIndex, 1);
         openocdArgConstraints.setFill(GridConstraints.FILL_HORIZONTAL);
         openocdArgConstraints.setHSizePolicy(GridConstraints.SIZEPOLICY_WANT_GROW);
-        wrapper.add(arguments, openocdArgConstraints);
+        wrapper.add(openOcdArguments, openocdArgConstraints);
         rowIndex++;
 
         wrapper.add(i18nLabel("esp32.debug.app_elf"), createConstraints(rowIndex, 0));
@@ -114,17 +116,19 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
     }
 
     private void initValue() {
-        DebugConfigModel debugConfigModel = Esp32RunConfigFactory.syncProjectDesc(project);
-        if (debugConfigModel == null) {
-            debugConfigModel = Esp32RunConfigFactory.syncProjectDesc(project);
-        }
+        DebugConfigModel debugConfigModel = Esp32RunConfigFactory.getDebugConfigModel(project);
         if (debugConfigModel == null) {
             return;
         }
-        appElf.setText(debugConfigModel.getAppElf());
-        appElf.setRootDir(Esp32RunConfigFactory.getFileInCmakeBuildDir(project, "/"));
-        String target = debugConfigModel.getTarget();
+        setDefault(debugConfigModel);
+    }
 
+    private void setDefault(@NotNull DebugConfigModel debugConfigModel) {
+        openocdPath.setText(debugConfigModel.getOpenOcdPath());
+        appElf.setText(debugConfigModel.getAppElf());
+        gdb.setText(debugConfigModel.getGdbExe());
+        openOcdArguments.setText(debugConfigModel.getOpenOcdArguments());
+        String target = debugConfigModel.getTarget();
     }
 
     @Override
@@ -135,7 +139,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
             return;
         }
         envComponent.setEnvData(configDataModel.getEnvData());
-        arguments.setText(configDataModel.getOpenOcdArguments());
+        openOcdArguments.setText(configDataModel.getOpenOcdArguments());
         appElf.setText(configDataModel.getAppElf());
         gdb.setText(configDataModel.getGdbExe());
         openocdPath.setText(configDataModel.getOpenOcdPath());
@@ -147,7 +151,7 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         DebugConfigModel debugConfigModel = configDataModel == null ? new DebugConfigModel() : configDataModel;
         esp32RunConfig.setConfigDataModel(debugConfigModel);
         debugConfigModel.setAppElf(appElf.getText());
-        debugConfigModel.setOpenOcdArguments(arguments.getText());
+        debugConfigModel.setOpenOcdArguments(openOcdArguments.getText());
         debugConfigModel.setGdbExe(gdb.getText());
         debugConfigModel.setEnvData(envComponent.getEnvData());
         debugConfigModel.setOpenOcdPath(openocdPath.getText());

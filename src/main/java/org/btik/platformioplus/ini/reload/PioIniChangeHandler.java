@@ -29,4 +29,6 @@ public interface PioIniChangeHandler {
     void bindEnvNode(DefaultMutableTreeNode envNode, Runnable updateUI);
 
     void loadEnvInFile( @NotNull PsiElement[] children);
+
+    int iniVersion();
 }
