@@ -21,7 +21,7 @@ import javax.swing.*;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static org.btik.platformioplus.ini.PioIniMetaConst.MCU;
+import static org.btik.platformioplus.ini.PioIniBoradMetaConst.MCU;
 import static org.btik.platformioplus.run.config.esp32.system.Esp32DebugSysConfMeta.TARGET_DEFAULT;
 import static org.btik.platformioplus.util.SysConf.$sys;
 

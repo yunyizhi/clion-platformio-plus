@@ -7,17 +7,13 @@ import java.util.HashMap;
  * @since 2025/5/4 1:36
  */
 public class Esp32DebugSysConf {
-    private HashMap<String, Esp32DebugTargetConfig> targets = new HashMap<String, Esp32DebugTargetConfig>();
+    private final HashMap<String, Esp32DebugTargetConfig> targets = new HashMap<String, Esp32DebugTargetConfig>();
 
     private String openocdFolder;
     private String openocdBinName;
     private String openocdBinPath;
     public HashMap<String, Esp32DebugTargetConfig> getTargets() {
         return targets;
-    }
-
-    public void setTargets(HashMap<String, Esp32DebugTargetConfig> targets) {
-        this.targets = targets;
     }
 
     public Esp32DebugTargetConfig getTargetConfig(String target) {
@@ -46,6 +42,10 @@ public class Esp32DebugSysConf {
 
     public void setOpenocdBinPath(String openocdBinPath) {
         this.openocdBinPath = openocdBinPath;
+    }
+
+    public void putTargetConfig(String target, Esp32DebugTargetConfig targetConfig) {
+        targets.put(target, targetConfig);
     }
 
     public static class Esp32DebugTargetConfig {

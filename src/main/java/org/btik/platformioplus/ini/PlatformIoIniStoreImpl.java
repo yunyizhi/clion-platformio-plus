@@ -1,5 +1,10 @@
 package org.btik.platformioplus.ini;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.text.StringUtil;
@@ -16,13 +21,16 @@ import org.btik.platformioplus.service.PlatformIoIniStore;
 import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static org.btik.platformioplus.ini.PioIniMetaConst.*;
+import static org.btik.platformioplus.ini.PioIniBoradMetaConst.*;
+import static org.btik.platformioplus.util.IniUtils.getEnvName;
 import static org.btik.platformioplus.util.IniUtils.getSectionName;
 import static org.btik.platformioplus.util.PathUtils.getPioSubPath;
 
@@ -31,12 +39,11 @@ import static org.btik.platformioplus.util.PathUtils.getPioSubPath;
  * @since 2025/5/3 17:31
  */
 public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
-
+    private final static Logger log = Logger.getInstance(PlatformIoIniStoreImpl.class);
     private final Project project;
     private PsiFile pioIniPsiFile;
 
     private final HashMap<String, PioIniSectionBean> sectionMap = new HashMap<>();
-    private final HashMap<String, String> envsMap = new HashMap<>();
 
     private final HashMap<String, BoardConf> boardConfMap = new HashMap<>();
 
@@ -44,8 +51,12 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
 
     private Path platformsPath = null;
 
+    private File platformsDir = null;
+
     private int iniVersion = 0;
     private final List<PioIniSectionBean> sections = new ArrayList<>();
+
+    private final Gson gson = new Gson();
 
     public PlatformIoIniStoreImpl(Project project) {
         this.project = project;
@@ -69,7 +80,7 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
         if (platformsPath == null) {
             return;
         }
-
+        platformsDir = platformsPath.toFile();
         iniVersion = currentIniVersion;
 
         @NotNull PsiElement[] children = pioIniPsiFile.getChildren();
@@ -82,7 +93,9 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
                 if (Objects.equals(ENV, sectionName)) {
                     defaultEnv = bean;
                 }
-                if (nameText.startsWith("[env:"))
+                if (nameText != null && nameText.startsWith(ENV_SECTION_PREFIX)) {
+                    bean.setEnvName(getEnvName(nameText));
+                }
                 bean.setSection(sectionName);
                 HashMap<String, String> propResult = parseProp(section);
                 bean.setProperties(propResult);
@@ -113,9 +126,80 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
                 section.put(MCU, boardConf.getMcu());
                 continue;
             }
-            Path boardPath = platformsPath.resolve(platform);
+            if (platform.startsWith("http")) {
+                doWithFindBoard(platform, board, section);
+                continue;
+            }
+            String platformPath = platform;
+            if (platform.contains("@")) {
+                platformPath = platform.replaceAll("\\s", "");
+            }
+            Path boardPath = platformsPath.resolve(platformPath).resolve(BOARD_DIR).resolve(board + BOARD_SUFFIX);
+            if (!Files.exists(boardPath)) {
+                doWithFindBoard(platform, board, section);
+                continue;
+            }
+            boardConf = parseBoard(boardPath, platform, board);
+            if (boardConf != null) {
+                section.put(MCU, boardConf.getMcu());
+            }
         }
 
+    }
+
+    private BoardConf parseBoard(Path boardPath, String platform, String board) {
+        if (boardPath == null) {
+            return null;
+        }
+        BoardConf boardConf = new BoardConf();
+        boardConf.setBoardId(board);
+        try (JsonReader reader = new JsonReader(new FileReader(boardPath.toFile()))) {
+            JsonElement jsonElement = gson.fromJson(reader, JsonElement.class);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonElement boardName = jsonObject.get(NAME);
+            if (boardName != null) {
+                boardConf.setBoardName(boardName.getAsString());
+            }
+            JsonElement boardBuild = jsonObject.get(BOARD_BUILD);
+            if (boardBuild != null) {
+                JsonObject boardBuildObj = boardBuild.getAsJsonObject();
+                JsonElement boardBuildMcu = boardBuildObj.get(MCU);
+                if (boardBuildMcu != null) {
+                    boardConf.setMcu(boardBuildMcu.getAsString());
+                }
+            }
+            boardConfMap.put(platform + '/' + board, boardConf);
+            boardConfMap.put(board, boardConf);
+        } catch (Exception e) {
+            log.error("Error reading board configuration", e);
+        }
+
+        return boardConf;
+    }
+
+    private void doWithFindBoard(String platform, String board, PioIniSectionBean section) {
+        // 先尝试通过boardId获取
+        BoardConf boardConf = boardConfMap.get(board);
+        if (boardConf != null) {
+            section.put(MCU, boardConf.getMcu());
+            return;
+        }
+        // 再尝试查找
+        String[] platforms = platformsDir.list();
+        if (platforms == null) {
+            return;
+        }
+        for (String aPlatform : platforms) {
+            Path boardPath = platformsPath.resolve(aPlatform).resolve(BOARD_DIR).resolve(board + BOARD_SUFFIX);
+            if (!Files.exists(boardPath)) {
+                continue;
+            }
+            boardConf = parseBoard(boardPath, platform, board);
+            if (boardConf != null) {
+                section.put(MCU, boardConf.getMcu());
+                break;
+            }
+        }
     }
 
     private String getValueFormExtendOrCommon(String key, PioIniSectionBean section) {

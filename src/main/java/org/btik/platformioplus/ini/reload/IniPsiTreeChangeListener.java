@@ -1,11 +1,9 @@
 package org.btik.platformioplus.ini.reload;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiTreeChangeEvent;
 import com.intellij.psi.PsiTreeChangeListener;
-import ini4idea.lang.psi.IniSection;
 import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
 

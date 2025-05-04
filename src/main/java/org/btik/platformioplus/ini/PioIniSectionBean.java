@@ -3,7 +3,7 @@ package org.btik.platformioplus.ini;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static org.btik.platformioplus.ini.PioIniMetaConst.PLATFORM;
+import static org.btik.platformioplus.ini.PioIniBoradMetaConst.PLATFORM;
 
 /**
  * @author lustre

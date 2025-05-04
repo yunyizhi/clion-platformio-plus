@@ -9,10 +9,8 @@ import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.util.ui.JBUI;
-import org.btik.platformioplus.ini.PioIniSectionBean;
 import org.btik.platformioplus.run.config.esp32.components.TextFieldFileChooser;
 import org.btik.platformioplus.run.config.esp32.debug.model.DebugConfigModel;
-import org.btik.platformioplus.service.PlatformIoIniStore;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -128,7 +126,6 @@ public class Esp32DebugSettingEditor extends SettingsEditor<Esp32RunConfig> {
         appElf.setText(debugConfigModel.getAppElf());
         gdb.setText(debugConfigModel.getGdbExe());
         openOcdArguments.setText(debugConfigModel.getOpenOcdArguments());
-        String target = debugConfigModel.getTarget();
     }
 
     @Override

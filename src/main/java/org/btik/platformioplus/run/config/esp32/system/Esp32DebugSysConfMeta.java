@@ -17,7 +17,7 @@ public interface Esp32DebugSysConfMeta {
 
     String GDB = "gdb";
 
-    String DEFAULT_OPENOCD_CFG = "default-openocd-cfg";
+    String DEFAULT_OPENOCD_CFG = "default_openocd_cfg";
 
     String OPENOCD_CONF = "openocd-conf";
 
@@ -26,4 +26,8 @@ public interface Esp32DebugSysConfMeta {
     String NAME = "name";
 
     String TARGET_DEFAULT = "default";
+
+    String BIN = "bin";
+
+    String WIN_EXE_SUFFIX = ".exe";
 }

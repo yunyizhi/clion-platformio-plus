@@ -25,6 +25,10 @@ public interface PlatformIoPlusConst {
 
     String PACKAGES = "packages";
 
+    String BOARD_DIR = "boards";
+
+    String BOARD_SUFFIX = ".json";
+
     String[][] PLATFORMS_PATH = {
             {PLATFORM_IO, PLATFORMS},
             {PIO, PLATFORMS},
