@@ -60,7 +60,7 @@ public class Esp32RunConfigFactory extends ConfigurationFactory {
     public static DebugConfigModel getDebugConfigModel(Project project) {
         PlatformIoIniStore service = project.getService(PlatformIoIniStore.class);
         SystemMetaService sysConfService = ApplicationManager.getApplication().getService(SystemMetaService.class);
-        PioIniSectionBean currentSection = service.getCurrentSection();
+        PioIniSectionBean currentSection = service.getCurrentEnv();
         if (currentSection == null) {
             return null;
         }

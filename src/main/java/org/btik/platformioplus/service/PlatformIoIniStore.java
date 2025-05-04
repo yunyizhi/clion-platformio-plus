@@ -13,7 +13,7 @@ public interface PlatformIoIniStore extends PlatformIoPlusConst {
 
     PsiFile getPlatformIoIni();
 
-    PioIniSectionBean getCurrentSection();
+    PioIniSectionBean getCurrentEnv();
 
-    List<PioIniSectionBean> getSections();
+    List<PioIniSectionBean> getEnvs();
 }

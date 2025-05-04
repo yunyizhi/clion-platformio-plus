@@ -54,7 +54,7 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
     private File platformsDir = null;
 
     private int iniVersion = 0;
-    private final List<PioIniSectionBean> sections = new ArrayList<>();
+    private final List<PioIniSectionBean> envs = new ArrayList<>();
 
     private final Gson gson = new Gson();
 
@@ -87,7 +87,6 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
         for (PsiElement child : children) {
             if (child instanceof IniSection section) {
                 PioIniSectionBean bean = new PioIniSectionBean();
-                sections.add(bean);
                 String nameText = section.getNameText();
                 String sectionName = getSectionName(nameText);
                 if (Objects.equals(ENV, sectionName)) {
@@ -95,6 +94,7 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
                 }
                 if (nameText != null && nameText.startsWith(ENV_SECTION_PREFIX)) {
                     bean.setEnvName(getEnvName(nameText));
+                    envs.add(bean);
                 }
                 bean.setSection(sectionName);
                 HashMap<String, String> propResult = parseProp(section);
@@ -104,7 +104,7 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
                 sectionMap.put(sectionName, bean);
             }
         }
-        parseSections(sections);
+        parseSections(envs);
     }
 
     private void parseSections(List<PioIniSectionBean> sections) {
@@ -253,14 +253,14 @@ public class PlatformIoIniStoreImpl implements PlatformIoIniStore {
     }
 
     @Override
-    public PioIniSectionBean getCurrentSection() {
+    public PioIniSectionBean getCurrentEnv() {
         parsePioIni();
-        return sections.isEmpty() ? null : sections.get(0);
+        return envs.isEmpty() ? null : envs.get(0);
     }
 
     @Override
-    public List<PioIniSectionBean> getSections() {
+    public List<PioIniSectionBean> getEnvs() {
         parsePioIni();
-        return sections;
+        return envs;
     }
 }
