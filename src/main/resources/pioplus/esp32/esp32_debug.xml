@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<esp32-debug>
+    <target-conf>
+        <target type="esp32" toolchain="toolchain-xtensa-esp32" gdb="xtensa-esp32-elf-gdb"/>
+        <target type="esp32s2" toolchain="toolchain-xtensa-esp32s2" gdb="xtensa-esp32s2-elf-gdb"/>
+        <target type="esp32s3" toolchain="toolchain-xtensa-esp32s3" gdb="xtensa-esp32s3-elf-gdb"
+              default_openocd_cfg="-f board/esp32s3-builtin.cfg"/>
+        <target type="esp32c2" toolchain="toolchain-riscv32-esp" gdb="riscv32-esp-elf-gdb"/>
+        <target type="esp32c3" toolchain="toolchain-riscv32-esp" gdb="riscv32-esp-elf-gdb"
+              default_openocd_cfg="-f board/esp32c3-builtin.cfg"/>
+        <target type="esp32c6" toolchain="toolchain-riscv32-esp" gdb="riscv32-esp-elf-gdb"
+              default_openocd_cfg="-f board/esp32c6-builtin.cfg"/>
+        <target type="esp32h2" toolchain="toolchain-riscv32-esp" gdb="riscv32-esp-elf-gdb"
+              default_openocd_cfg="-f board/esp32h2-builtin.cfg"/>
+        <target type="esp32p4" toolchain="toolchain-riscv32-esp" gdb="riscv32-esp-elf-gdb"
+              default_openocd_cfg="-f board/esp32p4-builtin.cfg"/>
+        <target type="default" toolchain="toolchain-riscv32-esp" gdb="riscv32-esp-elf-gdb"
+              default_openocd_cfg="-f board/%s-builtin.cfg"/>
+    </target-conf>
+    <openocd-conf dir="tool-openocd-esp32" name="openocd"/>
+</esp32-debug>

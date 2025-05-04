@@ -5,8 +5,9 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.util.IconLoader;
+import org.btik.platformioplus.icon.PlatformIoPlusIcon;
 import org.btik.platformioplus.ini.completion.entity.PioIniItemBuilder;
+import org.btik.platformioplus.ini.completion.entity.PlatformRule;
 import org.btik.platformioplus.ini.completion.filter.IniTipFilters;
 import org.btik.platformioplus.util.DomUtil;
 import org.jetbrains.annotations.NotNull;
@@ -14,12 +15,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import static org.btik.platformioplus.ini.completion.IniMetaXmlConstant.*;
-import static org.btik.platformioplus.util.DomUtil.eachByTagName;
+import static org.btik.platformioplus.util.DomUtil.*;
 import static org.btik.platformioplus.util.Note.*;
 import static org.btik.platformioplus.util.Note.getMsg;
 
@@ -39,6 +39,8 @@ public class PlatformioIniMetaFactory {
     private final Set<LookupElementBuilder> sections = new HashSet<>();
 
     private final HashMap<String, Set<PioIniItemBuilder>> values = new HashMap<>();
+
+    private final ArrayList<PlatformRule> platformRules = new ArrayList<>();
 
     private final byte[] lock = new byte[0];
     private volatile boolean loaded = false;
@@ -63,7 +65,7 @@ public class PlatformioIniMetaFactory {
             }
             loaded = true;
         }
-        Icon icon = IconLoader.getIcon("/pioplus/platformio_13.svg", getClass());
+        Icon icon = PlatformIoPlusIcon.PIOPLUS_13;
         Element documentElement;
         try {
             Document treeConf = DomUtil.parse(PlatformioIniMetaFactory.class.getResourceAsStream("/pioplus/platformioIniMeta.xml"));
@@ -117,6 +119,23 @@ public class PlatformioIniMetaFactory {
             });
         });
 
+        Element platformRule = getFirstElementByName(documentElement, PLATFORM_RULE);
+        if (platformRule == null) {
+            return;
+        }
+        platformRules.clear();
+        eachChildrenElement(platformRule, platform ->{
+            String platformName = platform.getTagName().trim();
+            String value = platform.getAttribute(VALUE).trim();
+            try {
+                Pattern compile = Pattern.compile(value);
+                platformRules.add(new PlatformRule(compile, platformName));
+            }catch (Exception e) {
+                NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+                        getMsgF("platformio.ini.meta.load.failed", e.getMessage()), NotificationType.ERROR).notify(null);
+            }
+        });
+        IniTipFilters.init();
     }
 
     /**
@@ -149,6 +168,10 @@ public class PlatformioIniMetaFactory {
 
     public static Set<LookupElementBuilder> getSections() {
         return INSTANCE.sections;
+    }
+
+    public static ArrayList<PlatformRule> getPlatformRules() {
+        return INSTANCE.platformRules;
     }
 
     public static HashMap<String, Set<PioIniItemBuilder>> getValues() {

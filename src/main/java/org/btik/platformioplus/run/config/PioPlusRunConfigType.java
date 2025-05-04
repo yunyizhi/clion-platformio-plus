@@ -3,7 +3,8 @@ package org.btik.platformioplus.run.config;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 
-import com.intellij.openapi.util.IconLoader;
+import org.btik.platformioplus.icon.PlatformIoPlusIcon;
+import org.btik.platformioplus.run.config.esp32.debug.Esp32RunConfigFactory;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,7 @@ public class PioPlusRunConfigType implements ConfigurationType {
 
     @Override
     public Icon getIcon() {
-        return IconLoader.getIcon("/pioplus/platformio_13.svg", getClass());
+        return PlatformIoPlusIcon.PIOPLUS_13;
     }
 
     @Override
@@ -41,7 +42,8 @@ public class PioPlusRunConfigType implements ConfigurationType {
     @Override
     public ConfigurationFactory[] getConfigurationFactories() {
         return new ConfigurationFactory[]{
-                new PioRunConfigFactory(this)
+                new PioRunConfigFactory(this),
+                new Esp32RunConfigFactory(this)
         };
     }
 }

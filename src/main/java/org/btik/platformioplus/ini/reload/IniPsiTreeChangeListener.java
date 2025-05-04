@@ -1,11 +1,9 @@
 package org.btik.platformioplus.ini.reload;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiTreeChangeEvent;
 import com.intellij.psi.PsiTreeChangeListener;
-import ini4idea.lang.psi.IniSection;
 import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
 
@@ -74,21 +72,13 @@ public class IniPsiTreeChangeListener implements PsiTreeChangeListener {
             return;
         }
 
-        PsiElement parent = event.getParent();
-        if (parent instanceof IniSection) {
-            parent = parent.getParent();
-        }
-        if (parent == null) {
-            return;
-        }
         Project fileProject = file.getProject();
         PioIniChangeHandler pioIniChangeHandler = fileProject.getService(PioIniChangeHandler.class);
         if (pioIniChangeHandler == null) {
             return;
         }
-        pioIniChangeHandler.loadEnvInFile(parent.getChildren());
-        pioIniChangeHandler.update(parent.getText());
-
+        pioIniChangeHandler.loadEnvInFile(file.getChildren());
+        pioIniChangeHandler.update(file.getText());
 
     }
 

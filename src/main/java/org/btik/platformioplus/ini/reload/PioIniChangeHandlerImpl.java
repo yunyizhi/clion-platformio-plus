@@ -33,6 +33,8 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
 
     private CharSequence lastUnSaveCharSequence = "";
 
+    private int iniVersion = Integer.MAX_VALUE;
+
 
     private volatile boolean fileChange;
 
@@ -85,7 +87,7 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
     @Override
     public void update(CharSequence charSequence) {
         lastUnSaveCharSequence = charSequence;
-
+        iniVersion = charSequence.hashCode();
         // 文件回退则隐藏，否则依然存在差异则显示
         fileChange = !Objects.equals(lastSaveCharSequence, charSequence);
         setVisible(fileChange);
@@ -144,5 +146,10 @@ public class PioIniChangeHandlerImpl implements PioIniChangeHandler {
             }
         }
         treeUpdateUI.run();
+    }
+
+    @Override
+    public int iniVersion() {
+        return iniVersion;
     }
 }

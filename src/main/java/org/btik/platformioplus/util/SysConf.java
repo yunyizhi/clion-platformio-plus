@@ -1,6 +1,7 @@
 package org.btik.platformioplus.util;
 
 import com.intellij.DynamicBundle;
+import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -24,6 +25,19 @@ public class SysConf extends DynamicBundle {
 
     public static String getF(String key, @NotNull Object... params) {
         return String.format(get(key), params);
+    }
+
+    public static int getInt(String key, int defaultValue) {
+
+        String intStr = INSTANCE.messageOrDefault(key, "");
+        if (StringUtil.isEmpty(intStr)) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(intStr);
+        }catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 
 

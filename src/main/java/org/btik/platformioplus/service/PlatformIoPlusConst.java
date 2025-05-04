@@ -14,6 +14,28 @@ public interface PlatformIoPlusConst {
 
     String PIO_HOME_CONTENT_ID = "Pio Home";
 
-    String PIO_HOME_OPT_CONTENT_ID = "Options";
+    String ENV_SECTION_PREFIX = "[env:";
 
+    String PIO_HOME_OPT_CONTENT_ID = "Options";
+    String PLATFORMS = "platforms";
+
+    String PLATFORM_IO = ".platformio";
+
+    String PIO = ".pio";
+
+    String PACKAGES = "packages";
+
+    String BOARD_DIR = "boards";
+
+    String BOARD_SUFFIX = ".json";
+
+    String[][] PLATFORMS_PATH = {
+            {PLATFORM_IO, PLATFORMS},
+            {PIO, PLATFORMS},
+    };
+
+    String[][] PACKAGES_PATH = {
+            {PLATFORM_IO, PACKAGES},
+            {PIO, PACKAGES},
+    };
 }

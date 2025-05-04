@@ -1,14 +1,11 @@
 package org.btik.platformioplus.ui.task.tree;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.ui.CheckedTreeNode;
 import com.intellij.ui.treeStructure.Tree;
 import org.btik.platformioplus.ini.reload.PioIniChangeHandler;
-import org.btik.platformioplus.setting.PioConf;
+import org.btik.platformioplus.service.PlatformIoIniStore;
 import org.btik.platformioplus.ui.task.tree.execute.TreeNodeCmdExecutor;
 import org.btik.platformioplus.ui.task.tree.model.CommandNode;
 import org.btik.platformioplus.ui.task.tree.model.PioTaskTreeNode;
@@ -96,15 +93,12 @@ public class PioPlusTaskTreeToolWindow {
         if (pioIniChangeHandler == null) {
             return;
         }
-        VirtualFile[] contentRoots = ProjectRootManager.getInstance(project).getContentRoots();
-        for (VirtualFile contentRoot : contentRoots) {
-            VirtualFile pioIni = contentRoot.findChild(PioConf.FILE_NAME);
-            if (pioIni != null) {
-                PsiFile pioIniPsiFile = PsiUtilCore.getPsiFile(project, pioIni);
-                pioIniChangeHandler.loadEnvInFile(pioIniPsiFile.getChildren());
-                break;
-            }
+        PlatformIoIniStore service = project.getService(PlatformIoIniStore.class);
+        PsiFile platformIoIni = service.getPlatformIoIni();
+        if (platformIoIni == null) {
+            return;
         }
+        pioIniChangeHandler.loadEnvInFile(platformIoIni.getChildren());
     }
 
     /**

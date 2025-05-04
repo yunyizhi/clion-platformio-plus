@@ -37,6 +37,7 @@
             <arg platform="espressif32" framework="arduino">-D ARDUINO_EVENT_RUNNING_CORE=</arg>
             <arg platform="espressif32" framework="arduino">-D ARDUINO_SERIAL_EVENT_TASK_STACK_SIZE=</arg>
             <arg platform="espressif32" framework="arduino">-D ARDUINO_SERIAL_EVENT_TASK_PRIORITY=</arg>
+            <arg platform="espressif32" framework="arduino">-D CONFIG_ARDUHAL_ESP_LOG</arg>
 
         </Key>
         <Key name="build_src_flags"/>
@@ -253,4 +254,8 @@
         <Key name="shared_dir"/>
     </Section>
     <Section name="env" desc="[env]"/>
+    <PlatformRule>
+        <espressif32 value=".*esp32.*"/>
+        <espressif32 value=".*espressif32.*"/>
+    </PlatformRule>
 </IniMeta>

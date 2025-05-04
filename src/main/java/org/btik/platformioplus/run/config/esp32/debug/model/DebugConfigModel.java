@@ -1,0 +1,87 @@
+package org.btik.platformioplus.run.config.esp32.debug.model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.intellij.execution.configuration.EnvironmentVariablesData;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * @author lustre
+ * @since 2024/9/7 11:37
+ */
+public class DebugConfigModel {
+
+    @Serial
+    @SerializedName("target")
+    private String target;
+
+    @Serial
+    @SerializedName("app_elf")
+    private String appElf;
+
+    @Serial
+    @SerializedName("openocd_path")
+    private String openOcdPath;
+
+    @Expose(serialize = false, deserialize = false)
+    @Serial
+    private String openOcdArguments;
+
+    @Expose(serialize = false, deserialize = false)
+    @Serial
+    private String gdbExe;
+
+    @Expose(serialize = false, deserialize = false)
+    @Serial
+    private EnvironmentVariablesData envData = EnvironmentVariablesData.DEFAULT;
+
+
+    public String getOpenOcdArguments() {
+        return openOcdArguments;
+    }
+
+    public void setOpenOcdArguments(String openOcdArguments) {
+        this.openOcdArguments = openOcdArguments;
+    }
+
+    public String getGdbExe() {
+        return gdbExe;
+    }
+
+    public void setGdbExe(String gdbExe) {
+        this.gdbExe = gdbExe;
+    }
+
+    public EnvironmentVariablesData getEnvData() {
+        return envData;
+    }
+
+    public void setEnvData(EnvironmentVariablesData envData) {
+        this.envData = envData;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getAppElf() {
+        return appElf;
+    }
+
+    public void setAppElf(String appElf) {
+        this.appElf = appElf;
+    }
+
+
+    public @NotNull String getOpenOcdPath() {
+        return openOcdPath;
+    }
+
+    public void setOpenOcdPath(String openOcdPath) {
+        this.openOcdPath = openOcdPath;
+    }
+}
