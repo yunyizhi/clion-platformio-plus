@@ -141,6 +141,11 @@
                 esp8266_exception_decoder
             </value>
         </Key>
+        <Key name="board_build.filesystem" platform="espressif32" framework="arduino">
+            <value>spiffs</value>
+            <value>littlefs</value>
+            <value>fatfs</value>
+        </Key>
         <Key name="board_build.f_flash" platform="espressif32" framework="arduino"/>
         <Key name="board_build.arduino.memory_type" platform="espressif32" framework="arduino">
             <value>dio_qspi</value>
@@ -151,6 +156,7 @@
             <value>qio_qspi</value>
         </Key>
         <Key name="board_build.flash_mode" platform="espressif32" framework="arduino">
+            <value>dout</value>
             <value>dio</value>
             <value>opi</value>
             <value>qio</value>
