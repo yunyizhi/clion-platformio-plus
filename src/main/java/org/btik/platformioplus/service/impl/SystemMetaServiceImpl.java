@@ -9,6 +9,7 @@ import org.btik.platformioplus.util.ClassMetaUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.btik.platformioplus.util.ClassMetaUtils.isMod;
@@ -41,7 +42,7 @@ public class SystemMetaServiceImpl implements SystemMetaService {
 
     @Override
     public List<ClassMetaUtils.PropOptMeta> getEsp32PropOptMetas() {
-        return propOptMetas;
+        return propOptMetas == null ? List.of() : propOptMetas;
     }
 
     @Override
