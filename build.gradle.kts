@@ -2,7 +2,7 @@ import java.io.File
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.5.0"
+    id("org.jetbrains.intellij.platform") version "2.7.0"
 }
 
 group = "org.btik"
@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        clion("2025.1", useInstaller = false)
+        clion("2025.1.1") { useInstaller = false }
         bundledPlugins(
             "com.intellij.cidr.base",
             "com.intellij.clion",
@@ -29,7 +29,7 @@ dependencies {
             "com.jetbrains.plugins.ini4idea"
         )
         plugins(
-            "intellij.clion.embedded.platformio:251.23774.112"
+            "intellij.clion.embedded.platformio:252.23892.298"
         )
         pluginVerifier()
     }
