@@ -21,15 +21,12 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        clion("2025.1.1") { useInstaller = false }
+        clion("2025.3") { useInstaller = false }
         bundledPlugins(
-            "com.intellij.cidr.base",
             "com.intellij.clion",
             "com.intellij.nativeDebug",
-            "com.jetbrains.plugins.ini4idea"
-        )
-        plugins(
-            "intellij.clion.embedded.platformio:252.23892.298"
+            "com.jetbrains.plugins.ini4idea",
+            "intellij.clion.embedded.platformio"
         )
         pluginVerifier()
     }
