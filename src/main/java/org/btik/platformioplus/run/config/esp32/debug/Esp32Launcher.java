@@ -14,14 +14,19 @@ import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.execution.ui.ExecutionConsole;
 import com.intellij.execution.ui.RunnerLayoutUi;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.ThrowableComputable;
 import com.intellij.ui.content.Content;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.ui.XDebugTabLayouter;
+import com.intellij.util.system.OS;
 import com.jetbrains.cidr.ArchitectureType;
 import com.jetbrains.cidr.cpp.execution.CLionLauncher;
 import com.intellij.clion.embedded.debugger.peripheralview.SvdPanel;
+import com.jetbrains.cidr.cpp.toolchains.CPPDebugger;
 import com.jetbrains.cidr.cpp.toolchains.CPPEnvironment;
+import com.jetbrains.cidr.cpp.toolchains.CPPToolchains;
+import com.jetbrains.cidr.cpp.toolchains.TrivialNativeToolchain;
 import com.jetbrains.cidr.execution.CidrCoroutineHelper;
 import com.jetbrains.cidr.execution.console.CidrPathConsoleFilter;
 import com.jetbrains.cidr.execution.TrivialRunParameters;
@@ -78,11 +83,12 @@ public class Esp32Launcher extends CLionLauncher {
     }
 
     @Override
-    public @NotNull XDebugProcess createDebugProcess(@NotNull CommandLineState state, @NotNull XDebugSession session) {
+    public @NotNull XDebugProcess createDebugProcess(@NotNull CommandLineState state, @NotNull XDebugSession session) throws ExecutionException {
         Project project = getProject();
         @SystemIndependent final String projectPath = project.getBasePath();
 
-        DebuggerDriverConfiguration debuggerDriverConfiguration = new Esp32OpenOcdGDBDriverConfig(project, esp32RunConfig);
+        CPPToolchains.Toolchain nativeToolchain = TrivialNativeToolchain.Companion.forDebugger(CPPDebugger.customGdb("gdb"), OS.CURRENT);
+        DebuggerDriverConfiguration debuggerDriverConfiguration = new Esp32OpenOcdGDBDriverConfig(project, nativeToolchain, esp32RunConfig);
 
         GeneralCommandLine commandLine = new GeneralCommandLine("").withWorkDirectory(project.getBasePath());
         TrivialRunParameters parameters = new TrivialRunParameters(debuggerDriverConfiguration, commandLine, ArchitectureType.UNKNOWN);
@@ -90,8 +96,11 @@ public class Esp32Launcher extends CLionLauncher {
             session.getConsoleView().print(s, ConsoleViewContentType.NORMAL_OUTPUT);
             return null;
         }};
-        return CidrCoroutineHelper.runOnEDT(
-                () -> new CidrDebugProcess(parameters, session, state.getConsoleBuilder(),
+        return CidrCoroutineHelper.runOnEDT(new ThrowableComputable<>() {
+
+            @Override
+            public @NotNull XDebugProcess compute() throws ExecutionException {
+                return new CidrDebugProcess(parameters, session, state.getConsoleBuilder(),
                         consoleCopyFilter) {
 
                     @Override
@@ -144,7 +153,9 @@ public class Esp32Launcher extends CLionLauncher {
                             }
                         };
                     }
-                });
+                };
+            }
+        });
     }
 
 }

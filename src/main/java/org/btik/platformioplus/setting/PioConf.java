@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.nio.file.Path;
 
-import static org.btik.platformioplus.util.Note.NOTIFICATION_GROUP;
+import static org.btik.platformioplus.util.Note.notificationGroup;
 
 /**
  * @author lustre
@@ -79,7 +79,7 @@ public class PioConf {
     }
 
     public static void notifyPlatformioNotFound() {
-        NOTIFICATION_GROUP
+        notificationGroup()
                 .createNotification(Note.getMsg("pio.location.not.found"),
                         Note.getMsg("please.check.system.path"), NotificationType.ERROR)
                 .addAction(NotificationAction.createSimple(Note.getMsg("install.guide"), PioConf::openInstallGuide))

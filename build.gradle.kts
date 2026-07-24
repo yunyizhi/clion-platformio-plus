@@ -2,7 +2,13 @@ import java.io.File
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.7.0"
+    id("org.jetbrains.intellij.platform") version "2.18.1"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }
 
 group = "org.btik"
@@ -21,13 +27,14 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        clion("2025.3") { useInstaller = false }
+        clion("2026.2") { useInstaller = true }
         bundledPlugins(
             "com.intellij.clion",
             "com.intellij.nativeDebug",
             "com.jetbrains.plugins.ini4idea",
-            "intellij.clion.embedded.platformio"
+            "com.intellij.clion.embedded"
         )
+        bundledModule("com.intellij.modules.jcef")
         pluginVerifier()
     }
     testImplementation("junit:junit:4.13.2")

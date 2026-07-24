@@ -75,7 +75,7 @@ public class PioPlusTaskTreeToolWindow {
                 if (e.getClickCount() == 2) {
                     Object userObject = lastPathComponent.getUserObject();
                     if (userObject instanceof CommandNode) {
-                        TreeNodeCmdExecutor.execute(e.getComponent(), (CommandNode) userObject, getEnvsFunction);
+                        TreeNodeCmdExecutor.execute(project, (CommandNode) userObject, getEnvsFunction);
                     }
                 }
             }

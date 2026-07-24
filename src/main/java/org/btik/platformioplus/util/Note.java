@@ -11,8 +11,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Note extends DynamicBundle {
     private static final Note INSTANCE = new Note("messages.PlatformioPlusBundle");
-    public static NotificationGroup NOTIFICATION_GROUP =
-            NotificationGroupManager.getInstance().getNotificationGroup("PlatformIO Plus");
+
+    /**
+     * 按需获取通知组，避免在类静态初始化阶段请求服务
+     * （2026.2 起平台禁止 <clinit> 依赖服务）
+     */
+    public static NotificationGroup notificationGroup() {
+        return NotificationGroupManager.getInstance().getNotificationGroup("PlatformIO Plus");
+    }
 
     public Note(@NotNull String pathToBundle) {
         super(pathToBundle);

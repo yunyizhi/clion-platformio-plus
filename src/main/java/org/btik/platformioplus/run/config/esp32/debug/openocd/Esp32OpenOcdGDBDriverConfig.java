@@ -14,14 +14,16 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.cidr.ArchitectureType;
+import com.jetbrains.cidr.cpp.toolchains.CPPToolchains;
 import com.jetbrains.cidr.execution.debugger.backend.DebuggerDriver;
 
-import com.jetbrains.cidr.execution.debugger.backend.gdb.GDBDriverConfiguration;
+import com.jetbrains.cidr.cpp.execution.debugger.backend.CLionGDBDriverConfiguration;
 import org.btik.platformioplus.icon.PlatformIoPlusIcon;
-import org.btik.platformioplus.run.config.esp32.debug.Esp32ConsoleRunProfile;
+import org.btik.platformioplus.run.config.PioConsoleRunProfile;
 import org.btik.platformioplus.run.config.esp32.debug.Esp32RunConfig;
 import org.btik.platformioplus.util.SysConf;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -31,7 +33,7 @@ import java.util.Map;
 
 import static org.btik.platformioplus.util.Note.$i18n;
 
-public class Esp32OpenOcdGDBDriverConfig extends GDBDriverConfiguration {
+public class Esp32OpenOcdGDBDriverConfig extends CLionGDBDriverConfiguration {
     private final Esp32RunConfig esp32RunConfig;
 
     private final Project project;
@@ -40,7 +42,8 @@ public class Esp32OpenOcdGDBDriverConfig extends GDBDriverConfiguration {
 
     private final Esp32OpenOcdProcessListener openOcdProcessListener = new Esp32OpenOcdProcessListener();
 
-    public Esp32OpenOcdGDBDriverConfig(@NotNull Project project, Esp32RunConfig esp32RunConfig) {
+    public Esp32OpenOcdGDBDriverConfig(@NotNull Project project, @Nullable CPPToolchains.Toolchain toolchain, Esp32RunConfig esp32RunConfig) {
+        super(project, toolchain);
         this.project = project;
         this.esp32RunConfig = esp32RunConfig;
     }
@@ -48,7 +51,7 @@ public class Esp32OpenOcdGDBDriverConfig extends GDBDriverConfiguration {
     @NotNull
     @Override
     public BaseProcessHandler<?> createDebugProcessHandler(@NotNull GeneralCommandLine commandLine) throws ExecutionException {
-        var idfOpenOcd = new Esp32ConsoleRunProfile($i18n("esp32.debug.openocd.run.title"), PlatformIoPlusIcon.ESP32_16, openOcdCli);
+        var idfOpenOcd = new PioConsoleRunProfile($i18n("esp32.debug.openocd.run.title"), PlatformIoPlusIcon.ESP32_16, openOcdCli);
         idfOpenOcd.addProcessListener(openOcdProcessListener);
         var environment = ExecutionEnvironmentBuilder.create(project, DefaultRunExecutor.getRunExecutorInstance(), idfOpenOcd).build();
         environment.setExecutionId(ExecutionEnvironment.getNextUnusedExecutionId());

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 import static org.btik.platformioplus.service.PlatformIoPlusConst.*;
-import static org.btik.platformioplus.util.Note.NOTIFICATION_GROUP;
+import static org.btik.platformioplus.util.Note.notificationGroup;
 
 
 /**
@@ -73,7 +73,7 @@ public class OpenPioHomeListener implements ToolWindowManagerListener {
         try {
             lastPioHomeProcessListener = new PioHomeProcessListener(project);
         } catch (Exception e) {
-            NOTIFICATION_GROUP
+            notificationGroup()
                     .createNotification(Note.getMsg("unexpected.exception"),
                             Note.getMsg("unexpected.exception"), NotificationType.ERROR)
                     .notify(project);
