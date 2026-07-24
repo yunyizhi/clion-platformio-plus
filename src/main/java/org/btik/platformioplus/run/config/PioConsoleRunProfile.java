@@ -1,4 +1,4 @@
-package org.btik.platformioplus.run.config.esp32.debug;
+package org.btik.platformioplus.run.config;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author lustre
  * @since 2023/5/18 1:54
  */
-public class Esp32ConsoleRunProfile implements RunProfile {
+public class PioConsoleRunProfile implements RunProfile {
     private String name;
 
     private Icon icon;
@@ -33,7 +33,7 @@ public class Esp32ConsoleRunProfile implements RunProfile {
 
     private List<ProcessListener> processListeners;
 
-    public Esp32ConsoleRunProfile(String name, Icon icon, GeneralCommandLine commandLine) {
+    public PioConsoleRunProfile(String name, Icon icon, GeneralCommandLine commandLine) {
         this.name = name;
         this.icon = icon;
         this.commandLine = commandLine;
@@ -52,13 +52,13 @@ public class Esp32ConsoleRunProfile implements RunProfile {
         return new CommandLineState(environment) {
             @Override
             protected @NotNull ProcessHandler startProcess() throws ExecutionException {
-                Esp32ConsoleRunProfile.this.processHandler = new KillableColoredProcessHandler(commandLine);
+                PioConsoleRunProfile.this.processHandler = new KillableColoredProcessHandler(commandLine);
                 if (processListeners != null) {
                     for (ProcessListener processListener : processListeners) {
-                        Esp32ConsoleRunProfile.this.processHandler.addProcessListener(processListener);
+                        PioConsoleRunProfile.this.processHandler.addProcessListener(processListener);
                     }
                 }
-                return Esp32ConsoleRunProfile.this.processHandler;
+                return PioConsoleRunProfile.this.processHandler;
             }
         };
     }

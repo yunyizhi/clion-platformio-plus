@@ -72,7 +72,7 @@ public class PlatformioIniMetaFactory {
             documentElement = treeConf.getDocumentElement();
 
         } catch (Exception e) {
-            NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+            notificationGroup().createNotification(getMsg("notification.group.platformio-plus"),
                     getMsgF("platformio.ini.meta.load.failed", e.getMessage()), NotificationType.ERROR).notify(null);
             return;
         }
@@ -131,7 +131,7 @@ public class PlatformioIniMetaFactory {
                 Pattern compile = Pattern.compile(value);
                 platformRules.add(new PlatformRule(compile, platformName));
             }catch (Exception e) {
-                NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+                notificationGroup().createNotification(getMsg("notification.group.platformio-plus"),
                         getMsgF("platformio.ini.meta.load.failed", e.getMessage()), NotificationType.ERROR).notify(null);
             }
         });

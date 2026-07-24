@@ -1,13 +1,16 @@
 package org.btik.platformioplus.ui.task.tree.execute;
 
-import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.ide.DataManager;
-import com.intellij.tools.Tool;
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.configurations.PtyCommandLine;
+import com.intellij.openapi.project.Project;
+import org.btik.platformioplus.icon.PlatformIoPlusIcon;
+import org.btik.platformioplus.run.config.PioConsoleRunProfile;
 import org.btik.platformioplus.setting.PioConf;
 import org.btik.platformioplus.ui.task.tree.model.CommandNode;
 import org.btik.platformioplus.ui.task.tree.model.LockCommandNode;
+import org.btik.platformioplus.util.CmdTaskExecutor;
 
-import java.awt.*;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -21,7 +24,7 @@ public class TreeNodeCmdExecutor {
     private static final ConcurrentHashMap<String, LockCommandProcessListener> LOCK_PROCESS_MAP = new ConcurrentHashMap<>();
 
 
-    public static void execute(Component component, CommandNode commandNode, Supplier<List<String>> getEnvsFunction) {
+    public static void execute(Project project, CommandNode commandNode, Supplier<List<String>> getEnvsFunction) {
         String platformioLocation = PioConf.findPlatformio();
         if (platformioLocation == null) {
             PioConf.notifyPlatformioNotFound();
@@ -29,24 +32,13 @@ public class TreeNodeCmdExecutor {
         }
         String command = buildCommand(commandNode, getEnvsFunction);
         if (commandNode instanceof LockCommandNode lockCommandNode) {
-            executeLockCommand(component, lockCommandNode, platformioLocation, command);
+            executeLockCommand(project, lockCommandNode, platformioLocation, command);
             return;
         }
-        Tool tool = new Tool();
-        tool.setName(commandNode.toString());
-        tool.setProgram(platformioLocation);
-        tool.setUseConsole(true);
-        tool.setParameters(command);
-        tool.execute(null, DataManager.getInstance().getDataContext(component),
-                ExecutionEnvironment.getNextUnusedExecutionId(), null);
+        execTask(project, commandNode.toString(), platformioLocation, command, null);
     }
 
-    private static void executeLockCommand(Component component, LockCommandNode lockCommandNode, String platformioLocation, String command) {
-        Tool tool = new Tool();
-        tool.setName(lockCommandNode.toString());
-        tool.setProgram(platformioLocation);
-        tool.setUseConsole(true);
-        tool.setParameters(command);
+    private static void executeLockCommand(Project project, LockCommandNode lockCommandNode, String platformioLocation, String command) {
         String lock = lockCommandNode.getLock();
         LockCommandProcessListener listener = LOCK_PROCESS_MAP.compute(lock, (key, oldVal) -> {
             if (oldVal == null) {
@@ -57,8 +49,28 @@ public class TreeNodeCmdExecutor {
             }
             return new LockCommandProcessListener(lock);
         });
-        tool.execute(null, DataManager.getInstance().getDataContext(component),
-                ExecutionEnvironment.getNextUnusedExecutionId(), listener);
+        execTask(project, lockCommandNode.toString(), platformioLocation, command, listener);
+    }
+
+    private static void execTask(Project project, String name, String platformioLocation, String command, LockCommandProcessListener listener) {
+        PtyCommandLine commandLine = new PtyCommandLine();
+        commandLine.setExePath(platformioLocation);
+        commandLine.setWorkDirectory(project.getBasePath());
+        commandLine.setCharset(Charset.forName(System.getProperty("sun.jnu.encoding", "UTF-8")));
+        commandLine.withConsoleMode(true);
+        String trimmedCommand = command.trim();
+        if (!trimmedCommand.isEmpty()) {
+            commandLine.addParameters(trimmedCommand.split("\\s+"));
+        }
+        PioConsoleRunProfile runProfile = new PioConsoleRunProfile(name, PlatformIoPlusIcon.PIOPLUS, commandLine);
+        if (listener != null) {
+            runProfile.addProcessListener(listener);
+        }
+        try {
+            CmdTaskExecutor.execute(project, runProfile);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     static void unlock(String lock, LockCommandProcessListener listener) {

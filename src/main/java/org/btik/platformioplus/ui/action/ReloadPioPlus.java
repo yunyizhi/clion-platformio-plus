@@ -10,7 +10,7 @@ import org.btik.platformioplus.setting.PioConf;
 import org.jetbrains.annotations.NotNull;
 
 import static org.btik.platformioplus.service.PlatformIoPlusConst.WINDOW_ARRAY;
-import static org.btik.platformioplus.util.Note.NOTIFICATION_GROUP;
+import static org.btik.platformioplus.util.Note.notificationGroup;
 import static org.btik.platformioplus.util.Note.getMsg;
 
 /**
@@ -23,7 +23,7 @@ public class ReloadPioPlus extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         if (project == null) {
-            NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+            notificationGroup().createNotification(getMsg("notification.group.platformio-plus"),
                     getMsg("load.pio.plus.failed"), NotificationType.WARNING).notify(null);
             return;
         }

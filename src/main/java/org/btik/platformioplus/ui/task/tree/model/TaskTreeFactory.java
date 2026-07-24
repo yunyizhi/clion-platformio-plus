@@ -37,13 +37,13 @@ public class TaskTreeFactory {
             documentElement = treeConf.getDocumentElement();
 
         } catch (Exception e) {
-            NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+            notificationGroup().createNotification(getMsg("notification.group.platformio-plus"),
                     getMsgF("tree.load.failed", e.getMessage()), NotificationType.ERROR).notify(null);
             return null;
         }
         Element treeRoot = getFirstElementByName(documentElement, TREE_ROOT);
         if (null == treeRoot) {
-            NOTIFICATION_GROUP.createNotification(getMsg("notification.group.platformio-plus"),
+            notificationGroup().createNotification(getMsg("notification.group.platformio-plus"),
                     getMsg("tree.load.failed"), NotificationType.ERROR).notify(null);
             return null;
         }
